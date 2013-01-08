@@ -8,25 +8,16 @@
 </body>
 
 <template name="page">
-  {{#if showCreateDialog}}
-    {{> createDialog}}
-  {{/if}}
-
-  {{#if showInviteDialog}}
-    {{> inviteDialog}}
-  {{/if}}
-
   {{#if newPostDialog}}
     {{> newPostDialog}}
   {{/if}}
 
   <div class="container">
     <div class="row">
-      <div class="span1"> </div>
 
-      <div class="span10">
+      <div class="span12">
         <div class="header row">
-          <div class="span6">
+          <div class="span8">
             <h3 style="margin-bottom: 0px"><i>We</i>blog re<i>Fi</i>nery &mdash; <i>WeFi</i></h3>
           </div>
           <div class="span4">
@@ -37,13 +28,12 @@
         </div>
 
         <div class="row">
-          <div class="span10">
+          <div class="span12">
             {{> postlist}}
           </div>
         </div>
       </div>
 
-      <div class="span1"> </div>
     </div>
   </div>
 </template>
