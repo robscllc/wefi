@@ -46,7 +46,61 @@ var attending = function (party) {
   return (_.groupBy(party.rsvps, 'rsvp').yes || []).length;
 };
 
+Posts = new Meteor.Collection("posts");
+
+Posts.allow({
+  insert: function (userId, post) {
+    return false; // no cowboy inserts -- use createPost method
+  },
+  update: function (userId, posts, fields, modifier) {
+    return _.all(posts, function (post) {
+      if (userId !== post.owner)
+        return false; // not the owner
+
+      var allowed = ["title", "description", "x", "y"];
+      if (_.difference(fields, allowed).length)
+        return false; // tried to write to forbidden field
+
+      // A good improvement would be to validate the type of the new
+      // value of the field (and if a string, the length.) In the
+      // future Meteor will have a schema system to makes that easier.
+      return true;
+    });
+  },
+  remove: function (userId, posts) {
+    return ! _.any(posts, function (post) {
+      // deny if not the owner, or if other people are going
+      return post.owner !== userId || attending(post) > 0;
+    });
+  }
+});
+
 Meteor.methods({
+  // options should include: title, description, x, y, public
+  createPost: function (options) {
+    options = options || {};
+    if (! (typeof options.title === "string" && options.title.length &&
+           typeof options.description === "string" &&
+           options.description.length ))
+      throw new Meteor.Error(400, "Required parameter missing");
+    if (options.title.length > 100)
+	throw new Meteor.Error(413, "Title too long");
+    if (options.description.length > 1000)
+      throw new Meteor.Error(413, "Description too long");
+    if (! this.userId)
+      throw new Meteor.Error(403, "You must be logged in");
+
+    return Posts.insert({
+      owner: this.userId,
+      title: options.title,
+      description: options.description,
+      comments: [],
+      flags: [],
+      favs: [],
+      tags: []
+    });
+  },
+
   // options should include: title, description, x, y, public
   createParty: function (options) {
     options = options || {};
@@ -84,7 +138,6 @@ Meteor.methods({
                              "That party is public. No need to invite people.");
     if (userId !== party.owner && ! _.contains(party.invited, userId)) {
       Parties.update(partyId, { $addToSet: { invited: userId } });
-
       var from = contactEmail(Meteor.users.findOne(this.userId));
       var to = contactEmail(Meteor.users.findOne(userId));
       if (Meteor.isServer && to) {

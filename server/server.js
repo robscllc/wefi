@@ -8,3 +8,8 @@ Meteor.publish("parties", function () {
   return Parties.find(
     {$or: [{"public": true}, {invited: this.userId}, {owner: this.userId}]});
 });
+
+Meteor.publish("posts", function () {
+  return Posts.find(
+    {$or: [{"public": true}, {invited: this.userId}, {owner: this.userId}]});
+});

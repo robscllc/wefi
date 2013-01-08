@@ -16,6 +16,10 @@
     {{> inviteDialog}}
   {{/if}}
 
+  {{#if newPostDialog}}
+    {{> newPostDialog}}
+  {{/if}}
+
   <div class="container">
     <div class="row">
       <div class="span1"> </div>
@@ -34,12 +38,12 @@
 
         <div class="row">
           <div class="span6">
-            {{> map}}
             {{#if currentUser}}
             <div class="pagination-centered">
               <em><small>Double click the map to post a party!</small></em>
             </div>
             {{/if}}
+            {{> postlist}}
           </div>
           <div class="span4">
             {{> details}}
@@ -66,6 +70,19 @@
         <a href="http://www.openstreetmap.org/?lat=37.78212&lon=-122.40146&zoom=15&layers=M"
            target="_blank">OpenStreetMap</a> contributors</small>
     </div>
+  </div>
+</template>
+
+<template name="postlist">
+  <div class="postlist">            
+    <input type="button" value="New Post"
+           class="btn btn-small new_post">
+    {{#each list}}
+    <div>
+      {{title}}
+      <span class="label label-inverse pull-right">Invited</span>
+    </div>
+    {{/each}}
   </div>
 </template>
 
@@ -156,6 +173,34 @@
         <a href="#" class="btn btn-mini invite">Invite people</a>
       </div>
     {{/if}}
+  </div>
+</template>
+
+<template name="newPostDialog">
+  <div class="mask"> </div>
+  <div class="modal">
+    <div class="modal-header">
+      <button type="button" class="close cancel">&times;</button>
+      <h3>New Post</h3>
+    </div>
+
+    <div class="modal-body">
+      {{#if error}}
+        <div class="alert alert-error">{{error}}</div>
+      {{/if}}
+
+      <label>Title</label>
+      <input type="text" class="title span5">
+
+      <label>Description</label>
+      <textarea class="description span5"></textarea>
+
+    </div>
+
+    <div class="modal-footer">
+      <a href="#" class="btn cancel">Cancel</a>
+      <a href="#" class="btn btn-primary save">Post</a>
+    </div>
   </div>
 </template>
 

@@ -2,6 +2,7 @@
 
 Meteor.subscribe("directory");
 Meteor.subscribe("parties");
+Meteor.subscribe("posts");
 
 // If no party selected, select one.
 Meteor.startup(function () {
@@ -13,6 +14,57 @@ Meteor.startup(function () {
     }
   });
 });
+
+// Posts
+
+Template.postlist.list = function() {
+  return Posts.find();
+};
+
+Template.postlist.events({
+  'click .new_post': function () {
+    newPostDialog();
+    return false;
+  }
+});
+
+var newPostDialog = function () {
+  Session.set("createError", null);
+  Session.set("newPostDialog", true);
+};
+
+Template.page.newPostDialog = function () {
+  return Session.get("newPostDialog");
+};
+
+Template.newPostDialog.events({
+  'click .save': function (event, template) {
+    var title = template.find(".title").value;
+    var description = template.find(".description").value;
+
+    if (title.length && description.length) {
+      Meteor.call('createPost', {
+        title: title,
+        description: description
+      }, function (error, party) {
+        if (! error) {
+        }
+      });
+      Session.set("newPostDialog", false);
+    } else {
+      Session.set("createError",
+                  "It needs a title and a description, or why bother?");
+    }
+  },
+
+  'click .cancel': function () {
+    Session.set("newPostDialog", false);
+  }
+});
+
+Template.newPostDialog.error = function () {
+  return Session.get("createError");
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 // Party details sidebar
