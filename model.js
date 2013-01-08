@@ -94,6 +94,7 @@ Meteor.methods({
       owner: this.userId,
       title: options.title,
       description: options.description,
+      last_updated: (new Date()).getTime(),
       comments: [],
       flags: [],
       favs: [],

@@ -28,6 +28,21 @@ Template.postlist.events({
   }
 });
 
+Template.postlist.poster = function () {
+  var owner = Meteor.users.findOne(this.owner);
+//  if (owner._id === Meteor.userId())
+//    return "me";
+  return displayName(owner);
+};
+
+Template.postlist.comment_count = function () {
+  return this.comments.length;
+};
+
+Template.postlist.timestamp = function () {
+  return new Date(this.last_updated);
+};
+
 var newPostDialog = function () {
   Session.set("createError", null);
   Session.set("newPostDialog", true);

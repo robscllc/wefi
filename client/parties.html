@@ -26,10 +26,10 @@
 
       <div class="span10">
         <div class="header row">
-          <div class="span5">
+          <div class="span6">
             <h3 style="margin-bottom: 0px">All Tomorrow's Parties</h3>
           </div>
-          <div class="span5">
+          <div class="span4">
             <div style="float: right">
               {{loginButtons align="right"}}
             </div>
@@ -37,16 +37,8 @@
         </div>
 
         <div class="row">
-          <div class="span6">
-            {{#if currentUser}}
-            <div class="pagination-centered">
-              <em><small>Double click the map to post a party!</small></em>
-            </div>
-            {{/if}}
+          <div class="span10">
             {{> postlist}}
-          </div>
-          <div class="span4">
-            {{> details}}
           </div>
         </div>
       </div>
@@ -78,9 +70,17 @@
     <input type="button" value="New Post"
            class="btn btn-small new_post">
     {{#each list}}
-    <div>
-      {{title}}
-      <span class="label label-inverse pull-right">Invited</span>
+    <div class="post">
+      {{description}}
+      <br/>
+      <span class="footer">
+	posted by
+	<a href="" class="user">{{poster}}</a>
+	at {{timestamp}} - 
+	<a href="" class="comments">{{comment_count}} comments</a>
+	fav
+	flag
+      </span>
     </div>
     {{/each}}
   </div>
