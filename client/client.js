@@ -41,6 +41,18 @@ Template.base.routeIs = function(route) {
   return Session.get("cur_page") == route;
 };
 
+Template.base.events = {
+  'click a': function (event) {
+    // prevent default browser link click behaviour
+    event.preventDefault();
+    // get the path from the link        
+    var reg = /.+?\:\/\/.+?(\/.+?)(?:#|\?|$)/;
+    var arr = reg.exec(event.currentTarget.href);
+    // route the URL 
+    app.navigate(arr && arr.length > 1 ? arr[1] : undefined, true);
+  }
+};
+
 // Posts
 
 Template.post.post = function() {
