@@ -4,8 +4,29 @@ Meteor.subscribe("directory");
 Meteor.subscribe("parties");
 Meteor.subscribe("posts");
 
+var Router = Backbone.Router.extend({
+  routes: {
+    "":                 "main", //this will be http://your_domain/
+    "post/:id":             "post"  // http://your_domain/help
+  },
+  
+  main: function() {
+    // Your homepage code
+    // for example: 
+    Session.set('cur_page', 'home');
+  },
+  
+  post: function(id) {
+    Session.set('cur_page', 'post');
+    Session.set('cur_post', id);
+    // Help page
+  }
+});
+var app = new Router;
+
 // If no party selected, select one.
 Meteor.startup(function () {
+  Backbone.history.start({pushState: true});
   Meteor.autorun(function () {
     if (! Session.get("selected")) {
       var party = Parties.findOne();
@@ -15,7 +36,17 @@ Meteor.startup(function () {
   });
 });
 
+// Routing
+Template.base.routeIs = function(route) {
+  return Session.get("cur_page") == route;
+};
+
 // Posts
+
+Template.post.post = function() {
+  var post = Posts.findOne(Session.get("cur_post"));
+  return post;
+};
 
 Template.postlist.list = function() {
   return Posts.find();
@@ -48,7 +79,7 @@ var newPostDialog = function () {
   Session.set("newPostDialog", true);
 };
 
-Template.page.newPostDialog = function () {
+Template.home.newPostDialog = function () {
   return Session.get("newPostDialog");
 };
 
@@ -266,7 +297,7 @@ var openCreateDialog = function (x, y) {
   Session.set("showCreateDialog", true);
 };
 
-Template.page.showCreateDialog = function () {
+Template.home.showCreateDialog = function () {
   return Session.get("showCreateDialog");
 };
 
@@ -312,10 +343,6 @@ Template.createDialog.error = function () {
 
 var openInviteDialog = function () {
   Session.set("showInviteDialog", true);
-};
-
-Template.page.showInviteDialog = function () {
-  return Session.get("showInviteDialog");
 };
 
 Template.inviteDialog.events({
