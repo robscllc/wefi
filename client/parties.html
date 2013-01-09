@@ -12,28 +12,19 @@
     {{> newPostDialog}}
   {{/if}}
 
-  <div class="container">
-    <div class="row">
-
-      <div class="span12">
-        <div class="header row">
-          <div class="span8">
-            <h3 style="margin-bottom: 0px"><i>WeFi</i> &mdash; <i>We</i>blog re<i>Fi</i>nery</h3>
-          </div>
-          <div class="span4">
-            <div style="float: right">
-              {{loginButtons align="right"}}
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="span12">
-            {{> postlist}}
-          </div>
-        </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span8">
+        <h3 style="margin-bottom: 0px"><i>WeFi</i> &mdash; <i>We</i>blog re<i>Fi</i>nery</h3>
       </div>
-
+      <div class="span4" style="float: right;">
+        {{loginButtons align="right"}}
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span12">
+        {{> postlist}}
+      </div>
     </div>
   </div>
 </template>
