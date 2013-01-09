@@ -79,27 +79,27 @@ Meteor.methods({
   // options should include: title, description, x, y, public
   createPost: function (options) {
     options = options || {};
-    if (! (typeof options.title === "string" && options.title.length &&
-           typeof options.description === "string" &&
+    if (! (typeof options.description === "string" &&
            options.description.length ))
       throw new Meteor.Error(400, "Required parameter missing");
-    if (options.title.length > 100)
-	throw new Meteor.Error(413, "Title too long");
     if (options.description.length > 1000)
       throw new Meteor.Error(413, "Description too long");
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in");
 
-    return Posts.insert({
+    var post = Posts.insert({
       owner: this.userId,
-      title: options.title,
       description: options.description,
       last_updated: (new Date()).getTime(),
-      comments: [],
+      parent: undefined,
+      slug: undefined,
+      full_slug: undefined,
       flags: [],
       favs: [],
       tags: []
     });
+    Posts.update(post, { $set: { 'root': post } });
+    return post;
   },
 
   // options should include: title, description, x, y, public

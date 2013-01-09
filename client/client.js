@@ -36,7 +36,7 @@ Template.postlist.poster = function () {
 };
 
 Template.postlist.comment_count = function () {
-  return this.comments.length;
+  return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
 };
 
 Template.postlist.timestamp = function () {
@@ -54,12 +54,10 @@ Template.page.newPostDialog = function () {
 
 Template.newPostDialog.events({
   'click .save': function (event, template) {
-    var title = template.find(".title").value;
     var description = template.find(".description").value;
 
-    if (title.length && description.length) {
+    if (description.length) {
       Meteor.call('createPost', {
-        title: title,
         description: description
       }, function (error, party) {
         if (! error) {
