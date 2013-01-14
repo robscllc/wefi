@@ -14,6 +14,7 @@ var Router = Backbone.Router.extend({
     // Your homepage code
     // for example: 
     Session.set('cur_page', 'home');
+    Session.set('cur_post', undefined);
   },
   
   post: function(id) {
@@ -95,7 +96,7 @@ Template.home.newPostDialog = function () {
   return Session.get("newPostDialog");
 };
 
-Template.newPostDialog.events({
+Template.navbar_form.events({
   'click .save': function (event, template) {
     var description = template.find(".description").value;
 
