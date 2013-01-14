@@ -91,14 +91,20 @@ Meteor.methods({
       owner: this.userId,
       description: options.description,
       last_updated: (new Date()).getTime(),
-      parent: undefined,
-      slug: undefined,
-      full_slug: undefined,
+      parent: options.parent,
+      slug: null,
+      full_slug: null,
       flags: [],
       favs: [],
       tags: []
     });
-    Posts.update(post, { $set: { 'root': post } });
+    var root = post;
+    if ( options.parent ) {
+      var rt = Posts.findOne(options.parent);
+      if (rt)
+	root = rt.root;
+    }
+    Posts.update(post, { $set: { 'root': root } });
     return post;
   },
 

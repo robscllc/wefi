@@ -50,7 +50,28 @@
   {{/with}}
   {{> navbar_form}}
   {{/if}}
+  {{> comments}}
 </template>
+
+<template name="comments">
+  <div class="postlist">            
+    {{#each tree}}
+    <div class="post">
+      {{description}}
+      <br/>
+      <span class="footer">
+	posted by
+	<a href="" class="user">{{poster}}</a>
+	at {{timestamp}} - 
+	<a href="/post/{{_id}}" class="comments">{{comment_count}} comments</a>
+	fav
+	flag
+      </span>
+    </div>
+    {{/each}}
+  </div>
+</template>
+
 
 <template name="map">
   <div class="map">
@@ -71,10 +92,6 @@
 
 <template name="postlist">
   <div class="postlist">            
-    {{#if currentUser}}
-    <input type="button" value="New Post"
-           class="btn btn-small new_post">
-    {{/if}}
     {{#each list}}
     <div class="post">
       {{description}}

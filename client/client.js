@@ -61,8 +61,12 @@ Template.post.post = function() {
   return post;
 };
 
+Template.comments.tree = function() {
+  return Posts.find({ parent: Session.get("cur_post") });
+};
+
 Template.postlist.list = function() {
-  return Posts.find();
+  return Posts.find({ parent: null });
 };
 
 Template.postlist.events({
@@ -102,7 +106,8 @@ Template.navbar_form.events({
 
     if (description.length) {
       Meteor.call('createPost', {
-        description: description
+        description: description,
+	parent: Session.get('cur_post')
       }, function (error, party) {
         if (! error) {
         }
