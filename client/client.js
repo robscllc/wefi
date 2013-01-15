@@ -66,7 +66,7 @@ Template.comments.tree = function() {
 };
 
 Template.postlist.list = function() {
-  return Posts.find({ parent: null });
+  return Posts.find({ parent: null }, { sort: { last_updated: -1 } }).fetch().slice(0, 5);
 };
 
 Template.postlist.events({
