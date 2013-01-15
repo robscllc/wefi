@@ -4,12 +4,7 @@
 </head>
 
 <body>
-  {{> base}}
-</body>
-
-<template name="base">
   <div class="container-fluid">
-    
     <div class="navbar navbar-fixed-top">  
       <div class="navbar-inner">  
 	  <div class="span8">
@@ -20,21 +15,14 @@
 	  </div>
       </div>  
     </div>   
-
-    {{#if routeIs "home"}}
-      {{> home }}
-    {{/if}}
-    {{#if routeIs "post"}}
-      {{> post }}
-    {{/if}}
+  {{renderPage}}
   </div>
-</template>
+</body>
 
 <template name="home">
   {{#if newPostDialog}}
     {{> newPostDialog}}
   {{/if}}
-
   <div class="row-fluid">
     <div class="span12">
       {{> postlist}}
@@ -100,7 +88,7 @@
 	posted by
 	<a href="" class="user">{{poster}}</a>
 	at {{timestamp}} - 
-	<a href="/post/{{_id}}" class="comments">{{comment_count}} comments</a>
+	<a href="/posts/{{_id}}" class="comments">{{comment_count}} comments</a>
 	fav
 	flag
       </span>

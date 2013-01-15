@@ -4,30 +4,20 @@ Meteor.subscribe("directory");
 Meteor.subscribe("parties");
 Meteor.subscribe("posts");
 
-var Router = Backbone.Router.extend({
-  routes: {
-    "":                 "main", //this will be http://your_domain/
-    "post/:id":             "post"  // http://your_domain/help
+Meteor.Router.add({
+  "/": function() {
+    Session.set('post_id', null);
+    return 'home';
   },
-  
-  main: function() {
-    // Your homepage code
-    // for example: 
-    Session.set('cur_page', 'home');
-    Session.set('cur_post', undefined);
-  },
-  
-  post: function(id) {
-    Session.set('cur_page', 'post');
-    Session.set('cur_post', id);
-    // Help page
+  "/posts/:id": function(id) {
+    Session.set('post_id', id);
+    return 'post';
   }
 });
-var app = new Router;
+
 
 // If no party selected, select one.
 Meteor.startup(function () {
-  Backbone.history.start({pushState: true});
   Meteor.autorun(function () {
     if (! Session.get("selected")) {
       var party = Parties.findOne();
@@ -37,32 +27,15 @@ Meteor.startup(function () {
   });
 });
 
-// Routing
-Template.base.routeIs = function(route) {
-  return Session.get("cur_page") == route;
-};
-
-Template.base.events = {
-  'click a': function (event) {
-    // prevent default browser link click behaviour
-    event.preventDefault();
-    // get the path from the link        
-    var reg = /.+?\:\/\/.+?(\/.+?)(?:#|\?|$)/;
-    var arr = reg.exec(event.currentTarget.href);
-    // route the URL 
-    app.navigate(arr && arr.length > 1 ? arr[1] : undefined, true);
-  }
-};
-
 // Posts
 
 Template.post.post = function() {
-  var post = Posts.findOne(Session.get("cur_post"));
+  var post = Posts.findOne(Session.get("post_id"));
   return post;
 };
 
 Template.comments.tree = function() {
-  return Posts.find({ parent: Session.get("cur_post") });
+  return Posts.find({ parent: Session.get("post_id") });
 };
 
 Template.postlist.list = function() {
@@ -107,7 +80,7 @@ Template.navbar_form.events({
     if (description.length) {
       Meteor.call('createPost', {
         description: description,
-	parent: Session.get('cur_post')
+	parent: Session.get('post_id')
       }, function (error, party) {
         if (! error) {
         }
