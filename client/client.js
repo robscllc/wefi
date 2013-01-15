@@ -7,9 +7,14 @@ Meteor.subscribe("posts");
 Meteor.Router.add({
   "/": function() {
     Session.set('post_id', null);
+    Session.set('page', 1);
     return 'home';
   },
-  "/posts/:id": function(id) {
+  "/page/:page": function(page) {
+    Session.set('page', page);
+    return 'home';
+  },
+  "/post/:id": function(id) {
     Session.set('post_id', id);
     return 'post';
   }
@@ -38,9 +43,22 @@ Template.comments.tree = function() {
   return Posts.find({ parent: Session.get("post_id") });
 };
 
+Pagination.perPage(20);
+Pagination.style('bootstrap');
+
 Template.postlist.list = function() {
+  Pagination.currentPage(Session.get('page'));
+  return Pagination.collection(Posts.find({ parent: null }, { sort: { last_updated: -1 } }).fetch());
   return Posts.find({ parent: null }, { sort: { last_updated: -1 } }).fetch().slice(0, 5);
 };
+
+Template.postlist.pagination = function () {
+  Pagination.currentPage(Session.get('page'));
+  // Pagination.links(prependRoute, cursorCount, options);
+  var count = Posts.find({ parent: null }, { sort: { last_updated: -1 } }).count();
+  if (count)
+    return Pagination.links('/page', count);
+}
 
 Template.postlist.events({
   'click .new_post': function () {

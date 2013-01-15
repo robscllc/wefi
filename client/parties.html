@@ -79,6 +79,7 @@
 </template>
 
 <template name="postlist">
+  {{{pagination}}}
   <div class="postlist">            
     {{#each list}}
     <div class="post">
@@ -88,13 +89,14 @@
 	posted by
 	<a href="" class="user">{{poster}}</a>
 	at {{timestamp}} - 
-	<a href="/posts/{{_id}}" class="comments">{{comment_count}} comments</a>
+	<a href="/post/{{_id}}" class="comments">{{comment_count}} comments</a>
 	fav
 	flag
       </span>
     </div>
     {{/each}}
   </div>
+  {{{pagination}}}
 </template>
 
 <template name="details">
