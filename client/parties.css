@@ -1,5 +1,5 @@
 body { 
-    padding: 60px 0px 20em; 
+    padding: 60px 0 0 0; 
 }
 
 @media screen and (max-width: 979px) {
@@ -32,10 +32,6 @@ body {
 .rsvp-buttons {
     text-align: center;
     margin: 40px 0 40px 0;
-}
-
-.description {
-    margin: 20px 0 20px 0;
 }
 
 .attendance .who {
