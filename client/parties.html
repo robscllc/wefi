@@ -79,7 +79,9 @@
 </template>
 
 <template name="postlist">
-  {{{pagination}}}
+  <div style="float: right;">
+    {{{pagination}}}
+  </div>
   <div class="postlist">            
     {{#each list}}
     <div class="post">
@@ -193,11 +195,10 @@
   <div class="navbar navbar-fixed-bottom">  
     <div class="navbar-inner">  
       <div class="container">  
-
-  <form class="form-inline">
-      <textarea rows="10" class="description span7"></textarea>
-      <a href="#" class="btn btn-primary save">Post</a>
-  </form>
+	<form class="form-inline">
+	  <textarea rows="10" class="description span7"></textarea>
+	  <a href="#" class="btn btn-primary save">Post</a>
+	</form>
       </div>  
     </div>  
   </div>   
