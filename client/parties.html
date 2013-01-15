@@ -28,15 +28,15 @@
       {{> postlist}}
     </div>
   </div>
-  {{> navbar_form}}
+  {{> postit}}
 </template>
 
 <template name="post">
   {{#if post}}
     {{#with post}}
-  {{description}}
+  {{postbody description}}
   {{/with}}
-  {{> navbar_form}}
+  {{> postit}}
   {{/if}}
   {{> comments}}
 </template>
@@ -45,7 +45,7 @@
   <div class="postlist">            
     {{#each tree}}
     <div class="post">
-      {{description}}
+      {{postbody description}}
       <br/>
       <span class="footer">
 	posted by
@@ -85,7 +85,7 @@
   <div class="postlist">            
     {{#each list}}
     <div class="post">
-      {{description}}
+      {{postbody description}}
       <br/>
       <span class="footer">
 	posted by
@@ -191,11 +191,11 @@
   </div>
 </template>
 
-<template name="navbar_form">
+<template name="postit">
 
   <div class="wmd-panel">
     <div id="wmd-button-bar"></div>
-    <textarea class="wmd-input" id="wmd-input">
+    <textarea class="wmd-input description" id="wmd-input">
 This is the *first* editor.
 ------------------------------
 
@@ -205,18 +205,7 @@ Just plain **Markdown**, except that the input is sanitized:
     </textarea>
   </div>
   <div id="wmd-preview" class="wmd-panel wmd-preview"></div>
-  <div class="navbar navbar-fixed-bottom">  
-    <div class="navbar-inner">  
-      <div class="container">  
-
-	<form class="form-inline">
-	  <textarea rows="10" class="description span7"></textarea>
-	  <a href="#" class="btn btn-primary save">Post</a>
-	</form>
-      </div>  
-    </div>  
-  </div>   
-
+  <a href="#" class="btn btn-primary save">Post</a>
 </template>
 
 <template name="newPostDialog">

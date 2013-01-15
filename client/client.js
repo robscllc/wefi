@@ -20,6 +20,7 @@ Meteor.Router.add({
   }
 });
 
+var converter = new Markdown.getSanitizingConverter();
 
 // If no party selected, select one.
 Meteor.startup(function () {
@@ -30,6 +31,10 @@ Meteor.startup(function () {
         Session.set("selected", party._id);
     }
   });
+});
+
+Handlebars.registerHelper('postbody', function (body) {
+  return new Handlebars.SafeString(body);
 });
 
 // Posts
@@ -91,19 +96,18 @@ Template.home.newPostDialog = function () {
   return Session.get("newPostDialog");
 };
 
-Template.navbar_form.rendered = function() {
-  var converter = new Markdown.getSanitizingConverter();
+Template.postit.rendered = function() {
   var editor = new Markdown.Editor(converter);
   editor.run();
 };
 
-Template.navbar_form.events({
+Template.postit.events({
   'click .save': function (event, template) {
     var description = template.find(".description").value;
 
     if (description.length) {
       Meteor.call('createPost', {
-        description: description,
+        description: converter.makeHtml(description),
 	parent: Session.get('post_id')
       }, function (error, party) {
         if (! error) {
