@@ -91,6 +91,12 @@ Template.home.newPostDialog = function () {
   return Session.get("newPostDialog");
 };
 
+Template.navbar_form.rendered = function() {
+  var converter = new Markdown.getSanitizingConverter();
+  var editor = new Markdown.Editor(converter);
+  editor.run();
+};
+
 Template.navbar_form.events({
   'click .save': function (event, template) {
     var description = template.find(".description").value;
