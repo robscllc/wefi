@@ -11,17 +11,7 @@
           <div class="pull-right">
 	    {{loginButtons align="right"}}
 	  </div>
-          <div class="pull-right">
-	    {{#if currentUser}}
-	    <button type="button" class="btn" data-toggle="collapse" data-target="#compose">
-	      Post
-	    </button>
-	    {{/if}}
-	  </div>
           <h3 style="margin: 0px"><a href="/"><i>WeFi</i> &mdash; <i>We</i>blog re<i>Fi</i>nery</a></h3>
-	  <div id="compose" class="collapse">
-	    {{> postit}}
-          </div>
 	</div>
       </div>  
     </div>   
@@ -40,26 +30,31 @@
 <template name="post">
   {{#if post}}
     {{#with post}}
-  {{postbody description}}
+    {{> post_layout}}
   {{/with}}
   {{> comments}}
   {{/if}}
 </template>
 
+<template name="post_layout">
+  {{postbody}}
+  <br/>
+  <span class="footer">
+    posted by
+    <a href="" class="user">{{postuser}}</a>
+    at {{timestamp}} 
+    <a href="/post/{{_id}}" class="comments btn btn-mini">view {{comment_count}} replies</a>
+    <a href="/post/{{_id}}" class="comments btn btn-mini">reply</a>
+    fav
+    flag
+  </span>
+</template>
+
 <template name="comments">
-  <div class="postlist">            
+  <div>            
     {{#each tree}}
     <div class="post">
-      {{postbody description}}
-      <br/>
-      <span class="footer">
-	posted by
-	<a href="" class="user">{{poster}}</a>
-	at {{timestamp}} - 
-	<a href="/post/{{_id}}" class="comments">{{comment_count}} comments</a>
-	fav
-	flag
-      </span>
+      {{> post_layout }}
     </div>
     {{/each}}
   </div>
@@ -85,19 +80,10 @@
 
 <template name="postlist">
   {{{pagination}}}
-  <div class="postlist">            
+  <div>            
     {{#each list}}
     <div class="post">
-      {{postbody description}}
-      <br/>
-      <span class="footer">
-	posted by
-	<a href="" class="user">{{poster}}</a>
-	at {{timestamp}} - 
-	<a href="/post/{{_id}}" class="comments">{{comment_count}} comments</a>
-	fav
-	flag
-      </span>
+      {{> post_layout }}
     </div>
     {{/each}}
   </div>
@@ -198,7 +184,7 @@
   <div class="row-fluid">
     <div class="span6">
       <div id="wmd-button-bar"></div>
-      <textarea class="description" style="width: 100%;" rows="6" id="wmd-input" />
+      <textarea class="body" style="width: 100%;" rows="6" id="wmd-input" />
       <a href="#" class="btn btn-primary save">Post</a>
     </div>
     <div class="span6">

@@ -79,17 +79,17 @@ Meteor.methods({
   // options should include: title, description, x, y, public
   createPost: function (options) {
     options = options || {};
-    if (! (typeof options.description === "string" &&
-           options.description.length ))
+    if (! (typeof options.body === "string" &&
+           options.body.length ))
       throw new Meteor.Error(400, "Required parameter missing");
-    if (options.description.length > 1000)
-      throw new Meteor.Error(413, "Description too long");
+    if (options.body.length > 1000)
+      throw new Meteor.Error(413, "Body too long");
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in");
 
     var post = Posts.insert({
       owner: this.userId,
-      description: options.description,
+      body: options.body,
       last_updated: (new Date()).getTime(),
       parent: options.parent,
       slug: null,

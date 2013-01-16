@@ -33,9 +33,6 @@ Meteor.startup(function () {
   });
 });
 
-Handlebars.registerHelper('postbody', function (body) {
-  return new Handlebars.SafeString(body);
-});
 
 // Posts
 
@@ -72,18 +69,23 @@ Template.postlist.events({
   }
 });
 
-Template.postlist.poster = function () {
+Template.post_layout.comment_count = function () {
+  return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
+};
+
+Template.post_layout.postbody = function () {
+  if (this.body)
+    return new Handlebars.SafeString(this.body);
+};
+
+Template.post_layout.postuser = function () {
   var owner = Meteor.users.findOne(this.owner);
 //  if (owner._id === Meteor.userId())
 //    return "me";
   return displayName(owner);
 };
 
-Template.postlist.comment_count = function () {
-  return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
-};
-
-Template.postlist.timestamp = function () {
+Template.post_layout.timestamp = function () {
   return new Date(this.last_updated);
 };
 
@@ -103,11 +105,11 @@ Template.postit.rendered = function() {
 
 Template.postit.events({
   'click .save': function (event, template) {
-    var description = template.find(".description").value;
+    var body = template.find(".body").value;
 
-    if (description.length) {
+    if (body.length) {
       Meteor.call('createPost', {
-        description: converter.makeHtml(description),
+        body: converter.makeHtml(body),
 	parent: Session.get('post_id')
       }, function (error, party) {
         if (! error) {
@@ -116,7 +118,7 @@ Template.postit.events({
       Session.set("newPostDialog", false);
     } else {
       Session.set("createError",
-                  "It needs a title and a description, or why bother?");
+                  "It needs a body, or why bother?");
     }
   },
 
