@@ -187,26 +187,20 @@
 </template>
 
 <template name="postit">
+  {{#if currentUser}}
   <div class="row-fluid">
     <div class="span6">
       <div style="float: right;">
 	<a href="#" class="btn btn-primary save">Post</a>
       </div>
-      <div id="wmd-preview" class=""></div>
+      <div id="wmd-button-bar"></div>
+      <textarea class="description" style="width: 100%;" rows="8" id="wmd-input" />
     </div>
     <div class="span6">
-      <div id="wmd-button-bar"></div>
-      <textarea class="description" style="width: 100%;" rows="8" id="wmd-input">
-This is the *first* editor.
-------------------------------
-
-Just plain **Markdown**, except that the input is sanitized:
-
-<marquee>I'm the ghost from the past!</marquee>
-      </textarea>
+      <div id="wmd-preview" class=""></div>
     </div>
   </div>
-
+  {{/if}}
 </template>
 
 <template name="newPostDialog">

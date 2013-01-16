@@ -61,7 +61,7 @@ Template.postlist.pagination = function () {
   Pagination.currentPage(Session.get('page'));
   // Pagination.links(prependRoute, cursorCount, options);
   var count = Posts.find({ parent: null }, { sort: { last_updated: -1 } }).count();
-  if (count)
+  if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
     return Pagination.links('/page', count);
 }
 
