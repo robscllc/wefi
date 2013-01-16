@@ -1,34 +1,6 @@
-body 
-{ 
-	background-color: White;
-    font-family: sans-serif;
-}
-
-.wmd-panel
-{
-	margin-left: 25%;
-	margin-right: 25%;
-	width: 50%;
-	min-width: 500px;
-}
-
 .wmd-button-bar 
 {
 	width: 100%;
-	background-color: Silver; 
-}
-
-.wmd-input 
-{ 
-	height: 300px;
-	width: 100%;
-	background-color: Gainsboro;
-	border: 1px solid DarkGray;
-}
-
-.wmd-preview 
-{ 
-	background-color: #c0e0ff; 
 }
 
 .wmd-button-row 

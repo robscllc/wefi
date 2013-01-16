@@ -7,12 +7,22 @@
   <div class="container-fluid">
     <div class="navbar navbar-fixed-top">  
       <div class="navbar-inner">  
-	  <div class="span8">
-            <h3 style="margin-bottom: 0px"><a href="/"><i>WeFi</i> &mdash; <i>We</i>blog re<i>Fi</i>nery</a></h3>
+	<div class="container">
+          <div class="pull-right">
+	    {{loginButtons align="right"}}
 	  </div>
-	  <div class="span4" style="float: right;">
-            {{loginButtons align="right"}}
+          <div class="pull-right">
+	    {{#if currentUser}}
+	    <button type="button" class="btn" data-toggle="collapse" data-target="#compose">
+	      Post
+	    </button>
+	    {{/if}}
 	  </div>
+          <h3 style="margin: 0px"><a href="/"><i>WeFi</i> &mdash; <i>We</i>blog re<i>Fi</i>nery</a></h3>
+	  <div id="compose" class="collapse">
+	    {{> postit}}
+          </div>
+	</div>
       </div>  
     </div>   
   {{renderPage}}
@@ -20,7 +30,6 @@
 </body>
 
 <template name="home">
-  {{> postit}}
   <div class="row-fluid">
     <div class="span12">
       {{> postlist}}
@@ -30,7 +39,6 @@
 
 <template name="post">
   {{#if post}}
-  {{> postit}}
     {{#with post}}
   {{postbody description}}
   {{/with}}
@@ -187,20 +195,16 @@
 </template>
 
 <template name="postit">
-  {{#if currentUser}}
   <div class="row-fluid">
     <div class="span6">
-      <div style="float: right;">
-	<a href="#" class="btn btn-primary save">Post</a>
-      </div>
       <div id="wmd-button-bar"></div>
-      <textarea class="description" style="width: 100%;" rows="8" id="wmd-input" />
+      <textarea class="description" style="width: 100%;" rows="6" id="wmd-input" />
+      <a href="#" class="btn btn-primary save">Post</a>
     </div>
     <div class="span6">
-      <div id="wmd-preview" class=""></div>
+      <div id="wmd-preview" class="wmd-preview"></div>
     </div>
   </div>
-  {{/if}}
 </template>
 
 <template name="newPostDialog">

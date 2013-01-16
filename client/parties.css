@@ -83,3 +83,13 @@ input.chosen {
     padding: 3px;
     padding-bottom: 0;
 }
+
+div.wmd-preview {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 4px 6px;
+    margin-top: 10px;
+    min-height: 14em;
+    max-height: 20em;
+    overflow-y: scroll;
+}
