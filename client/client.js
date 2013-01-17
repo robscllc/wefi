@@ -7,15 +7,18 @@ Meteor.subscribe("posts");
 Meteor.Router.add({
   "/": function() {
     Session.set('post_id', null);
+    Session.set('reply_id', null);
     Session.set('page', 1);
     return 'home';
   },
   "/page/:page": function(page) {
     Session.set('page', page);
+    Session.set('reply_id', null);
     return 'home';
   },
   "/post/:id": function(id) {
     Session.set('post_id', id);
+    Session.set('reply_id', null);
     return 'post';
   }
 });
@@ -42,7 +45,8 @@ Template.post.post = function() {
 };
 
 Template.comments.tree = function() {
-  return Posts.find({ parent: Session.get("post_id") });
+  var pid = Session.get("post_id");
+  return Posts.find({ $and: [ {root: pid }, {_id: {$ne: pid }} ] });
 };
 
 Pagination.perPage(20);
@@ -68,6 +72,20 @@ Template.postlist.events({
     return false;
   }
 });
+
+Template.post_layout.events({
+  'click .reply': function (event, template) {
+    Session.set('reply_id', template.data._id);
+    //return false;
+    var postit = $("#postit").detach();
+    postit.insertAfter($(template.find(".footer")));
+    return false;
+  }
+});
+
+Template.post_layout.is_root = function() {
+  return this._id === this.root;
+};
 
 Template.post_layout.comment_count = function () {
   return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
@@ -110,7 +128,7 @@ Template.postit.events({
     if (body.length) {
       Meteor.call('createPost', {
         body: converter.makeHtml(body),
-	parent: Session.get('post_id')
+	parent: Session.get('reply_id') || Session.get('post_id')
       }, function (error, party) {
         if (! error) {
         }

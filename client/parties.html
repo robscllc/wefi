@@ -15,6 +15,7 @@
 	</div>
       </div>  
     </div>   
+  {{> postit }}
   {{renderPage}}
   </div>
 </body>
@@ -43,8 +44,13 @@
     posted by
     <a href="" class="user">{{postuser}}</a>
     at {{timestamp}} 
-    <a href="/post/{{_id}}" class="comments btn btn-mini">view {{comment_count}} replies</a>
-    <a href="/post/{{_id}}" class="comments btn btn-mini">reply</a>
+    {{#if parent}}
+    <a href="/post/{{parent}}" class="btn btn-mini">goto parent</a>
+    {{/if}}
+    {{#if is_root}}
+    <a href="/post/{{_id}}" class="btn btn-mini">view {{comment_count}} replies</a>
+    {{/if}}
+    <a href="#" class="reply btn btn-mini">reply</a>
     fav
     flag
   </span>
@@ -79,7 +85,6 @@
 </template>
 
 <template name="postlist">
-  {{> postit }}
   {{{pagination}}}
   <div>            
     {{#each list}}
@@ -182,7 +187,8 @@
 </template>
 
 <template name="postit">
-  <div class="row-fluid">
+  <div id="postit" class="row-fluid">
+    {{#constant}}
     <div class="span6">
       <div id="wmd-button-bar"></div>
       <textarea class="body" style="width: 100%;" rows="6" id="wmd-input" />
@@ -191,6 +197,7 @@
     <div class="span6">
       <div id="wmd-preview" class="wmd-preview"></div>
     </div>
+    {{/constant}}
   </div>
 </template>
 
