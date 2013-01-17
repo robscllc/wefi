@@ -1,22 +1,22 @@
 <head>
-  <title>WeFi</title>
+  <title>MeteorFilter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
-  <div class="container-fluid">
-    <div class="navbar navbar-fixed-top">  
-      <div class="navbar-inner">  
-	<div class="container">
-          <div class="pull-right">
-	    {{loginButtons align="right"}}
-	  </div>
-          <h3 style="margin: 0px"><a href="/"><i>WeFi</i> &mdash; <i>We</i>blog re<i>Fi</i>nery</a></h3>
-	</div>
-      </div>  
+  <div class="navbar navbar-fixed-top">  
+    <div class="navbar-inner">  
+      <div class="container-fluid">
+        <a class="brand" href="/"><em>MeteorFilter</em></a>
+        <ul class="nav pull-right">
+	  <li><a>{{loginButtons align="right"}}</a></li>
+	</ul>
+      </div>
     </div>   
-  {{> postit }}
-  {{renderPage}}
+  </div>
+  <div class="container-fluid">
+    {{> postit }}
+    {{renderPage}}
   </div>
 </body>
 
