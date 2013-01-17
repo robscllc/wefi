@@ -119,6 +119,13 @@ Template.home.newPostDialog = function () {
 Template.postit.rendered = function() {
   var editor = new Markdown.Editor(converter);
   editor.run();
+  new EpicEditor({
+    basePath: '/epiceditor'
+    ,theme: {
+      preview:'/themes/preview/bartik.css',
+      editor:'/themes/editor/epic-light.css'
+    }
+  }).load()
 };
 
 Template.postit.events({
