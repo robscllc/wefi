@@ -189,16 +189,23 @@
 <template name="postit">
   <div id="postit" class="row-fluid">
     {{#constant}}
-      <div id="epiceditor" />
-    {{/constant}}
-    {{#constant}}
     <div class="span6">
-      <div id="wmd-button-bar"></div>
-      <textarea class="body" style="width: 100%;" rows="6" id="wmd-input" />
+      <ul class="nav nav-tabs hide" id="myTab">
+	<li class="active"><a href="#home">Home</a></li>
+	<li><a href="#profile">Profile</a></li>
+      </ul>
+
+      <div class="tab-content">
+	<div class="tab-pane active" id="home">
+	  <div id="wmd-button-bar"></div>
+	  <textarea class="body" style="width: 95%;" rows="6" id="wmd-input" />
+	</div>
+	<div class="tab-pane" id="profile">
+	  <div id="wmd-preview"></div>
+	</div>
+      </div>
       <a href="#" class="btn btn-primary save">Post</a>
-    </div>
-    <div class="span6">
-      <div id="wmd-preview" class="wmd-preview"></div>
+      <button type="button" class="btn preview" data-toggle="button"">Preview</button>
     </div>
     {{/constant}}
   </div>

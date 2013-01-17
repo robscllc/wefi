@@ -88,8 +88,6 @@ div.wmd-preview {
     background: #fff;
     border: 1px solid #ddd;
     padding: 4px 6px;
-    margin-top: 10px;
-    min-height: 14em;
-    max-height: 20em;
-    overflow-y: scroll;
+    margin-bottom: 10px;
+    height: 100%;
 }

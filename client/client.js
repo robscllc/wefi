@@ -119,6 +119,7 @@ Template.home.newPostDialog = function () {
 Template.postit.rendered = function() {
   var editor = new Markdown.Editor(converter);
   editor.run();
+  return;
   new EpicEditor({
     basePath: '/epiceditor'
     ,theme: {
@@ -129,6 +130,14 @@ Template.postit.rendered = function() {
 };
 
 Template.postit.events({
+  'click button.preview': function (event, template) {
+    if($(event.target).hasClass('active')) {
+      $('#myTab a[href="#home"]').tab('show');
+    } else {
+      $('#profile').css('height', $('#home').css('height'));
+      $('#myTab a[href="#profile"]').tab('show');
+    }      
+  },
   'click .save': function (event, template) {
     var body = template.find(".body").value;
 
