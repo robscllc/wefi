@@ -98,10 +98,30 @@ Template.home.newPostDialog = function () {
   return Session.get("newPostDialog");
 };
 
-Template.postit.rendered = function() {
-  var editor = new Markdown.Editor(converter);
-  editor.run();
-};
+(function() {
+  var renderedOnce = false;
+  Template.postit.rendered = function() {
+    if (!renderedOnce) {
+      var editor = new Markdown.Editor(converter);
+      editor.run();
+    }
+    renderedOnce = true;
+  };
+})();
+
+Template.post_layout.events({
+  'click .reply': function (event, template) {
+    //Session.set('reply_id', template.data._id);
+    //return false;
+    var postit = $("#postit").detach();
+    postit.insertAfter($(template.find(".footer")));
+    return false;
+  }
+});
+    
+Template.postit.preserve({
+  "*[id]": function (node) { return node.id; }
+});
 
 Template.postit.events({
   'click .save': function (event, template) {
