@@ -10,15 +10,22 @@ Meteor.Router.add({
     Session.set('reply_id', null);
     Session.set('page', 1);
     return 'home';
-  },
-  "/page/:page": function(page) {
+  }
+  ,"/page/:page": function(page) {
     Session.set('page', page);
     Session.set('reply_id', null);
     return 'home';
-  },
-  "/post/:id": function(id) {
+  }
+  ,"/post/:id": function(id) {
     Session.set('post_id', id);
     Session.set('reply_id', null);
+    Session.set('page', 1);
+    return 'post';
+  }
+  ,"/post/:id/:page": function(id, page) {
+    Session.set('post_id', id);
+    Session.set('reply_id', null);
+    Session.set('page', page);
     return 'post';
   }
 });
@@ -46,6 +53,8 @@ Template.post.post = function() {
 
 Template.comments.tree = function() {
   var pid = Session.get("post_id");
+  //Pagination.currentPage(Session.get('page'));
+  //return Pagination.collection(Posts.find({ $and: [ {root: pid } ] }, { sort: { full_slug: 1 } }).fetch());
   return Posts.find({ $and: [ {root: pid } ] }, { sort: { full_slug: 1 } });
 };
 
