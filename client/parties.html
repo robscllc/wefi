@@ -46,6 +46,7 @@
 </template>
 
 <template name="post_layout">
+  <div class="post depth{{depth}}">
   {{postbody}}
   <span class="footer">
     posted by
@@ -69,14 +70,13 @@
   </span>
   <br/>
   <br/>
+  </div>
 </template>
 
 <template name="comments">
   <div>            
     {{#each tree}}
-    <div class="post">
-      {{> post_layout }}
-    </div>
+    {{> post_layout }}
     {{/each}}
   </div>
 </template>
@@ -103,9 +103,7 @@
   {{{pagination}}}
   <div>            
     {{#each list}}
-    <div class="post">
-      {{> post_layout }}
-    </div>
+    {{> post_layout }}
     {{/each}}
   </div>
   {{{pagination}}}
@@ -202,7 +200,7 @@
 </template>
 
 <template name="postit">
-  <div id="postit" class="row-fluid">
+  <div id="postit" class="row-fluid depth1">
     {{#constant}}
     <div class="span6">
       <ul class="nav nav-tabs hide" id="myTab">

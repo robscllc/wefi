@@ -76,10 +76,8 @@ Template.postlist.events({
 Template.post_layout.events({
   'click .reply': function (event, template) {
     Session.set('reply_id', template.data._id);
-    //return false;
     var postit = $("#postit").detach();
     postit.insertAfter($(template.find(".footer")));
-    $('#postit').show();
     return false;
   }
 });
@@ -128,7 +126,6 @@ Template.home.newPostDialog = function () {
 Template.postit.rendered = function() {
   var editor = new Markdown.Editor(converter);
   editor.run();
-  $('#postit').hide();
 };
 
 Template.postit.events({
@@ -151,7 +148,6 @@ Template.postit.events({
         if (! error) {
         }
       });
-      Session.set("newPostDialog", false);
     } else {
       Session.set("createError",
                   "It needs a body, or why bother?");

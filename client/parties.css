@@ -95,3 +95,8 @@ div.wmd-preview {
 p {
     margin: 0px;
 }
+
+div.depth1 { margin-left: 2em; }
+div.depth2 { margin-left: 4em; }
+div.depth3 { margin-left: 6em; }
+div.depth4 { margin-left: 8em; }

@@ -99,12 +99,17 @@ Meteor.methods({
       tags: []
     });
     var root = post;
+    var depth = 0;
     if ( options.parent ) {
-      var rt = Posts.findOne(options.parent);
-      if (rt)
-	root = rt.root;
+      var par = Posts.findOne(options.parent);
+      while (par) {
+	if (!depth)
+	  root = par.root;
+	par = Posts.findOne(par.parent);
+	depth++;
+      }
     }
-    Posts.update(post, { $set: { 'root': root } });
+    Posts.update(post, { $set: { 'root': root, 'depth': depth } });
     return post;
   },
 
