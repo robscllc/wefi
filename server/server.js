@@ -10,6 +10,6 @@ Meteor.publish("parties", function () {
 });
 
 Meteor.publish("posts", function () {
-  return Posts.find(
-    {$or: [{"public": true}, {invited: this.userId}, {owner: this.userId}]});
+  return Posts.find();
+//    {$or: [{"public": true}, {invited: this.userId}, {owner: this.userId}]});
 });
