@@ -46,7 +46,7 @@ Template.post.post = function() {
 
 Template.comments.tree = function() {
   var pid = Session.get("post_id");
-  return Posts.find({ $and: [ {root: pid }, {_id: {$ne: pid }} ] });
+  return Posts.find({ $and: [ {root: pid } ] }, { sort: { full_slug: 1 } });
 };
 
 Pagination.perPage(20);
@@ -55,7 +55,6 @@ Pagination.style('bootstrap');
 Template.postlist.list = function() {
   Pagination.currentPage(Session.get('page'));
   return Pagination.collection(Posts.find({ parent: null }, { sort: { posted: -1 } }).fetch());
-  return Posts.find({ parent: null }, { sort: { posted: -1 } }).fetch().slice(0, 5);
 };
 
 Template.postlist.pagination = function () {

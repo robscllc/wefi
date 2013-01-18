@@ -87,10 +87,11 @@ Meteor.methods({
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in");
 
+    var now = new Date();
     var post = Posts.insert({
       owner: this.userId,
       body: options.body,
-      posted: (new Date()).getTime(),
+      posted: now,
       parent: options.parent,
       slug: null,
       full_slug: null,
@@ -98,16 +99,23 @@ Meteor.methods({
       favs: [],
       tags: []
     });
+
     var root = post;
     var depth = 0;
+    var slug = Math.floor(Math.random()*1679616).toString(36);
+    var full_slug = now.toJSON().replace(/[\D]/g, '') + ':' + slug;
     if ( options.parent ) {
       var par = Posts.findOne(options.parent);
       if (par) {
 	root = par.root;
 	depth = par.depth + 1;
+	slug = [par.slug, slug].join('/')
+	full_slug = [par.full_slug, full_slug].join('/')
       }
     }
-    Posts.update(post, { $set: { 'root': root, 'depth': depth } });
+
+    Posts.update(post, { $set: { 'root': root, 'depth': depth, 
+				 'slug': slug, 'full_slug': full_slug } });
     return post;
   },
 
