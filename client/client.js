@@ -75,6 +75,15 @@ Template.postlist.events({
 Template.post_layout.events({
   'click .reply': function (event, template) {
     Session.set('reply_id', template.data._id);
+    var foot = $(template.find(".footer"));
+    $("#postit").css({
+      position: "absolute",
+      top: (foot.position().top + foot.outerHeight() + $("#postit").outerHeight()) + "px",
+      left: foot.position().left + "px"
+    });
+    $("#postit").show();
+    $("#postit").scrollintoview();
+    
     //var postit = $("#postit").detach();
     //postit.insertAfter($(template.find(".footer")));
     return false;
@@ -132,11 +141,14 @@ Template.postit.events({
     if($(event.target).hasClass('active')) {
       $('#myTab a[href="#home"]').tab('show');
     } else {
-      $('#profile').css('height', $('#home').css('height'));
+      $('#profile').css('height', $('#home').outerHeight()+10);
       $('#myTab a[href="#profile"]').tab('show');
     }      
   },
-  'click .save': function (event, template) {
+  'click button.cancel': function () {
+    $("#postit").hide();
+  },
+  'click button.save': function (event, template) {
     var body = template.find(".body").value;
 
     if (body.length) {
@@ -145,6 +157,7 @@ Template.postit.events({
 	parent: Session.get('reply_id') || Session.get('post_id')
       }, function (error, party) {
         if (! error) {
+	  $("#postit").hide();
         }
       });
     } else {
