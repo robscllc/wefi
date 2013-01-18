@@ -76,8 +76,8 @@ Template.postlist.events({
 Template.post_layout.events({
   'click .reply': function (event, template) {
     Session.set('reply_id', template.data._id);
-    var postit = $("#postit").detach();
-    postit.insertAfter($(template.find(".footer")));
+    //var postit = $("#postit").detach();
+    //postit.insertAfter($(template.find(".footer")));
     return false;
   }
 });

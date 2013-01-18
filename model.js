@@ -102,11 +102,9 @@ Meteor.methods({
     var depth = 0;
     if ( options.parent ) {
       var par = Posts.findOne(options.parent);
-      while (par) {
-	if (!depth)
-	  root = par.root;
-	par = Posts.findOne(par.parent);
-	depth++;
+      if (par) {
+	root = par.root;
+	depth = par.depth + 1;
       }
     }
     Posts.update(post, { $set: { 'root': root, 'depth': depth } });
