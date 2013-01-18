@@ -199,6 +199,9 @@
 <template name="postit">
   <div id="postit" class="depth1 modal hide">
     <div class="modal-body">
+      {{#if error}}
+      <div class="alert alert-error">{{error}}</div>
+      {{/if}}
       <div class="row-fluid">
 	<div class="span12">
 	  <ul class="nav nav-tabs hide" id="myTab">

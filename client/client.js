@@ -131,7 +131,7 @@ Template.home.newPostDialog = function () {
   return Session.get("newPostDialog");
 };
 
-Template.postit.rendered = function() {
+Template.postit.rendered = function() { 
   var editor = new Markdown.Editor(converter);
   editor.run();
 };
@@ -157,6 +157,7 @@ Template.postit.events({
 	parent: Session.get('reply_id') || Session.get('post_id')
       }, function (error, party) {
         if (! error) {
+	  Session.set("createError", null);
 	  $("#postit").hide();
         }
       });
@@ -167,11 +168,11 @@ Template.postit.events({
   },
 
   'click .cancel': function () {
-    Session.set("newPostDialog", false);
+    Session.set("createError", null);
   }
 });
 
-Template.newPostDialog.error = function () {
+Template.postit.error = function () {
   return Session.get("createError");
 };
 
