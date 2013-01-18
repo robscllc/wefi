@@ -91,3 +91,7 @@ div.wmd-preview {
     margin-bottom: 10px;
     height: 100%;
 }
+
+p {
+    margin: 0px;
+}

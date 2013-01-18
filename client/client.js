@@ -79,6 +79,7 @@ Template.post_layout.events({
     //return false;
     var postit = $("#postit").detach();
     postit.insertAfter($(template.find(".footer")));
+    $('#postit').show();
     return false;
   }
 });
@@ -87,8 +88,16 @@ Template.post_layout.is_root = function() {
   return this._id === this.root;
 };
 
+Template.post_layout.is_different_post = function() {
+  return this._id !== Session.get('post_id')
+};
+
 Template.post_layout.comment_count = function () {
   return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
+};
+
+Template.post_layout.has_children = function () {
+  return Posts.find({ $and: [ {parent: this._id } ] }).count() > 0;
 };
 
 Template.post_layout.postbody = function () {
@@ -119,14 +128,7 @@ Template.home.newPostDialog = function () {
 Template.postit.rendered = function() {
   var editor = new Markdown.Editor(converter);
   editor.run();
-  return;
-  new EpicEditor({
-    basePath: '/epiceditor'
-    ,theme: {
-      preview:'/themes/preview/bartik.css',
-      editor:'/themes/editor/epic-light.css'
-    }
-  }).load()
+  $('#postit').hide();
 };
 
 Template.postit.events({

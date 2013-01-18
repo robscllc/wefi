@@ -8,6 +8,13 @@
     <div class="navbar-inner">  
       <div class="container-fluid">
         <a class="brand" href="/"><em>MeteorFilter</em></a>
+	<ul class="nav">
+	  <li class="active">
+	    <a href="/">FPP</a>
+	  </li>
+	  <li><a href="#"></a></li>
+	  <li><a href="#">Link</a></li>
+	</ul>
         <ul class="nav pull-right">
 	  <li><a>{{loginButtons align="right"}}</a></li>
 	</ul>
@@ -39,7 +46,6 @@
 
 <template name="post_layout">
   {{postbody}}
-  <br/>
   <span class="footer">
     posted by
     <a href="" class="user">{{postuser}}</a>
@@ -47,13 +53,21 @@
     {{#if parent}}
     <a href="/post/{{parent}}" class="btn btn-mini">goto parent</a>
     {{/if}}
+    {{#if is_different_post}}
     {{#if is_root}}
     <a href="/post/{{_id}}" class="btn btn-mini">view {{comment_count}} replies</a>
+    {{else}}
+    {{#if has_children}}
+    <a href="/post/{{_id}}" class="btn btn-mini">view sub-thread</a>
+    {{/if}}
+    {{/if}}
     {{/if}}
     <a href="#" class="reply btn btn-mini">reply</a>
     fav
     flag
   </span>
+  <br/>
+  <br/>
 </template>
 
 <template name="comments">
