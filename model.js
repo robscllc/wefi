@@ -90,7 +90,7 @@ Meteor.methods({
     var post = Posts.insert({
       owner: this.userId,
       body: options.body,
-      last_updated: (new Date()).getTime(),
+      posted: (new Date()).getTime(),
       parent: options.parent,
       slug: null,
       full_slug: null,

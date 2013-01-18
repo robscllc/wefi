@@ -54,14 +54,14 @@ Pagination.style('bootstrap');
 
 Template.postlist.list = function() {
   Pagination.currentPage(Session.get('page'));
-  return Pagination.collection(Posts.find({ parent: null }, { sort: { last_updated: -1 } }).fetch());
-  return Posts.find({ parent: null }, { sort: { last_updated: -1 } }).fetch().slice(0, 5);
+  return Pagination.collection(Posts.find({ parent: null }, { sort: { posted: -1 } }).fetch());
+  return Posts.find({ parent: null }, { sort: { posted: -1 } }).fetch().slice(0, 5);
 };
 
 Template.postlist.pagination = function () {
   Pagination.currentPage(Session.get('page'));
   // Pagination.links(prependRoute, cursorCount, options);
-  var count = Posts.find({ parent: null }, { sort: { last_updated: -1 } }).count();
+  var count = Posts.find({ parent: null }, { sort: { posted: -1 } }).count();
   if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
     return Pagination.links('/page', count);
 }
@@ -111,7 +111,7 @@ Template.post_layout.postuser = function () {
 };
 
 Template.post_layout.timestamp = function () {
-  return new Date(this.last_updated);
+  return new Date(this.posted);
 };
 
 var newPostDialog = function () {
