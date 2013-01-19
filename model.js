@@ -69,8 +69,7 @@ Posts.allow({
   },
   remove: function (userId, posts) {
     return ! _.any(posts, function (post) {
-      // deny if not the owner, or if other people are going
-      return post.owner !== userId || attending(post) > 0;
+      return post.owner !== userId;
     });
   }
 });

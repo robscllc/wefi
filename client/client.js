@@ -117,6 +117,10 @@ Template.post_layout.events({
     Session.set('reply_id', template.data._id);
     show_postit($(template.find(".reply")));
     return false;
+  },
+  'click .remove': function () {
+    Posts.remove(this._id);
+    return false;
   }
 });
 
