@@ -9,6 +9,7 @@ Meteor.Router.add({
     Session.set('post_id', null);
     Session.set('reply_id', null);
     Session.set('page', 1);
+    Session.set('tag', 'fpp');
     return 'home';
   }
   ,"/page/:page": function(page) {
@@ -27,6 +28,13 @@ Meteor.Router.add({
     Session.set('reply_id', null);
     Session.set('page', page);
     return 'post';
+  }
+  ,"/tag/:tag": function(tag) {
+    Session.set('post_id', null);
+    Session.set('reply_id', null);
+    Session.set('page', 1);
+    Session.set('tag', tag);
+    return 'home';
   }
 });
 
@@ -63,7 +71,7 @@ Pagination.style('bootstrap');
 
 Template.postlist.list = function() {
   Pagination.currentPage(Session.get('page'));
-  return Pagination.collection(Posts.find({ parent: null }, { sort: { posted: -1 } }).fetch());
+  return Pagination.collection(Posts.find({ parent: null, tags: Session.get('tag') }, { sort: { posted: -1 } }).fetch());
 };
 
 Template.postlist.pagination = function () {
@@ -176,6 +184,7 @@ Template.postit.events({
     if (body.length) {
       Meteor.call('createPost', {
         body: converter.makeHtml(body),
+	tags: template.find(".tags").value.split(/^W+/),
 	parent: Session.get('reply_id')
       }, function (error, party) {
         if (! error) {

@@ -97,7 +97,7 @@ Meteor.methods({
       full_slug: null,
       flags: [],
       favs: [],
-      tags: []
+      tags: options.tags
     });
 
     var root = post;
