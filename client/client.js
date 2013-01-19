@@ -82,12 +82,16 @@ Template.postlist.events({
 });
 
 var show_postit = function(target) {
-  $("#postit").css({
-    position: "absolute",
-    top: (target.position().top + target.outerHeight() + $("#postit").outerHeight()) + "px",
-    left: target.position().left + "px"
-  });
   $("#postit").show();
+  $("#postit").css({
+    position: "absolute"
+  });
+  $("#postit").position({
+    my: "center top",
+    at: "center bottom",
+    of: target,
+    collision: "fit none"
+  });
   $("#postit").scrollintoview();
   $("#postit textarea.body").focus();
 };
@@ -103,7 +107,7 @@ Template.navbar.events({
 Template.post_layout.events({
   'click .reply': function (event, template) {
     Session.set('reply_id', template.data._id);
-    show_postit($(template.find(".footer")));
+    show_postit($(template.find(".reply")));
     return false;
   }
 });
