@@ -17,10 +17,21 @@
       <div class="container-fluid">
 	<ul class="nav">
           <li><a class="brand" href="/"><em>MeteorFilter</em></a></li>
-	  <li><a class="post" href="#">Post Something</a></li>
-	  <li><a href="#">Pony Requests</a></li>
-	  <li><a href="#">Favorites</a></li>
-	  <li><a href="#">About</a></li>
+	  <li><a class="post" href="#">New Post</a></li>
+	  <li><a href="/tag/meta">About</a></li>
+	  <li><a href="/tag/features">Feature Requests</a></li>
+	  <li><a href="/tag/bugs">Bug Reports</a></li>
+	  <li>
+	    <div class="btn-group">
+	      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+		More tags
+		<span class="caret"></span>
+	      </a>
+	      <ul class="dropdown-menu">
+		<!-- dropdown menu links -->
+	      </ul>
+	    </div>
+	  </li>
 	</ul>
         <ul class="nav pull-right">
 	  <li><a>{{loginButtons align="right"}}</a></li>
