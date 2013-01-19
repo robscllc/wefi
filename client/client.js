@@ -190,8 +190,6 @@ Template.postit.events({
         if (! error) {
 	  Session.set("createError", null);
 	  $("#postit").hide();
-	  if(Session.get('reply_id') === null)
-	    Meteor.Router.to('/');
         }
       });
     } else {
