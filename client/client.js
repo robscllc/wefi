@@ -81,20 +81,29 @@ Template.postlist.events({
   }
 });
 
+var show_postit = function(target) {
+  $("#postit").css({
+    position: "absolute",
+    top: (target.position().top + target.outerHeight() + $("#postit").outerHeight()) + "px",
+    left: target.position().left + "px"
+  });
+  $("#postit").show();
+  $("#postit").scrollintoview();
+  $("#postit textarea.body").focus();
+};
+
+Template.navbar.events({
+  'click .post': function (event, template) {
+    Session.set('reply_id', null);
+    show_postit($(template.find(".post")));
+    return false;
+  }
+});
+
 Template.post_layout.events({
   'click .reply': function (event, template) {
     Session.set('reply_id', template.data._id);
-    var foot = $(template.find(".footer"));
-    $("#postit").css({
-      position: "absolute",
-      top: (foot.position().top + foot.outerHeight() + $("#postit").outerHeight()) + "px",
-      left: foot.position().left + "px"
-    });
-    $("#postit").show();
-    $("#postit").scrollintoview();
-    
-    //var postit = $("#postit").detach();
-    //postit.insertAfter($(template.find(".footer")));
+    show_postit($(template.find(".footer")));
     return false;
   }
 });
@@ -163,11 +172,13 @@ Template.postit.events({
     if (body.length) {
       Meteor.call('createPost', {
         body: converter.makeHtml(body),
-	parent: Session.get('reply_id') || Session.get('post_id')
+	parent: Session.get('reply_id')
       }, function (error, party) {
         if (! error) {
 	  Session.set("createError", null);
 	  $("#postit").hide();
+	  if(Session.get('reply_id') === null)
+	    Meteor.Router.to('/');
         }
       });
     } else {

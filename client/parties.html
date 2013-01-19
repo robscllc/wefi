@@ -4,14 +4,20 @@
 </head>
 
 <body>
+  {{> navbar }}
+  <div class="container-fluid">
+    {{> postit }}
+    {{renderPage}}
+  </div>
+</body>
+
+<template name="navbar">
   <div class="navbar navbar-fixed-top">  
     <div class="navbar-inner">  
       <div class="container-fluid">
-        <a class="brand" href="/"><em>MeteorFilter</em></a>
 	<ul class="nav">
-	  <li class="active">
-	    <a href="/">Front Page</a>
-	  </li>
+          <li><a class="brand" href="/"><em>MeteorFilter</em></a></li>
+	  <li><a class="post" href="#">Post Something</a></li>
 	  <li><a href="#">Pony Requests</a></li>
 	  <li><a href="#">Favorites</a></li>
 	  <li><a href="#">About</a></li>
@@ -22,11 +28,7 @@
       </div>
     </div>   
   </div>
-  <div class="container-fluid">
-    {{> postit }}
-    {{renderPage}}
-  </div>
-</body>
+</template>
 
 <template name="home">
   <div class="row-fluid">
