@@ -95,9 +95,8 @@ Meteor.methods({
       parent: options.parent,
       slug: null,
       full_slug: null,
-      flags: [],
-      favs: [],
-      tags: options.tags
+      tags: options.tags,
+      votes: []
     });
 
     var root = post;
