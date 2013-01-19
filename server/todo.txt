@@ -1,4 +1,0 @@
-- pinned items
-- tagged posts (tags are subreddits)
-- limit to the fpp tag
-- sub-threads
