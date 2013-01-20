@@ -1,0 +1,50 @@
+<head>
+  <title>We Blog In Realtime</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  {{> navbar }}
+  <div class="container-fluid">
+    {{> postit }}
+    {{renderPage}}
+  </div>
+</body>
+
+<template name="navbar">
+  <div class="navbar navbar-fixed-top">  
+    <div class="navbar-inner">  
+      <div class="container-fluid">
+	<ul class="nav">
+          <li><a class="brand" href="/">We Blog In Realtime</a></li>
+	  <li><a class="post" href="#">New Post</a></li>
+	  <li><a href="/tag/meta">About</a></li>
+	  <li><a href="/tag/features">Feature Requests</a></li>
+	  <li><a href="/tag/bugs">Bug Reports</a></li>
+	  <li>
+	    <div class="btn-group">
+	      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+		More tags
+		<span class="caret"></span>
+	      </a>
+	      <ul class="dropdown-menu">
+		<!-- dropdown menu links -->
+	      </ul>
+	    </div>
+	  </li>
+	</ul>
+        <ul class="nav pull-right">
+	  <li><a>{{loginButtons align="right"}}</a></li>
+	</ul>
+      </div>
+    </div>   
+  </div>
+</template>
+
+<template name="home">
+  <div class="row-fluid">
+    <div class="span12">
+      {{> postlist}}
+    </div>
+  </div>
+</template>
