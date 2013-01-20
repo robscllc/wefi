@@ -8,7 +8,7 @@ Accounts.onCreateUser(function(options, user){
     user.profile.name = user.username;
   
   if ( !Meteor.users.find().count() )
-    user.isAdmin = true;
+    user.is_admin = true;
 
   return user;
 });
