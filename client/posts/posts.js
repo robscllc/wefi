@@ -148,7 +148,7 @@ Template.postit.events({
         body: converter.makeHtml(body),
 	tags: template.find(".tags").value.split(/^W+/),
 	parent: Session.get('reply_id')
-      }, function (error, party) {
+      }, function (error, post) {
         if (! error) {
 	  Session.set("createError", null);
 	  $("#postit").hide();
