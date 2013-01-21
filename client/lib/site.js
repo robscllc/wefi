@@ -14,7 +14,7 @@ Meteor.Router.add({
 Template.navbar.events({
   'click .post': function (event, template) {
     Session.set('reply_id', null);
-    show_postit($(template.find(".post")));
+    showPostit($(template.find(".post")));
     return false;
   }
 });

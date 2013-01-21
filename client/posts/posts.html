@@ -5,7 +5,7 @@
   {{/if}}
 </template>
 
-<template name="post_layout">
+<template name="postLayout">
   <div class="post depth{{depth}}">
     <a name="{{_id}}" />
   {{postbody}}
@@ -16,11 +16,11 @@
     {{#if parent}}
     <a href="#{{parent}}" class="btn btn-mini">goto parent</a>
     {{/if}}
-    {{#if is_different_post}}
-    {{#if is_root}}
-    <a href="/post/{{_id}}" class="btn btn-mini">view {{comment_count}} replies</a>
+    {{#if isDifferentPost}}
+    {{#if isRoot}}
+    <a href="/post/{{_id}}" class="btn btn-mini">view {{commentCount}} replies</a>
     {{else}}
-    {{#if has_children}}
+    {{#if hasChildren}}
     <a href="/post/{{_id}}" class="btn btn-mini">view sub-thread</a>
     {{/if}}
     {{/if}}
@@ -38,7 +38,7 @@
 <template name="comments">
   <div>            
     {{#each tree}}
-    {{> post_layout }}
+    {{> postLayout }}
     {{/each}}
   </div>
 </template>
@@ -47,7 +47,7 @@
   {{{pagination}}}
   <div>            
     {{#each list}}
-    {{> post_layout }}
+    {{> postLayout }}
     {{/each}}
   </div>
   {{{pagination}}}

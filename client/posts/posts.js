@@ -64,7 +64,7 @@ Template.postlist.events({
   }
 });
 
-var show_postit = function(target) {
+var showPostit = function(target) {
   $("#postit").show();
   $("#postit").css({
     position: "absolute"
@@ -79,10 +79,10 @@ var show_postit = function(target) {
   $("#postit textarea.body").focus();
 };
 
-Template.post_layout.events({
+Template.postLayout.events({
   'click .reply': function (event, template) {
     Session.set('reply_id', template.data._id);
-    show_postit($(template.find(".reply")));
+    showPostit($(template.find(".reply")));
     return false;
   },
   'click .remove': function () {
@@ -91,35 +91,35 @@ Template.post_layout.events({
   }
 });
 
-Template.post_layout.is_root = function() {
+Template.postLayout.isRoot = function() {
   return this._id === this.root;
 };
 
-Template.post_layout.is_different_post = function() {
+Template.postLayout.isDifferentPost = function() {
   return this._id !== Session.get('post_id')
 };
 
-Template.post_layout.comment_count = function () {
+Template.postLayout.commentCount = function () {
   return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
 };
 
-Template.post_layout.has_children = function () {
+Template.postLayout.hasChildren = function () {
   return Posts.find({ $and: [ {parent: this._id } ] }).count() > 0;
 };
 
-Template.post_layout.postbody = function () {
+Template.postLayout.postbody = function () {
   if (this.body)
     return new Handlebars.SafeString(this.body);
 };
 
-Template.post_layout.postuser = function () {
+Template.postLayout.postuser = function () {
   var owner = Meteor.users.findOne(this.owner);
 //  if (owner._id === Meteor.userId())
 //    return "me";
   return displayName(owner);
 };
 
-Template.post_layout.timestamp = function () {
+Template.postLayout.timestamp = function () {
   return new Date(this.posted);
 };
 
