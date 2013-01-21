@@ -79,6 +79,7 @@ Template.postlist.events({
 });
 
 var showPostit = function(target) {
+  $("#postit textarea.body").val('');
   $("#postit").show();
   $("#postit").css({
     position: "absolute"
