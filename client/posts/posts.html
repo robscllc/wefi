@@ -28,7 +28,9 @@
     <a href="#" class="reply btn btn-mini" data-toggle="button">reply</a>
     <a href="#" class="up"><i class="icon-thumbs-up" /></a>
     <a href="#" class="down"><i class="icon-thumbs-down" /></a>
+    {{#if currentUser.is_admin}}
     <button class="remove btn btn-mini" data-toggle="button">remove</button>
+    {{/if}}
   </span>
   <br/>
   <br/>

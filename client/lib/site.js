@@ -1,3 +1,4 @@
+Meteor.subscribe("currentUser");
 Meteor.subscribe("directory");
 
 Meteor.Router.add({
