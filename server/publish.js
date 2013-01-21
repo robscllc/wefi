@@ -1,5 +1,5 @@
 Meteor.publish('currentUser', function() {
-  return Meteor.users.findOne(this.userId);
+  return Meteor.users.find(this.userId);
 });
 
 Meteor.publish("directory", function () {
@@ -33,6 +33,7 @@ Meteor.startup(function() {
       });
     },
     remove: function (userId, posts) {
+      return isAdminById(userId);
       return ! _.any(posts, function (post) {
 	return isAdminById(userId);
       });
