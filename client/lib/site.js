@@ -11,7 +11,6 @@ Meteor.Router.add({
   }
 });
 
-
 Template.navbar.events({
   'click .post': function (event, template) {
     Session.set('reply_id', null);
