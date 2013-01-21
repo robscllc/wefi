@@ -1,3 +1,7 @@
+Meteor.publish('currentUser', function() {
+  return Meteor.users.findOne(this.userId);
+});
+
 Meteor.publish("directory", function () {
   return Meteor.users.find({}, {fields: {emails: 1, profile: 1, username: 1}});
 });
@@ -30,7 +34,7 @@ Meteor.startup(function() {
     },
     remove: function (userId, posts) {
       return ! _.any(posts, function (post) {
-	return post.owner !== userId;
+	return isAdminById(userId);
       });
     }
   });
