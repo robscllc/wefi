@@ -44,9 +44,16 @@ Template.comments.tree = function() {
 Pagination.perPage(20);
 Pagination.style('bootstrap');
 
+var split_tags = function() { 
+  var tags = Session.get("tag");
+  if ( _.isString(tags) )
+    return tags.split('/');
+  return [];
+};
+
 Template.postlist.list = function() {
   Pagination.currentPage(Session.get('page'));
-  var tags = Session.get('tag').split('/');
+  var tags = split_tags();
   var cons = { parent: null };
   if (tags.length > 1) {
     cons['$and'] = _.map(tags, function(tag){ return { tags: tag } });
@@ -151,7 +158,6 @@ Template.postit.events({
     var body = template.find(".body").value;
 
     if (body.length) {
-      console.log(template.find(".tags").value.split(/\W+/));
       Meteor.call('createPost', {
         body: converter.makeHtml(body),
 	tags: template.find(".tags").value.split(/\W+/),
@@ -175,4 +181,8 @@ Template.postit.events({
 
 Template.postit.error = function () {
   return Session.get("createError");
+};
+
+Template.postit.tags = function () {
+  return split_tags().join(' ');
 };
