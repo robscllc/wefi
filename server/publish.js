@@ -19,10 +19,11 @@ Meteor.startup(function() {
     },
     update: function (userId, posts, fields, modifier) {
       return _.all(posts, function (post) {
+	console.log(fields);
 	if (userId !== post.owner)
           return false; // not the owner
 	
-	var allowed = ["title", "description", "x", "y"];
+	var allowed = ["body", "tags"];
 	if (_.difference(fields, allowed).length)
           return false; // tried to write to forbidden field
 	
@@ -33,6 +34,7 @@ Meteor.startup(function() {
       });
     },
     remove: function (userId, posts) {
+      return false;
       return isAdminById(userId);
       return ! _.any(posts, function (post) {
 	return isAdminById(userId);
@@ -58,6 +60,7 @@ Meteor.methods({
       owner: this.userId,
       body: options.body,
       posted: now,
+      state: 'active',
       parent: options.parent,
       slug: null,
       full_slug: null,
@@ -82,5 +85,8 @@ Meteor.methods({
     Posts.update(post, { $set: { 'root': root, 'depth': depth, 
 				 'slug': slug, 'full_slug': full_slug } });
     return post;
+  },
+  hidePost: function() {
+    
   }
 });
