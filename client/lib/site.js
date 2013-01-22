@@ -18,3 +18,7 @@ Template.navbar.events({
     return false;
   }
 });
+
+Meteor.startup(function() {
+  $(".navbar .brand .anim").fadeOut(1000, 'easeInBack', function() { $(this).html('&nbsp;Blog&nbsp;').fadeIn(1000, 'easeInBack') });
+});
