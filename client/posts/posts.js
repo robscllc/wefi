@@ -96,13 +96,24 @@ var showPostit = function(target) {
 
 Template.postLayout.events({
   'click .reply': function (event, template) {
-    Session.set('reply_id', template.data._id);
+    Session.set('reply_id', this._id);
     showPostit($(template.find(".reply")));
     return false;
   },
   'click .remove': function () {
     Posts.remove(this._id);
     return false;
+  },
+  'click .state .btn': function (event, template) {
+    Meteor.call('setPostState', {
+      post_id: this._id, 
+      state: $(event.target).text()
+    }, function (error, post) {
+      if (! error) {
+	Session.set("createError", null);
+	$("#postit").hide();
+      }
+    });
   }
 });
 
@@ -136,6 +147,10 @@ Template.postLayout.postuser = function () {
 
 Template.postLayout.timestamp = function () {
   return new Date(this.posted);
+};
+
+Template.postLayout.maybeState = function (what) {
+  return what == this.state ? "active" : "";
 };
 
 Template.postit.rendered = function() { 

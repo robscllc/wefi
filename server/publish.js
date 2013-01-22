@@ -7,8 +7,11 @@ Meteor.publish("directory", function () {
 });
 
 Meteor.publish("posts", function () {
-  return Posts.find();
-//    {$or: [{"public": true}, {invited: this.userId}, {owner: this.userId}]});
+  if (this.userId && isAdminById(this.userId)) {
+    return Posts.find();
+  } else {
+    return Posts.find({ $or: [{state: "active"}, { state: "closed"}]});
+  }
 });
 
 Meteor.startup(function() {
@@ -34,7 +37,6 @@ Meteor.startup(function() {
       });
     },
     remove: function (userId, posts) {
-      return false;
       return isAdminById(userId);
       return ! _.any(posts, function (post) {
 	return isAdminById(userId);
@@ -86,7 +88,17 @@ Meteor.methods({
 				 'slug': slug, 'full_slug': full_slug } });
     return post;
   },
-  hidePost: function() {
-    
+  setPostState: function(options) {
+    options = options || {};
+    if (! (this.userId && isAdminById(this.userId) ) )
+      throw new Meteor.Error(403, "You must be admin in to change state");
+    if (! _.contains(['active', 'closed', 'hidden'], options.state))
+      throw new Meteor.Error(400, "Invalid state");
+
+    var post = Posts.findOne(options.post_id);
+    if (! post)
+      throw new Meteor.Error(404, "No such post");
+
+    Posts.update(post, { $set: { state: options.state } });
   }
 });
