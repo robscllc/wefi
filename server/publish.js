@@ -99,6 +99,7 @@ Meteor.methods({
     if (! post)
       throw new Meteor.Error(404, "No such post");
 
-    Posts.update(post, { $set: { state: options.state } });
+    Posts.update({ root: post.root, slug: {$regex: post.slug }},
+		 { $set: { state: options.state } }, { multi: true} );
   }
 });
