@@ -20,5 +20,5 @@ Template.navbar.events({
 });
 
 Meteor.startup(function() {
-  $(".navbar .brand .anim").fadeOut(1000, 'easeInBack', function() { $(this).html('&nbsp;Blog&nbsp;').fadeIn(1000, 'easeInBack') });
+  $(".navbar .brand .anim").delay(1000).fadeOut(1000, 'easeInBack', function() { $(this).html('&nbsp;blog&nbsp;').fadeIn(1000, 'easeInBack') });
 });
