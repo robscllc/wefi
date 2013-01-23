@@ -1,4 +1,4 @@
-var converter = new Showdown.converter();
+var postit_target;
 
 Meteor.subscribe("posts");
 
@@ -78,29 +78,11 @@ Template.postlist.events({
   }
 });
 
-var showPostit = function(target) {
-  Session.set('showPostit', true);
-  return;
-
-  $("#postit textarea.body").val('');
-  $("#postit").show();
-  $("#postit").css({
-    position: "absolute"
-  });
-  $("#postit").position({
-    my: "center top",
-    at: "center bottom",
-    of: target,
-    collision: "fit none"
-  });
-  $("#postit").scrollintoview();
-  $("#postit textarea.body").focus();
-};
-
 Template.postLayout.events({
   'click .reply': function (event, template) {
-    Session.set('reply_id', this._id);
-    showPostit($(template.find(".reply")));
+    Session.set('reply_id', template.data._id);
+    postit_target = $(template.find(".reply"));
+    Session.set('showPostit', true);
     return false;
   },
   'click .remove': function () {
@@ -154,6 +136,24 @@ Template.postLayout.maybeState = function (what) {
   return what == this.state ? "active" : "";
 };
 
+Template.postit.converter = new Showdown.converter();
+
+Template.postit.rendered = function() {
+  $("#postit textarea.body").val('');
+  $("#postit").show();
+  $("#postit").css({
+    position: "absolute"
+  });
+  $("#postit").position({
+    my: "center top",
+    at: "center bottom",
+    of: postit_target,
+    collision: "fit none"
+  });
+  $("#postit").scrollintoview();
+  $("#postit textarea.body").focus();
+};
+
 Template.postit.events({
   'click button.preview': function (event, template) {
     if($(event.target).hasClass('active')) {
@@ -161,34 +161,31 @@ Template.postit.events({
     } else {
       $('#profile').css('height', $('#home').outerHeight()+10);
       $('#myTab a[href="#profile"]').tab('show');
-      $(template.find('.wmd-preview')).html(converter.makeHtml($('#wmd-input').val()));
+      $(template.find('.preview')).html(Template.postit.converter.makeHtml(template.find(".body").value));
     }      
   },
   'click button.cancel': function () {
-    Session.set('showPostit', true);
+    Session.set('showPostit', false);
   },
   'click button.save': function (event, template) {
     var body = template.find(".body").value;
-
     if (body.length) {
       Meteor.call('createPost', {
         body: body,
 	tags: template.find(".tags").value.split(/\W+/),
 	parent: Session.get('reply_id')
       }, function (error, post) {
-        if (! error) {
+        if (error) {
+	  Session.set("createError", error.reason);
+	} else {
 	  Session.set("createError", null);
+	  Session.set('showPostit', false);
         }
       });
-      Session.set('showPostit', false);
     } else {
       Session.set("createError",
                   "It needs a body, or why bother?");
     }
-  },
-
-  'click .cancel': function () {
-    Session.set("showPostit", false);
   }
 });
 
