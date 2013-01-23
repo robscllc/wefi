@@ -1,4 +1,4 @@
-var converter = new Markdown.getSanitizingConverter();
+var converter = new Showdown.converter();
 
 Meteor.subscribe("posts");
 
@@ -79,6 +79,9 @@ Template.postlist.events({
 });
 
 var showPostit = function(target) {
+  Session.set('showPostit', true);
+  return;
+
   $("#postit textarea.body").val('');
   $("#postit").show();
   $("#postit").css({
@@ -110,8 +113,6 @@ Template.postLayout.events({
       state: $(event.target).text()
     }, function (error, post) {
       if (! error) {
-	Session.set("createError", null);
-	$("#postit").hide();
       }
     });
   }
@@ -153,11 +154,6 @@ Template.postLayout.maybeState = function (what) {
   return what == this.state ? "active" : "";
 };
 
-Template.postit.rendered = function() { 
-  var editor = new Markdown.Editor(converter);
-  editor.run();
-};
-
 Template.postit.events({
   'click button.preview': function (event, template) {
     if($(event.target).hasClass('active')) {
@@ -165,25 +161,26 @@ Template.postit.events({
     } else {
       $('#profile').css('height', $('#home').outerHeight()+10);
       $('#myTab a[href="#profile"]').tab('show');
+      $(template.find('.wmd-preview')).html(converter.makeHtml($('#wmd-input').val()));
     }      
   },
   'click button.cancel': function () {
-    $("#postit").hide();
+    Session.set('showPostit', true);
   },
   'click button.save': function (event, template) {
     var body = template.find(".body").value;
 
     if (body.length) {
       Meteor.call('createPost', {
-        body: converter.makeHtml(body),
+        body: body,
 	tags: template.find(".tags").value.split(/\W+/),
 	parent: Session.get('reply_id')
       }, function (error, post) {
         if (! error) {
 	  Session.set("createError", null);
-	  $("#postit").hide();
         }
       });
+      Session.set('showPostit', false);
     } else {
       Session.set("createError",
                   "It needs a body, or why bother?");
@@ -191,9 +188,13 @@ Template.postit.events({
   },
 
   'click .cancel': function () {
-    Session.set("createError", null);
+    Session.set("showPostit", false);
   }
 });
+
+Template.postit.showPostit = function() {
+  return Session.get('showPostit');
+};
 
 Template.postit.error = function () {
   return Session.get("createError");

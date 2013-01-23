@@ -61,7 +61,8 @@
 </template>
 
 <template name="postit">
-  <div id="postit" class="depth1 modal hide">
+  {{#if showPostit}}
+  <div id="postit" class="depth1 modal">
     <div class="modal-body">
       {{#if error}}
       <div class="alert alert-error">{{error}}</div>
@@ -97,4 +98,5 @@
       </div>
     </div>
   </div>
+  {{/if}}
 </template>
