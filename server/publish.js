@@ -1,3 +1,5 @@
+var md_converter;
+
 Meteor.publish('currentUser', function() {
   return Meteor.users.find(this.userId);
 });
@@ -15,6 +17,11 @@ Meteor.publish("posts", function () {
 });
 
 Meteor.startup(function() {
+
+  var require = __meteor_bootstrap__.require;
+  var path = require('path');
+  var base = path.resolve('.');
+  md_converter = require(base + "/client/thirdparty/pagedown/Markdown.Sanitizer").getSanitizingConverter();
 
   Posts.allow({
     insert: function (userId, post) {
@@ -68,6 +75,7 @@ Meteor.methods({
     var post = Posts.insert({
       owner: this.userId,
       body: options.body,
+      body_rendered: md_converter.makeHtml(options.body),
       posted: now,
       state: 'active',
       parent: options.parent,

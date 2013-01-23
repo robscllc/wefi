@@ -122,8 +122,8 @@ Template.postLayout.hasChildren = function () {
 };
 
 Template.postLayout.postbody = function () {
-  if (this.body)
-    return new Handlebars.SafeString(this.body);
+  if (this.body && this.body_rendered)
+    return new Handlebars.SafeString(this.body_rendered);
 };
 
 Template.postLayout.postuser = function () {
@@ -140,8 +140,6 @@ Template.postLayout.timestamp = function () {
 Template.postLayout.maybeState = function (what) {
   return what == this.state ? "active" : "";
 };
-
-Template.postit.converter = new Showdown.converter();
 
 Template.postit.rendered = function() {
   $("#postit textarea.body").val('');
@@ -166,7 +164,7 @@ Template.postit.events({
     } else {
       $('#profile').css('height', $('#home').outerHeight()+10);
       $('#myTab a[href="#profile"]').tab('show');
-      $(template.find('.preview')).html(Template.postit.converter.makeHtml(template.find(".body").value));
+      $(template.find('.preview')).html(md_converter.makeHtml(template.find(".body").value));
     }      
   },
   'click button.cancel': function () {
