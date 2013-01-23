@@ -83,6 +83,7 @@ Template.postLayout.events({
     Session.set('reply_id', template.data._id);
     postit_target = $(template.find(".reply"));
     Session.set('showPostit', true);
+    Session.set('createError', null);
     return false;
   },
   'click .remove': function () {
@@ -142,7 +143,6 @@ Template.postLayout.maybeState = function (what) {
 };
 
 Template.postit.rendered = function() {
-  $("#postit textarea.body").val('');
   $("#postit").show();
   $("#postit").css({
     position: "absolute"
@@ -202,4 +202,8 @@ Template.postit.error = function () {
 
 Template.postit.tags = function () {
   return split_tags().join(' ');
+};
+
+Template.postit.body = function () {
+  return '';
 };

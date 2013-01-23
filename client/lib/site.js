@@ -18,7 +18,8 @@ Template.navbar.events({
     Session.set('reply_id', null);
     postit_target = $(template.find(".post"));
     Session.set('showPostit', true);
-    return false;
+    Session.set('createError', null);
+   return false;
   }
 });
 
