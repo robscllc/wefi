@@ -86,7 +86,12 @@ Template.postLayout.events({
     return false;
   },
   'click .remove': function () {
-    Posts.remove(this._id);
+    Meteor.call('removeThread', {
+      post_id: this._id
+    }, function (error, post) {
+      if (! error) {
+      }
+    });
     return false;
   },
   'click .state .btn': function (event, template) {

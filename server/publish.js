@@ -95,7 +95,7 @@ Meteor.methods({
   setPostState: function(options) {
     options = options || {};
     if (! (this.userId && isAdminById(this.userId) ) )
-      throw new Meteor.Error(403, "You must be admin in to change state");
+      throw new Meteor.Error(403, "You must be admin to change state");
     if (! _.contains(['active', 'closed', 'hidden'], options.state))
       throw new Meteor.Error(400, "Invalid state");
 
@@ -105,5 +105,16 @@ Meteor.methods({
 
     Posts.update({ root: post.root, slug: {$regex: post.slug }},
 		 { $set: { state: options.state } }, { multi: true} );
+  },
+  removeThread: function(options) {
+    options = options || {};
+    if (! (this.userId && isAdminById(this.userId) ) )
+      throw new Meteor.Error(403, "You must be admin to remove posts");
+
+    var post = Posts.findOne(options.post_id);
+    if (! post)
+      throw new Meteor.Error(404, "No such post");
+
+    Posts.remove({ root: post.root, slug: {$regex: post.slug }});
   }
 });
