@@ -1,7 +1,9 @@
 body { 
-    padding: 60px 0 0 0; 
+    padding-top: 60px; 
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 @media screen and (max-width: 979px) {
-    body { padding: 0px; }
+    body { padding-top: 0px; }
 }
