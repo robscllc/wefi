@@ -145,6 +145,7 @@ Template.postLayout.editTimeRemaining = function () {
 };
 
 Template.postLayout.rendered = function() {
+  $("abbr.timeago").timeago();
   var rem = $(this.find('span.remaining'));
   var edit = $(this.find('button.edit'));
   if (rem) {
