@@ -27,7 +27,9 @@
       {{/if}}
       {{/if}}
       {{/if}}
-      <button type="button" class="edit btn btn-mini" data-toggle="button">edit</button>
+      {{#if inEditWindow}}
+      <button type="button" class="edit btn btn-mini" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
+      {{/if}}
       <a href="#" class="reply btn btn-mini" data-toggle="button">reply</a>
       <a href="#" class="up"><i class="icon-thumbs-up" /></a>
       <a href="#" class="down"><i class="icon-thumbs-down" /></a>

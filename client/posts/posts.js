@@ -133,6 +133,35 @@ Template.postLayout.hasChildren = function () {
   return Posts.find({ $and: [ {parent: this._id } ] }).count() > 0;
 };
 
+Template.postLayout.inEditWindow = function () {
+  var owner = Meteor.users.findOne(this.owner);
+  if (owner._id === Meteor.userId())
+    return ((new Date()).getTime() - (new Date(this.posted)).getTime()) < 300000;
+  return false;
+};
+
+Template.postLayout.editTimeRemaining = function () {
+  return Math.floor(300 - ((new Date()).getTime() - (new Date(this.posted)).getTime()) / 1000);
+};
+
+Template.postLayout.rendered = function() {
+  var rem = $(this.find('span.remaining'));
+  var edit = $(this.find('button.edit'));
+  if (rem) {
+    $(function(){
+      var count = rem.text();
+      var countdown = setInterval(function(){
+	rem.text(' for ' + count + ' more seconds');
+	if (count < 0) {
+	  //edit.hide();
+	  clearInterval(countdown);
+	}
+	count--;
+      }, 1000);
+    });
+  }
+};
+
 Template.postLayout.postbody = function () {
   if (this.body && this.body_rendered)
     return new Handlebars.SafeString(this.body_rendered);
