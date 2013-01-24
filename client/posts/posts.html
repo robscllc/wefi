@@ -58,13 +58,21 @@
 </template>
 
 <template name="postlist">
-  {{{pagination}}}
-  <div class="span10">            
-    {{#each list}}
-    {{> postLayout }}
-    {{/each}}
+  <div class="row">
+    <div class="span10">
+      {{#each list}}
+      {{> postLayout }}
+      {{/each}}
+    </div>
+    <div class="span2">
+      <div class="affix-top" data-spy="affix" data-offset-top="60">
+	{{{pagination}}}
+	<form>
+          what <!-- inputs and stuff -->
+	</form>
+      </div>
+    </div>
   </div>
-  {{{pagination}}}
 </template>
 
 <template name="postit">

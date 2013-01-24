@@ -35,3 +35,9 @@ div.post {
 div.post span.footer {
     font-size: .8em;
 }
+
+.affix {
+    position: fixed;
+    top: 10px;
+    width: 100%;
+}

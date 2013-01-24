@@ -76,6 +76,12 @@ Template.postlist.pagination = function () {
     return Pagination.links('/page', count);
 }
 
+Template.postlist.rendered = function () {
+  $('div.affix-top').affix({
+    offset: $('div.affix-top').position()
+  });
+};
+
 Template.postlist.events({
   'click .new_post': function () {
     newPostDialog();
