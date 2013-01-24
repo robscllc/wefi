@@ -20,19 +20,23 @@
       {{/if}}
       {{#if isDifferentPost}}
       {{#if isRoot}}
-      <a href="/post/{{_id}}" class="btn btn-mini">view {{commentCount}} replies</a>
+      {{#if commentCount}}
+      <a href="/post/{{_id}}">view {{commentCount}} replies</a>
+      {{/if}}
       {{else}}
       {{#if hasChildren}}
       <a href="/post/{{_id}}" class="btn btn-mini">view sub-thread</a>
       {{/if}}
       {{/if}}
       {{/if}}
+      {{#if currentUser}}
       {{#if inEditWindow}}
       <button type="button" class="edit btn btn-mini" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
       {{/if}}
       <a href="#" class="reply btn btn-mini" data-toggle="button">reply</a>
       <a href="#" class="up"><i class="icon-thumbs-up" /></a>
       <a href="#" class="down"><i class="icon-thumbs-down" /></a>
+      {{/if}}
       {{#if currentUser.is_admin}}
       <div class="btn-group state" data-toggle="buttons-radio">
 	<button type="button" class="btn btn-mini {{maybeState "active"}}">active</button>
