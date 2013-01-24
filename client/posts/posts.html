@@ -30,13 +30,13 @@
       {{/if}}
       {{/if}}
       {{#if currentUser}}
-      {{#if inEditWindow}}
-      <button type="button" class="edit btn btn-mini" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
-      {{/if}}
       <a href="#" class="reply btn btn-mini" data-toggle="button">reply</a>
       <a href="#" class="up"><i class="icon-thumbs-up{{#if myVoteIs "up"}} icon-filled{{/if}}" /></a>
       {{score}}
       <a href="#" class="down"><i class="icon-thumbs-down{{#if myVoteIs "down"}} icon-filled{{/if}}" /></a>
+      {{#if inEditWindow}}
+      <button type="button" class="edit btn btn-mini" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
+      {{/if}}
       {{/if}}
       {{#if currentUser.is_admin}}
       <div class="btn-group state" data-toggle="buttons-radio">
