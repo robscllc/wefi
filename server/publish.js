@@ -28,6 +28,7 @@ Meteor.startup(function() {
       return false; // no cowboy inserts -- use createPost method
     },
     update: function (userId, posts, fields, modifier) {
+      return false;
       return _.all(posts, function (post) {
 	console.log(fields);
 	if (userId !== post.owner)
@@ -136,6 +137,51 @@ Meteor.methods({
       
     Posts.update(post, { $set: { body: options.body,
 				 body_rendered: md_converter.makeHtml(options.body) } });
+  },
+  voteForPost: function (options) {
+    options = options || {};
+    if (! _.contains(['up','down'], options.vote))
+      throw new Meteor.Error(400, "Invalid vote");
+    if (! this.userId)
+      throw new Meteor.Error(403, "You must be logged in");
+
+    var post = Posts.findOne(options.post_id);
+    if (! post)
+      throw new Meteor.Error(404, "No such post");
+
+    var vote = Posts.findOne({_id: post._id, 
+			      votes: { $elemMatch: { owner: this.userId } } },
+			     { fields: { votes: 1 } });
+    if (vote) {
+      if (vote.votes[0].vote == 1) {
+	if (options.vote == 'up') {
+	  Posts.update({_id: post._id, 'votes.owner': this.userId},
+		       { $pull: { votes: { owner: this.userId, vote: 1 } } });
+	} else {
+	  Posts.update({_id: post._id, 'votes.owner': this.userId},
+		       { $set: { 'votes.$.vote': -1 } });
+	}
+      } else if (vote.votes[0].vote == -1) {
+	if (options.vote == 'up') {
+	  Posts.update({_id: post._id, 'votes.owner': this.userId},
+		       { $set: { 'votes.$.vote': 1 } });
+	} else {
+	  Posts.update({_id: post._id, 'votes.owner': this.userId},
+		       { $pull: { votes: { owner: this.userId, vote: -1 } } });
+	}
+	
+      } else {
+	if (options.vote == 'up') {
+	  Posts.update({_id: post._id, 'votes.owner': this.userId},
+		       { $set: { 'votes.$.vote': 1 } });
+	} else {
+	  Posts.update({_id: post._id, 'votes.owner': this.userId},
+		       { $set: { 'votes.$.vote': -1 } });
+	}
+      }
+    } else {
+      Posts.update(post, { $addToSet: { votes: { owner: this.userId, vote: options.vote == 'up' ? 1 : -1 } } })
+    }
   },
   removeThread: function(options) {
     options = options || {};

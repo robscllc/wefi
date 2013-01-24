@@ -17,6 +17,7 @@ Template.navbar.events({
   'click .post': function (event, template) {
     Session.set('postit_id', null);
     Session.set('postit_mode', 'reply');
+    Session.set("postit_body", undefined);
     postit_target = $(template.find(".post"));
     Session.set('showPostit', true);
     Session.set('createError', null);

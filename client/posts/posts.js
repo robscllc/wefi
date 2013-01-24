@@ -114,7 +114,28 @@ Template.postLayout.events({
       if (! error) {
       }
     });
+  },
+  'click .up': function (event, template) {
+    Meteor.call('voteForPost', {
+      post_id: this._id, 
+      vote: 'up'
+    }, function (error, post) {
+      if (! error) {
+      }
+    });
+    return false;
+  },
+  'click .down': function (event, template) {
+    Meteor.call('voteForPost', {
+      post_id: this._id, 
+      vote: 'down'
+    }, function (error, post) {
+      if (! error) {
+      }
+    });
+    return false;
   }
+
 });
 
 Template.postLayout.isRoot = function() {
