@@ -4,23 +4,27 @@ Meteor.subscribe("posts");
 
 Meteor.Router.add({
   "/page/:page": function(page) {
+    Session.set('path', this.canonicalPath);
     Session.set('page', page);
     Session.set('postit_id', null);
     return 'home';
   },
   "/post/:id": function(id) {
+    Session.set('path', this.canonicalPath);
     Session.set('post_id', id);
     Session.set('postit_id', null);
     Session.set('page', 1);
     return 'post';
   },
   "/post/:id/:page": function(id, page) {
+    Session.set('path', this.canonicalPath);
     Session.set('post_id', id);
     Session.set('postit_id', null);
     Session.set('page', page);
     return 'post';
   }
   ,"/tag/*": function(tag) {
+    Session.set('path', this.canonicalPath);
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', 1);
@@ -81,22 +85,28 @@ Template.postlist.events({
 
 Template.postLayout.events({
   'click .reply': function (event, template) {
-    Session.set('postit_id', template.data._id);
-    Session.set('postit_mode', 'reply');
-    Session.set("postit_body", undefined);
-    postit_target = $(template.find(".reply"));
-    Session.set('showPostit', true);
-    Session.set('createError', null);
-    return false;
+    if($(event.target).hasClass('active')) {
+      Session.set('showPostit', false);
+    } else {
+      Session.set('postit_id', template.data._id);
+      Session.set('postit_mode', 'reply');
+      Session.set("postit_body", undefined);
+      postit_target = $(template.find(".reply"));
+      Session.set('showPostit', true);
+      Session.set('createError', null);
+    }
   },
   'click .edit': function (event, template) {
-    Session.set('postit_id', template.data._id);
-    Session.set('postit_mode', 'edit');
-    Session.set("postit_body", template.data.body);
-    postit_target = $(template.find(".edit"));
-    Session.set('showPostit', true);
-    Session.set('createError', null);
-    return false;
+    if($(event.target).hasClass('active')) {
+      Session.set('showPostit', false);
+    } else {
+      Session.set('postit_id', template.data._id);
+      Session.set('postit_mode', 'edit');
+      Session.set("postit_body", template.data.body);
+      postit_target = $(template.find(".edit"));
+      Session.set('showPostit', true);
+      Session.set('createError', null);
+    }
   },
   'click .remove': function () {
     Meteor.call('removeThread', {
@@ -236,8 +246,8 @@ Template.postit.rendered = function() {
 };
 
 Template.postit.events({
-  'click button.preview': function (event, template) {
-    if($(event.target).hasClass('active')) {
+  'click button.preview': function (event, template) { 
+   if($(event.target).hasClass('active')) {
       $('#myTab a[href="#home"]').tab('show');
     } else {
       $('#profile').css('height', $('#home').outerHeight());

@@ -5,6 +5,7 @@ Meteor.subscribe("directory");
 
 Meteor.Router.add({
   "/": function() {
+    Session.set('path', this.canonicalPath);
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', 1);
@@ -14,14 +15,23 @@ Meteor.Router.add({
 });
 
 Template.navbar.events({
-  'click .post': function (event, template) {
-    Session.set('postit_id', null);
-    Session.set('postit_mode', 'reply');
-    Session.set("postit_body", undefined);
-    postit_target = $(template.find(".post"));
-    Session.set('showPostit', true);
-    Session.set('createError', null);
-   return false;
+  'click button.post': function (event, template) {
+    if($(event.target).hasClass('active')) {
+      Session.set('showPostit', false);
+    } else {
+      Session.set('postit_id', null);
+      Session.set('postit_mode', 'reply');
+      Session.set("postit_body", undefined);
+      postit_target = $(template.find(".post"));
+      Session.set('showPostit', true);
+      Session.set('createError', null);
+    }
+  }
+});
+
+Template.navbar.helpers({
+  activePage: function (page) {
+    return Session.equals("path", page) ? "active" : "";
   }
 });
 
