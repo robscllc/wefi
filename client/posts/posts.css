@@ -25,3 +25,13 @@ div.depth19 { margin-left: 19em; }
 .icon-filled {
   background-image: url("/images/css/filled_thumbs.png");
 }
+
+div.post {
+    border-left: 1px dotted #ddd;
+    padding: 0 0 2px 4px;
+    margin-bottom: 1em;
+}
+
+div.post span.footer {
+    font-size: .8em;
+}

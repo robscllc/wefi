@@ -201,7 +201,7 @@ Template.postLayout.rendered = function() {
       var countdown = setInterval(function(){
 	rem.text(' for ' + count + ' more seconds');
 	if (count < 0) {
-	  //edit.hide();
+	  edit.hide();
 	  clearInterval(countdown);
 	}
 	count--;

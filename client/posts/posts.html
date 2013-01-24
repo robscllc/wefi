@@ -54,14 +54,12 @@
       <button class="remove btn btn-mini" data-toggle="button">remove</button>
       {{/if}}
     </span>
-    <br/>
-    <br/>
   </div>
 </template>
 
 <template name="postlist">
   {{{pagination}}}
-  <div>            
+  <div class="span10">            
     {{#each list}}
     {{> postLayout }}
     {{/each}}
