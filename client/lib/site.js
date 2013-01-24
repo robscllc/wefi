@@ -6,7 +6,7 @@ Meteor.subscribe("directory");
 Meteor.Router.add({
   "/": function() {
     Session.set('post_id', null);
-    Session.set('reply_id', null);
+    Session.set('postit_id', null);
     Session.set('page', 1);
     Session.set('tag', 'fpp');
     return 'home';
@@ -15,7 +15,8 @@ Meteor.Router.add({
 
 Template.navbar.events({
   'click .post': function (event, template) {
-    Session.set('reply_id', null);
+    Session.set('postit_id', null);
+    Session.set('postit_mode', 'reply');
     postit_target = $(template.find(".post"));
     Session.set('showPostit', true);
     Session.set('createError', null);

@@ -106,13 +106,33 @@ Meteor.methods({
       throw new Meteor.Error(403, "You must be admin to change state");
     if (! _.contains(['active', 'closed', 'hidden'], options.state))
       throw new Meteor.Error(400, "Invalid state");
-
+ 
     var post = Posts.findOne(options.post_id);
     if (! post)
       throw new Meteor.Error(404, "No such post");
 
     Posts.update({ root: post.root, slug: {$regex: post.slug }},
 		 { $set: { state: options.state } }, { multi: true} );
+  },
+  editPost: function (options) {
+    options = options || {};
+    if (! (typeof options.body === "string" &&
+           options.body.length ))
+      throw new Meteor.Error(400, "Required parameter missing");
+    if (options.body.length > 1000)
+      throw new Meteor.Error(413, "Body too long");
+    if (! this.userId)
+      throw new Meteor.Error(403, "You must be logged in");
+
+    var post = Posts.findOne(options.post_id);
+    if (! post)
+      throw new Meteor.Error(404, "No such post");
+
+    if (this.userId !== post.owner)
+      throw new Meteor.Error(404, "Not your post");
+
+    Posts.update(post, { $set: { body: options.body,
+				 body_rendered: md_converter.makeHtml(options.body) } });
   },
   removeThread: function(options) {
     options = options || {};

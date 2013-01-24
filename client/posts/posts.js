@@ -5,24 +5,24 @@ Meteor.subscribe("posts");
 Meteor.Router.add({
   "/page/:page": function(page) {
     Session.set('page', page);
-    Session.set('reply_id', null);
+    Session.set('postit_id', null);
     return 'home';
   },
   "/post/:id": function(id) {
     Session.set('post_id', id);
-    Session.set('reply_id', null);
+    Session.set('postit_id', null);
     Session.set('page', 1);
     return 'post';
   },
   "/post/:id/:page": function(id, page) {
     Session.set('post_id', id);
-    Session.set('reply_id', null);
+    Session.set('postit_id', null);
     Session.set('page', page);
     return 'post';
   }
   ,"/tag/*": function(tag) {
     Session.set('post_id', null);
-    Session.set('reply_id', null);
+    Session.set('postit_id', null);
     Session.set('page', 1);
     Session.set('tag', tag);
     return 'home';
@@ -80,8 +80,19 @@ Template.postlist.events({
 
 Template.postLayout.events({
   'click .reply': function (event, template) {
-    Session.set('reply_id', template.data._id);
+    Session.set('postit_id', template.data._id);
+    Session.set('postit_mode', 'reply');
+    Session.set("postit_body", undefined);
     postit_target = $(template.find(".reply"));
+    Session.set('showPostit', true);
+    Session.set('createError', null);
+    return false;
+  },
+  'click .edit': function (event, template) {
+    Session.set('postit_id', template.data._id);
+    Session.set('postit_mode', 'edit');
+    Session.set("postit_body", template.data.body);
+    postit_target = $(template.find(".edit"));
     Session.set('showPostit', true);
     Session.set('createError', null);
     return false;
@@ -173,21 +184,37 @@ Template.postit.events({
   'click button.save': function (event, template) {
     var body = template.find(".body").value;
     if (body.length) {
-      Meteor.call('createPost', {
-        body: body,
-	tags: template.find(".tags").value.split(/\W+/),
-	parent: Session.get('reply_id')
-      }, function (error, post) {
-        if (error) {
-	  Session.set("createError", error.reason);
-	} else {
-	  Session.set("createError", null);
-	  Session.set('showPostit', false);
-        }
-      });
+      switch (Session.get('postit_mode')) {
+      case "reply":
+	Meteor.call('createPost', {
+          body: body,
+	  tags: template.find(".tags").value.split(/\W+/),
+	  parent: Session.get('postit_id')
+	}, function (error, post) {
+          if (error) {
+	    Session.set("createError", error.reason);
+	  } else {
+	    Session.set("createError", null);
+	    Session.set('showPostit', false);
+          }
+	});
+	break;
+      case "edit":
+	Meteor.call('editPost', {
+          body: body,
+	  post_id: Session.get('postit_id')
+	}, function (error, post) {
+          if (error) {
+	    Session.set("createError", error.reason);
+	  } else {
+	    Session.set("createError", null);
+	    Session.set('showPostit', false);
+          }
+	});
+	break;
+      }
     } else {
-      Session.set("createError",
-                  "It needs a body, or why bother?");
+      Session.set("createError", "It needs a body, or why bother?");
     }
   }
 });
@@ -205,5 +232,5 @@ Template.postit.tags = function () {
 };
 
 Template.postit.body = function () {
-  return '';
+  return Session.get("postit_body");
 };
