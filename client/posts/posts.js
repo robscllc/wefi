@@ -34,7 +34,7 @@ Template.post.post = function() {
   return post;
 };
 
-Template.comments.tree = function() {
+Template.post.tree = function() {
   var pid = Session.get("post_id");
   var post = Posts.findOne(Session.get("post_id"));
   //Pagination.currentPage(Session.get('page'));

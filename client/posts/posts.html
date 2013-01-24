@@ -1,7 +1,11 @@
 
 <template name="post">
   {{#if post}}
-  {{> comments}}
+  <div>            
+    {{#each tree}}
+    {{> postLayout }}
+    {{/each}}
+  </div>
   {{/if}}
 </template>
 
@@ -52,14 +56,6 @@
     </span>
     <br/>
     <br/>
-  </div>
-</template>
-
-<template name="comments">
-  <div>            
-    {{#each tree}}
-    {{> postLayout }}
-    {{/each}}
   </div>
 </template>
 
