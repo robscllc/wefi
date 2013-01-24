@@ -16,24 +16,27 @@
       <a href="" class="user">{{postuser}}</a>
       <abbr class="timeago" title="{{posted}}">{{timestamp}}</abbr> 
       {{#if parent}}
-      <a href="#{{parent}}" class="btn btn-mini">goto parent</a>
+      <a href="#{{parent}}">parent</a>
       {{/if}}
       {{#if isDifferentPost}}
       {{#if isRoot}}
       {{#if commentCount}}
-      <a href="/post/{{_id}}">view {{commentCount}} replies</a>
+      <a href="/post/{{_id}}">{{commentCount}} replies</a>
       {{/if}}
       {{else}}
       {{#if hasChildren}}
-      <a href="/post/{{_id}}" class="btn btn-mini">view sub-thread</a>
+      <a href="/post/{{_id}}">sub-thread</a>
       {{/if}}
       {{/if}}
       {{/if}}
+      score: 
       {{#if currentUser}}
-      <a href="#" class="reply btn btn-mini" data-toggle="button">reply</a>
       <a href="#" class="up"><i class="icon-thumbs-up{{#if myVoteIs "up"}} icon-filled{{/if}}" /></a>
+      {{/if}}
       {{score}}
+      {{#if currentUser}}
       <a href="#" class="down"><i class="icon-thumbs-down{{#if myVoteIs "down"}} icon-filled{{/if}}" /></a>
+      <button class="reply btn btn-mini" data-toggle="button">reply</button>
       {{#if inEditWindow}}
       <button type="button" class="edit btn btn-mini" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
       {{/if}}

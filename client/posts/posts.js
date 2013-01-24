@@ -239,7 +239,7 @@ Template.postit.events({
     if($(event.target).hasClass('active')) {
       $('#myTab a[href="#home"]').tab('show');
     } else {
-      $('#profile').css('height', $('#home').outerHeight()+10);
+      $('#profile').css('height', $('#home').outerHeight());
       $('#myTab a[href="#profile"]').tab('show');
       $(template.find('.preview')).html(md_converter.makeHtml(template.find(".body").value));
     }      
