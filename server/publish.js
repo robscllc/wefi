@@ -83,7 +83,8 @@ Meteor.methods({
       slug: null,
       full_slug: null,
       tags: options.tags,
-      votes: []
+      votes: [],
+      score: 0
     });
 
     var root = post;
@@ -156,31 +157,39 @@ Meteor.methods({
       if (vote.votes[0].vote == 1) {
 	if (options.vote == 'up') {
 	  Posts.update({_id: post._id, 'votes.owner': this.userId},
-		       { $pull: { votes: { owner: this.userId, vote: 1 } } });
+		       { $inc: { score: -1 },
+			 $pull: { votes: { owner: this.userId, vote: 1 } } });
 	} else {
 	  Posts.update({_id: post._id, 'votes.owner': this.userId},
-		       { $set: { 'votes.$.vote': -1 } });
+		       { $inc: { score: -2 },
+			 $set: { 'votes.$.vote': -1 } });
 	}
       } else if (vote.votes[0].vote == -1) {
 	if (options.vote == 'up') {
 	  Posts.update({_id: post._id, 'votes.owner': this.userId},
-		       { $set: { 'votes.$.vote': 1 } });
+		       { $inc: { score: 2 },
+			 $set: { 'votes.$.vote': 1 } });
 	} else {
 	  Posts.update({_id: post._id, 'votes.owner': this.userId},
-		       { $pull: { votes: { owner: this.userId, vote: -1 } } });
+		       { $inc: { score: 1 },
+			 $pull: { votes: { owner: this.userId, vote: -1 } } });
 	}
 	
       } else {
 	if (options.vote == 'up') {
 	  Posts.update({_id: post._id, 'votes.owner': this.userId},
-		       { $set: { 'votes.$.vote': 1 } });
+		       { $inc: { score: 1 },
+			 $set: { 'votes.$.vote': 1 } });
 	} else {
 	  Posts.update({_id: post._id, 'votes.owner': this.userId},
-		       { $set: { 'votes.$.vote': -1 } });
+		       { $inc: { score: -1 },
+			 $set: { 'votes.$.vote': -1 } });
 	}
       }
     } else {
-      Posts.update(post, { $addToSet: { votes: { owner: this.userId, vote: options.vote == 'up' ? 1 : -1 } } })
+      var val = options.vote == 'up' ? 1 : -1;
+      Posts.update(post, { $inc: { score: val },
+			   $addToSet: { votes: { owner: this.userId, vote: val } } })
     }
   },
   removeThread: function(options) {

@@ -161,6 +161,21 @@ Template.postLayout.inEditWindow = function () {
   return false;
 };
 
+Template.postLayout.myVoteIs = function (val) {
+  // no elemMatch in client :(
+  // votes: { $elemMatch: { owner: Meteor.userId() } }
+  var post = Posts.findOne({_id: this._id},
+			   { fields: { votes: 1 } });
+  if (post) {
+    var vote = _.find(post.votes, function(vote) {
+      return vote.owner == Meteor.userId();
+    });
+    if (vote)
+      return (vote.vote == 1 ? 'up' : 'down') == val;
+  }
+  return undefined;
+};
+
 Template.postLayout.editTimeRemaining = function () {
   return Math.floor(300 - ((new Date()).getTime() - (new Date(this.posted)).getTime()) / 1000);
 };

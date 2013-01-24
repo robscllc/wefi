@@ -21,3 +21,7 @@ div.depth16 { margin-left: 16em; }
 div.depth17 { margin-left: 17em; }
 div.depth18 { margin-left: 18em; }
 div.depth19 { margin-left: 19em; }
+
+.icon-filled {
+  background-image: url("/images/css/filled_thumbs.png");
+}
