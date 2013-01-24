@@ -36,9 +36,10 @@ Template.post.post = function() {
 
 Template.comments.tree = function() {
   var pid = Session.get("post_id");
+  var post = Posts.findOne(Session.get("post_id"));
   //Pagination.currentPage(Session.get('page'));
   //return Pagination.collection(Posts.find({ $and: [ {root: pid } ] }, { sort: { full_slug: 1 } }).fetch());
-  return Posts.find({ $and: [ {root: pid } ] }, { sort: { full_slug: 1 } });
+  return Posts.find({ $and: [ {root: post.root, slug: {$regex: post.slug } } ] }, { sort: { full_slug: 1 } });
 };
 
 Pagination.perPage(20);
