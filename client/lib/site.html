@@ -1,5 +1,5 @@
 <head>
-  <title>Weekday Filler</title>
+  <title>WeekdayFiller</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -15,23 +15,21 @@
   <div class="navbar navbar-fixed-top">  
     <div class="navbar-inner">  
       <div class="container-fluid">
-	<a class="brand" href="/">Weekday Filler</a>
 	<ul class="nav">
-	  <li><button class="post btn btn-link" data-toggle="button">New Post</button></li>
-	  <li class="{{activePage "/tag/wbir/meta"}}"><a href="/tag/wbir/meta">About</a></li>
-	  <li class="{{activePage "/tag/wbir/feature"}}"><a href="/tag/wbir/feature">Feature Requests</a></li>
-	  <li class="{{activePage "/tag/wbir/bug"}}"><a href="/tag/wbir/bug">Bug Reports</a></li>
 	  <li>
 	    <div class="btn-group">
-	      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-		More tags
+	      <a class="btn-mini dropdown-toggle brand" data-toggle="dropdown" href="#">
+		<em>WeekdayFiller</em>
 		<span class="caret"></span>
 	      </a>
 	      <ul class="dropdown-menu">
-		<!-- dropdown menu links -->
+		<li class="{{activePage "/tag/wefi/meta"}}"><a href="/tag/wefi/meta">About</a></li>
+		<li class="{{activePage "/tag/wefi/feature"}}"><a href="/tag/wefi/feature">Feature Requests</a></li>
+		<li class="{{activePage "/tag/wefi/bug"}}"><a href="/tag/wefi/bug">Bug Reports</a></li>
 	      </ul>
 	    </div>
 	  </li>
+	  <li><button class="post btn btn-link" data-toggle="button">New Post</button></li>
 	</ul>
         <ul class="nav pull-right">
 	  <li><a>{{loginButtons align="right"}}</a></li>

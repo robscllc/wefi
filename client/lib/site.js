@@ -10,6 +10,7 @@ Meteor.Router.add({
     Session.set('postit_id', null);
     Session.set('page', 1);
     Session.set('postit_tags', 'fpp');
+    Session.set('page_tags', 'fpp');
     return 'home';
   }
 });

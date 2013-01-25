@@ -26,6 +26,7 @@ Meteor.Router.add({
   ,"/tag/*": function(tag) {
     Session.set('path', this.canonicalPath);
     Session.set("postit_tags", (_.isString(tag) ? tag.split('/') : []).join(' '));
+    Session.set("page_tags", (_.isString(tag) ? tag.split('/') : []).join(' '));
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', 1);
@@ -51,7 +52,7 @@ Pagination.style('bootstrap');
 
 Template.postlist.list = function() {
   Pagination.currentPage(Session.get('page'));
-  var tags = Session.get("postit_tags").split(' ');
+  var tags = Session.get("page_tags").split(' ');
   var cons = { parent: null };
   if (tags.length > 1) {
     cons['$and'] = _.map(tags, function(tag){ return { tags: tag } });

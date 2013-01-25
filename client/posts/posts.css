@@ -1,7 +1,3 @@
-p {
-    margin: 0px;
-}
-
 div.depth1 { margin-left: 1em; }
 div.depth2 { margin-left: 2em; }
 div.depth3 { margin-left: 3em; }
@@ -32,11 +28,15 @@ div.post {
     margin-bottom: 1em;
 }
 
+div.post p {
+    margin: 0px;
+}
+
 div.post span.footer {
     font-size: .8em;
 }
 
 .affix {
     position: fixed;
-    top: 10px;
+    top: 60px;
 }
