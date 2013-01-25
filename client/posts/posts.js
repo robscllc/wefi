@@ -46,7 +46,7 @@ Template.post.tree = function() {
   return Posts.find({ $and: [ {root: post.root, slug: {$regex: post.slug } } ] }, { sort: { full_slug: 1 } });
 };
 
-Pagination.perPage(4);
+Pagination.perPage(20);
 Pagination.style('bootstrap');
 
 var split_tags = function() { 

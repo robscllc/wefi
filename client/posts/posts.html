@@ -18,7 +18,15 @@
     <span class="footer">
       posted by
       <a href="" class="user">{{postuser}}</a>
-      <abbr class="timeago" title="{{posted}}">{{timestamp}}</abbr> 
+      <abbr class="timeago" title="{{posted}}">{{timestamp}}</abbr>  
+      with a +/- of 
+      {{#if currentUser}}
+      <a href="#" class="up"><i class="icon-thumbs-up{{#if myVoteIs "up"}} icon-filled{{/if}}" /></a>
+      {{/if}}
+      {{score}}
+      {{#if currentUser}}
+      <a href="#" class="down"><i class="icon-thumbs-down{{#if myVoteIs "down"}} icon-filled{{/if}}" /></a>
+      {{/if}}
       {{#if parent}}
       <a href="#{{parent}}">parent</a>
       {{/if}}
@@ -33,13 +41,7 @@
       {{/if}}
       {{/if}}
       {{/if}}
-      score: 
       {{#if currentUser}}
-      <a href="#" class="up"><i class="icon-thumbs-up{{#if myVoteIs "up"}} icon-filled{{/if}}" /></a>
-      {{/if}}
-      {{score}}
-      {{#if currentUser}}
-      <a href="#" class="down"><i class="icon-thumbs-down{{#if myVoteIs "down"}} icon-filled{{/if}}" /></a>
       <button class="reply btn btn-mini" data-toggle="button">reply</button>
       {{#if inEditWindow}}
       <button type="button" class="edit btn btn-mini" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
