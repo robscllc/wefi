@@ -25,10 +25,10 @@ Meteor.Router.add({
   }
   ,"/tag/*": function(tag) {
     Session.set('path', this.canonicalPath);
+    Session.set("postit_tags", (_.isString(tag) ? tag.split('/') : []).join(' '));
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', 1);
-    Session.set('tag', tag);
     return 'home';
   }
 });
@@ -49,16 +49,9 @@ Template.post.tree = function() {
 Pagination.perPage(20);
 Pagination.style('bootstrap');
 
-var split_tags = function() { 
-  var tags = Session.get("tag");
-  if ( _.isString(tags) )
-    return tags.split('/');
-  return [];
-};
-
 Template.postlist.list = function() {
   Pagination.currentPage(Session.get('page'));
-  var tags = split_tags();
+  var tags = Session.get("postit_tags").split(' ');
   var cons = { parent: null };
   if (tags.length > 1) {
     cons['$and'] = _.map(tags, function(tag){ return { tags: tag } });
@@ -97,6 +90,7 @@ Template.postLayout.events({
       Session.set('postit_id', template.data._id);
       Session.set('postit_mode', 'reply');
       Session.set("postit_body", undefined);
+      Session.set("postit_tags", undefined);
       postit_target = $(template.find(".reply"));
       Session.set('showPostit', true);
       Session.set('createError', null);
@@ -109,6 +103,7 @@ Template.postLayout.events({
       Session.set('postit_id', template.data._id);
       Session.set('postit_mode', 'edit');
       Session.set("postit_body", template.data.body);
+      Session.set("postit_tags", template.data.tags.join(' '));
       postit_target = $(template.find(".edit"));
       Session.set('showPostit', true);
       Session.set('createError', null);
@@ -271,7 +266,7 @@ Template.postit.events({
       case "reply":
 	Meteor.call('createPost', {
           body: body,
-	  tags: template.find(".tags").value.split(/\W+/),
+	  tags: template.find(".tags").value,
 	  parent: Session.get('postit_id')
 	}, function (error, post) {
           if (error) {
@@ -285,6 +280,7 @@ Template.postit.events({
       case "edit":
 	Meteor.call('editPost', {
           body: body,
+	  tags: template.find(".tags").value,
 	  post_id: Session.get('postit_id')
 	}, function (error, post) {
           if (error) {
@@ -311,7 +307,7 @@ Template.postit.error = function () {
 };
 
 Template.postit.tags = function () {
-  return split_tags().join(' ');
+  return Session.get("postit_tags");
 };
 
 Template.postit.body = function () {

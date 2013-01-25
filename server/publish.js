@@ -72,6 +72,7 @@ Meteor.methods({
     if (par && par.state == 'closed')
       throw new Meteor.Error(403, "Parent post is closed");
 
+    var tags = options.tags.split(/\W+/);
     var now = new Date();
     var post = Posts.insert({
       owner: this.userId,
@@ -82,7 +83,7 @@ Meteor.methods({
       parent: options.parent,
       slug: null,
       full_slug: null,
-      tags: options.tags,
+      tags: tags,
       votes: [],
       score: 0
     });
@@ -126,6 +127,7 @@ Meteor.methods({
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in");
 
+    var tags = options.tags.split(/\W+/);
     var post = Posts.findOne(options.post_id);
     if (! post)
       throw new Meteor.Error(404, "No such post");
@@ -137,6 +139,7 @@ Meteor.methods({
       throw new Meteor.Error(404, "Not in edit window");
       
     Posts.update(post, { $set: { body: options.body,
+				 tags: tags,
 				 body_rendered: md_converter.makeHtml(options.body) } });
   },
   voteForPost: function (options) {
