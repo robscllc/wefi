@@ -27,9 +27,7 @@ Meteor.Router.add({
 });
 
 WeFi.query_func = {
-  post_constraints: function() {
-    Pagination.currentPage(Session.get('page'));
-    var tags = Session.get("page_tags").split(' ');
+  post_constraints: function(tags) {
     var cons = { parent: null };
     if (tags.length > 1) {
       cons['$and'] = _.map(tags, function(tag){ return { tags: tag } });
@@ -55,13 +53,15 @@ Pagination.perPage(20);
 Pagination.style('bootstrap');
 
 Template.postlist.list = function() {
-  var pc = WeFi.query_func.post_constraints();
+  var pc = WeFi.query_func.post_constraints(Session.get("page_tags").split(' '));
+  Pagination.currentPage(Session.get('page'));
   return Pagination.collection(Posts.find(pc[0], pc[1]).fetch());
 };
 
 Template.postlist.pagination = function () {
-  var pc = WeFi.query_func.post_constraints();
+  var pc = WeFi.query_func.post_constraints(Session.get("page_tags").split(' '));
   var count = Posts.find(pc[0], pc[1]).count();
+  Pagination.currentPage(Session.get('page'));
   if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
     return Pagination.links('/tag/' + Session.get('page_tags').split(' ').join('-'), count);
 }
