@@ -1,11 +1,18 @@
 
 <template name="post">
   {{#if post}}
-  <div>            
-    {{#each tree}}
-    {{> postLayout }}
-    {{/each}}
+  {{#with post}}
+  <div class="row-fluid">
+    <div class="span9">            
+      {{#each tree}}
+      {{> postLayout }}
+      {{/each}}
+    </div>
+    <div class="span3">
+      {{tags}}
+    </div>
   </div>
+  {{/with}}
   {{/if}}
 </template>
 

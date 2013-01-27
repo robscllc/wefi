@@ -39,8 +39,7 @@ WeFi.query_func = {
 };
 
 Template.post.post = function() {
-  var post = Posts.findOne(Session.get("post_id"));
-  return post;
+  return Posts.findOne(Session.get("post_id"));
 };
 
 Template.post.tree = function() {
