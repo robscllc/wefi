@@ -9,11 +9,19 @@
       {{/each}}
     </div>
     <div class="span3">
-      {{tags}}
+      {{> tags}}
     </div>
   </div>
   {{/with}}
   {{/if}}
+</template>
+
+<template name="tags">
+  <ul>
+    {{#each tags}}
+    <li><a href="/tag/{{this}}">{{this}}</a></li>
+    {{/each}}
+  </ul>
 </template>
 
 <template name="postLayout">
@@ -74,6 +82,9 @@
       {{/each}}
     </div>
     <div class="span3">
+      <div class="pagination">
+	{{{pagination}}}
+      </div>
       <div>
 
 	<p>
@@ -106,9 +117,6 @@
 	  about</a> <em>WeFi</em>.
 	</p>
 
-	<div class="pagination">
-	  {{{pagination}}}
-	</div>
 	<form>
 	</form>
       </div>
