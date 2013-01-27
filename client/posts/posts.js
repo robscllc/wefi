@@ -1,36 +1,44 @@
 Meteor.subscribe("posts");
 
-Meteor.Router.add({
-  "/page/:page": function(page) {
-    Session.set('path', this.canonicalPath);
-    Session.set('page', page);
-    Session.set('postit_id', null);
-    return 'home';
-  },
-  "/post/:id": function(id) {
-    Session.set('path', this.canonicalPath);
-    Session.set('post_id', id);
-    Session.set('postit_id', null);
-    Session.set('page', 1);
-    return 'post';
-  },
-  "/post/:id/:page": function(id, page) {
-    Session.set('path', this.canonicalPath);
-    Session.set('post_id', id);
-    Session.set('postit_id', null);
-    Session.set('page', page);
-    return 'post';
-  }
-  ,"/tag/:tag": function(tag) {
+WeFi.router_func = {
+  tag: function(tag, page) {
     Session.set('path', this.canonicalPath);
     Session.set("postit_tags", (_.isString(tag) ? tag.split('-') : []).join(' '));
     Session.set("page_tags", (_.isString(tag) ? tag.split('-') : []).join(' '));
     Session.set('post_id', null);
     Session.set('postit_id', null);
-    Session.set('page', 1);
+    Session.set('page', page || 1);
     return 'home';
+  },
+  post: function(id, page) {
+    Session.set('path', this.canonicalPath);
+    Session.set('post_id', id);
+    Session.set('postit_id', null);
+    Session.set('page', page || 1);
+    return 'post';
   }
+};
+
+Meteor.Router.add({
+  "/post/:id": WeFi.router_func.post
+  ,"/post/:id/:page": WeFi.router_func.post
+  ,"/tag/:tag": WeFi.router_func.tag
+  ,"/tag/:tag/:page": WeFi.router_func.tag
 });
+
+WeFi.query_func = {
+  post_constraints: function() {
+    Pagination.currentPage(Session.get('page'));
+    var tags = Session.get("page_tags").split(' ');
+    var cons = { parent: null };
+    if (tags.length > 1) {
+      cons['$and'] = _.map(tags, function(tag){ return { tags: tag } });
+    } else {
+      cons.tags = tags[0];
+    }
+    return [cons, { sort: { posted: -1 } } ];
+  }
+};
 
 Template.post.post = function() {
   var post = Posts.findOne(Session.get("post_id"));
@@ -40,8 +48,6 @@ Template.post.post = function() {
 Template.post.tree = function() {
   var pid = Session.get("post_id");
   var post = Posts.findOne(Session.get("post_id"));
-  //Pagination.currentPage(Session.get('page'));
-  //return Pagination.collection(Posts.find({ $and: [ {root: pid } ] }, { sort: { full_slug: 1 } }).fetch());
   return Posts.find({ $and: [ {root: post.root, slug: {$regex: post.slug } } ] }, { sort: { full_slug: 1 } });
 };
 
@@ -49,23 +55,15 @@ Pagination.perPage(20);
 Pagination.style('bootstrap');
 
 Template.postlist.list = function() {
-  Pagination.currentPage(Session.get('page'));
-  var tags = Session.get("page_tags").split(' ');
-  var cons = { parent: null };
-  if (tags.length > 1) {
-    cons['$and'] = _.map(tags, function(tag){ return { tags: tag } });
-  } else {
-    cons.tags = tags[0];
-  }
-  return Pagination.collection(Posts.find(cons, { sort: { posted: -1 } }).fetch());
+  var pc = WeFi.query_func.post_constraints();
+  return Pagination.collection(Posts.find(pc[0], pc[1]).fetch());
 };
 
 Template.postlist.pagination = function () {
-  Pagination.currentPage(Session.get('page'));
-  // Pagination.links(prependRoute, cursorCount, options);
-  var count = Posts.find({ parent: null }, { sort: { posted: -1 } }).count();
+  var pc = WeFi.query_func.post_constraints();
+  var count = Posts.find(pc[0], pc[1]).count();
   if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
-    return Pagination.links('/page', count);
+    return Pagination.links('/tag/' + Session.get('page_tags').split(' ').join('-'), count);
 }
 
 Template.postlist.rendered = function () {
