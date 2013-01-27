@@ -23,10 +23,10 @@ Meteor.Router.add({
     Session.set('page', page);
     return 'post';
   }
-  ,"/tag/*": function(tag) {
+  ,"/tag/:tag": function(tag) {
     Session.set('path', this.canonicalPath);
-    Session.set("postit_tags", (_.isString(tag) ? tag.split('/') : []).join(' '));
-    Session.set("page_tags", (_.isString(tag) ? tag.split('/') : []).join(' '));
+    Session.set("postit_tags", (_.isString(tag) ? tag.split('-') : []).join(' '));
+    Session.set("page_tags", (_.isString(tag) ? tag.split('-') : []).join(' '));
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', 1);
