@@ -203,6 +203,8 @@ Template.postLayout.rendered = function() {
 	if (count < 0) {
 	  edit.hide();
 	  clearInterval(countdown);
+	} else {
+	  edit.show();
 	}
 	count--;
       }, 1000);
