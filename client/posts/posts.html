@@ -28,6 +28,9 @@
   <div class="post depth{{depth}}">
     <a name="{{_id}}" />
     <div class="postbody">
+      <span class="tags pull-right">
+	{{> tags }}
+      </span>
       {{postbody}}
     </div>
     <span class="footer">
@@ -82,9 +85,7 @@
       {{/each}}
     </div>
     <div class="span3">
-      <div class="pagination">
-	{{{pagination}}}
-      </div>
+      {{{pagination}}}
       <div>
 
 	<p>
