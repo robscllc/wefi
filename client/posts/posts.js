@@ -1,5 +1,3 @@
-var postit_target;
-
 Meteor.subscribe("posts");
 
 Meteor.Router.add({
@@ -92,7 +90,7 @@ Template.postLayout.events({
       Session.set('postit_mode', 'reply');
       Session.set("postit_body", undefined);
       Session.set("postit_tags", undefined);
-      postit_target = $(template.find(".reply"));
+      WeFi.postit_target = $(template.find(".reply"));
       Session.set('showPostit', true);
       Session.set('createError', null);
     }
@@ -105,7 +103,7 @@ Template.postLayout.events({
       Session.set('postit_mode', 'edit');
       Session.set("postit_body", template.data.body);
       Session.set("postit_tags", template.data.tags.join(' '));
-      postit_target = $(template.find(".edit"));
+      WeFi.postit_target = $(template.find(".edit"));
       Session.set('showPostit', true);
       Session.set('createError', null);
     }
@@ -240,7 +238,7 @@ Template.postit.rendered = function() {
   $("#postit").position({
     my: "center top",
     at: "center bottom",
-    of: postit_target,
+    of: WeFi.postit_target,
     collision: "fit none"
   });
   $("#postit").scrollintoview();
@@ -254,7 +252,7 @@ Template.postit.events({
     } else {
       $('#profile').css('height', $('#home').outerHeight());
       $('#myTab a[href="#profile"]').tab('show');
-      $(template.find('.preview')).html(md_converter.makeHtml(template.find(".body").value));
+      $(template.find('.preview')).html(WeFi.md_converter.makeHtml(template.find(".body").value));
     }      
   },
   'click button.cancel': function () {

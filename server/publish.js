@@ -1,5 +1,3 @@
-var md_converter;
-
 Meteor.publish('currentUser', function() {
   return Meteor.users.find(this.userId);
 });
@@ -21,7 +19,7 @@ Meteor.startup(function() {
   var require = __meteor_bootstrap__.require;
   var path = require('path');
   var base = path.resolve('.');
-  md_converter = require(base + "/client/thirdparty/pagedown/Markdown.Sanitizer").getSanitizingConverter();
+  WeFi.md_converter = require(base + "/client/thirdparty/pagedown/Markdown.Sanitizer").getSanitizingConverter();
 
   Posts.allow({
     insert: function (userId, post) {
@@ -77,7 +75,7 @@ Meteor.methods({
     var post = Posts.insert({
       owner: this.userId,
       body: options.body,
-      body_rendered: md_converter.makeHtml(options.body),
+      body_rendered: WeFi.md_converter.makeHtml(options.body),
       posted: now,
       state: 'active',
       parent: options.parent,
@@ -140,7 +138,7 @@ Meteor.methods({
       
     Posts.update(post, { $set: { body: options.body,
 				 tags: tags,
-				 body_rendered: md_converter.makeHtml(options.body) } });
+				 body_rendered: WeFi.md_converter.makeHtml(options.body) } });
   },
   voteForPost: function (options) {
     options = options || {};
