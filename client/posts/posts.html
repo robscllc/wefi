@@ -19,12 +19,14 @@
 <template name="tags">
   <ul class="tags inline">
     {{#each tags}}
+    {{#if this}}
     <li>
       <div class="input-append pull-right">
 	<button class="btn btn-mini btn-link" href="/tag/{{this}}">{{this}}</button>
 	<button class="close btn btn-mini" >&times;</button>
       </div>
     </li>
+    {{/if}}
     {{/each}}
   </ul>
 </template>
@@ -42,7 +44,7 @@
       posted by
       <a href="" class="user">{{postuser}}</a>
       <abbr class="timeago" title="{{posted}}">{{timestamp}}</abbr>  
-      with a +/- of 
+      with a score of 
       {{#if currentUser}}
       <a href="#" class="up"><i class="icon-thumbs-up{{#if myVoteIs "up"}} icon-filled{{/if}}" /></a>
       {{/if}}
@@ -155,8 +157,10 @@
 	</div>
       </div>
       <div class="row-fluid">
-	<div class="span12">
-	  <label>Tags</label>
+	<div class="span1">
+	  <label class="pull-right">Tags</label>
+	</div>
+	<div class="span11">
 	  <input type="text" class="tags span12" value="{{tags}}"/>
 	</div>
       </div>
