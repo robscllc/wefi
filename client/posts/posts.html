@@ -9,7 +9,7 @@
       {{/each}}
     </div>
     <div class="span3">
-      {{> tags}}
+      {{> about }}
     </div>
   </div>
   {{/with}}
@@ -84,6 +84,41 @@
   </div>
 </template>
 
+<template name="about">
+  <div>
+    
+    <p>
+      <em>Weekday Filler</em> is a weblog heavily
+      influenced by <a href="http://metafilter.com">MetaFilter</a> with a dash
+      of <a href="http://reddit.com">reddit</a>.
+    </p>
+
+    <p>
+      Why bother? It's an attempt
+      by <a href="/users/fred">fred</a> to learn
+      the <a href="http://meteor.com">Meteor framework</a>.
+      <em>Weekday Filler</em> updates in real-time,
+      without page
+      refreshes. It's <a href="http://www.meteor.com/screencast">magic</a>.
+    </p>
+    
+    <p>This project was also inspired by the
+      recent <a href="http://metatalk.metafilter.com/22319/MeFi-is-adding-titles">clusterfuck
+	over at MeFi</a> that erupted following the rollout of a
+      seemingly innocuous feature. <em>Weekday Filler</em>
+      aims to be fully open and responsive in its development.
+    </p>
+    
+    <p>
+      Please <a href="/tag/wefi-feature">suggest
+	features</a>, <a href="/tag/wefi-bug">report bugs</a>,
+      or <a href="/tag/wefi-meta">read more
+	about</a> <em>WeFi</em>.
+    </p>
+    
+  </div>
+</template>
+
 <template name="postlist">
   <div class="row-fluid">
     <div class="span9">
@@ -93,41 +128,7 @@
     </div>
     <div class="span3">
       {{{pagination}}}
-      <div>
-
-	<p>
-	  <em>Weekday Filler</em> is a weblog heavily
-	  influenced by <a href="http://metafilter.com
-	  ">MetaFilter</a> with a dash
-	  of <a href="http://reddit.com">reddit</a>.
-	</p>
-
-	<p>
-	  Why bother? It's an attempt
-	  by <a href="/users/fred">fred</a> to learn
-	  the <a href="http://meteor.com">Meteor framework</a>.
-	  <em>Weekday Filler</em> updates in real-time,
-	  without page
-	  refreshes. It's <a href="http://www.meteor.com/screencast">magic</a>.
-	</p>
-
-	<p>This project was also inspired by the
-	  recent <a href="http://metatalk.metafilter.com/22319/MeFi-is-adding-titles">clusterfuck
-	    over at MeFi</a> that erupted following the rollout of a
-	  seemingly innocuous feature. <em>Weekday Filler</em>
-	  aims to be fully open and responsive in its development.
-	</p>
-
-	<p>
-	  Please <a href="/tag/wefi-feature">suggest
-	  features</a>, <a href="/tag/wefi-bug">report bugs</a>,
-	  or <a href="/tag/wefi-meta">read more
-	  about</a> <em>WeFi</em>.
-	</p>
-
-	<form>
-	</form>
-      </div>
+      {{> about }}
     </div>
   </div>
 </template>
