@@ -40,3 +40,17 @@ div.post span.footer {
     position: fixed;
     top: 60px;
 }
+
+ul.inline {
+    margin-left: 0;
+    list-style: none;
+}
+
+ul.inline li {
+    display: inline;
+}
+
+ul.tags button.close {
+    margin-right: 1em;
+}
+

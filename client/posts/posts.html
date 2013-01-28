@@ -17,9 +17,14 @@
 </template>
 
 <template name="tags">
-  <ul>
+  <ul class="tags inline">
     {{#each tags}}
-    <li><a href="/tag/{{this}}">{{this}}</a></li>
+    <li>
+      <div class="input-append pull-right">
+	<button class="btn btn-mini btn-link" href="/tag/{{this}}">{{this}}</button>
+	<button class="close btn btn-mini" >&times;</button>
+      </div>
+    </li>
     {{/each}}
   </ul>
 </template>
@@ -28,9 +33,9 @@
   <div class="post depth{{depth}}">
     <a name="{{_id}}" />
     <div class="postbody">
-      <span class="tags pull-right">
+      <div class="pull-right">
 	{{> tags }}
-      </span>
+      </div>
       {{postbody}}
     </div>
     <span class="footer">
