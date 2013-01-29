@@ -18,8 +18,11 @@ Meteor.startup(function() {
 
   var require = __meteor_bootstrap__.require;
   var path = require('path');
+  var fs = require('fs');
   var base = path.resolve('.');
-  WeFi.md_converter = require(base + "/public/thirdparty/pagedown/Markdown.Sanitizer").getSanitizingConverter();
+  var isProd = fs.existsSync(base + '/static');
+
+  WeFi.md_converter = require(base + (isProd ? "/static" : "/public") + "/thirdparty/pagedown/Markdown.Sanitizer").getSanitizingConverter();
 
   Posts.allow({
     insert: function (userId, post) {
