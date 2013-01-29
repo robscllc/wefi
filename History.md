@@ -1,3 +1,7 @@
+## v0.1.4
+
+* shared node module bugfix on server
+
 ## v0.1.3
 
 * added shell script to deploy from tagged git
