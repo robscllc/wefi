@@ -58,7 +58,7 @@ Meteor.methods({
     if (! (typeof options.body === "string" &&
            options.body.length ))
       throw new Meteor.Error(400, "Required parameter missing");
-    if (options.body.length > 1000)
+    if (options.body.length > 100000)
       throw new Meteor.Error(413, "Body too long");
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in");
