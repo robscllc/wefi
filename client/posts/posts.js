@@ -50,7 +50,7 @@ Template.post.post = function() {
 Template.post.tree = function() {
   var pid = Session.get("post_id");
   var post = Posts.findOne(Session.get("post_id"));
-  return Posts.find({ $and: [ {root: post.root, slug: {$regex: post.slug } } ] }, { sort: { full_slug: 1 } });
+  return Posts.find({ $and: [ {root: post.root, slug: {$regex: post.slug } } ] }, { sort: { date_slug: 1 } });
 };
 
 Pagination.perPage(20);

@@ -83,7 +83,7 @@ Meteor.methods({
       state: 'active',
       parent: options.parent,
       slug: null,
-      full_slug: null,
+      date_slug: null,
       tags: tags,
       votes: [],
       score: 0
@@ -92,16 +92,16 @@ Meteor.methods({
     var root = post;
     var depth = 0;
     var slug = Math.floor(Math.random()*1679616).toString(36);
-    var full_slug = now.toJSON().replace(/[\D]/g, '') + ':' + slug;
+    var date_slug = now.toJSON().replace(/[\D]/g, '') + ':' + slug;
     if (par) {
       root = par.root;
       depth = par.depth + 1;
       slug = [par.slug, slug].join('/')
-      full_slug = [par.full_slug, full_slug].join('/')
+      date_slug = [par.date_slug, date_slug].join('/')
     }
 
     Posts.update(post, { $set: { 'root': root, 'depth': depth, 
-				 'slug': slug, 'full_slug': full_slug } });
+				 'slug': slug, 'date_slug': date_slug } });
     return post;
   },
   setPostState: function(options) {
