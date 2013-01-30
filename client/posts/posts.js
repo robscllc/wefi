@@ -32,6 +32,10 @@ Meteor.Router.add({
   ,"/post/:id/:slug": WeFi.router_func.post
   ,"/tag/:tag": WeFi.router_func.tag
   ,"/tag/:tag/:page": WeFi.router_func.tag
+  ,"/tag": function() {
+    Session.set("routed_template", "all_tags");
+    return Session.get("routed_template");
+  }
 });
 
 _.extend(WeFi.query_func, {
@@ -371,3 +375,7 @@ Template.postit.body = function () {
 Template.about.events({
   'click button.post': function(e, t) { return WeFi.root_post_popup(e, t) }
 });
+
+Template.all_tags.tags = function() {
+  return Session.get('all_tags');
+};
