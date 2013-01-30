@@ -54,6 +54,20 @@ Meteor.startup(function() {
   });
 });
 
+WeFi.max_posts = 1679616;
+WeFi.max_score = 2176782336;
+
+WeFi.encodeScoreSlug = function(n) {
+  return WeFi.zfill(Math.floor(n + WeFi.max_score*.5).toString(36), 6);
+};
+
+WeFi.zfill = function (number, size) {
+  number = number.toString();
+  while (number.length < size) number = "0" + number;
+      return number;
+};
+
+
 Meteor.methods({
   // options should include: title, description, x, y, public
   createPost: function (options) {
@@ -84,6 +98,7 @@ Meteor.methods({
       parent: options.parent,
       slug: null,
       date_slug: null,
+      score_slug: null,
       tags: tags,
       votes: [],
       score: 0
@@ -91,17 +106,20 @@ Meteor.methods({
 
     var root = post;
     var depth = 0;
-    var slug = Math.floor(Math.random()*1679616).toString(36);
+    var slug = WeFi.zfill(Math.floor(Math.random()*WeFi.max_posts).toString(36), 4);
     var date_slug = now.toJSON().replace(/[\D]/g, '') + ':' + slug;
+    var score_slug = WeFi.encodeScoreSlug(0) + ':' + slug;
     if (par) {
       root = par.root;
       depth = par.depth + 1;
       slug = [par.slug, slug].join('/')
       date_slug = [par.date_slug, date_slug].join('/')
+      score_slug = [par.score_slug, score_slug].join('/')
     }
 
     Posts.update(post, { $set: { 'root': root, 'depth': depth, 
-				 'slug': slug, 'date_slug': date_slug } });
+				 'slug': slug, 'date_slug': date_slug, 
+				 'score_slug': score_slug } });
     return post;
   },
   setPostState: function(options) {
@@ -195,6 +213,16 @@ Meteor.methods({
       Posts.update(post, { $inc: { score: val },
 			   $addToSet: { votes: { owner: this.userId, vote: val } } })
     }
+    
+    post = Posts.findOne(post._id);
+    var mys = post.score_slug.split('/').pop();
+    var arr = mys.split(':');
+    var new_slug = [WeFi.encodeScoreSlug(0-post.score), arr[1]].join(':');
+    var cursor = Posts.find({ root: post.root, score_slug: {$regex: mys }});
+    cursor.forEach( function(p) {
+      var new_full = p.score_slug;
+      Posts.update(p, { $set: { score_slug: new_full.replace(mys, new_slug) } });
+    });
   },
   removeThread: function(options) {
     options = options || {};

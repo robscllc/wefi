@@ -9,6 +9,7 @@ Meteor.Router.add({
     Session.set('page', 1);
     Session.set('postit_tags', 'fpp');
     Session.set('page_tags', 'fpp');
+    Session.set("tag-dir", "desc");
     return 'home';
   }
 });
@@ -32,6 +33,15 @@ Template.navbar.events({
     } else {
       Session.set('hideClosed', true);
     }
+  },
+  'click .sort .btn': function (event, template) {
+    Session.set('tag-sort', $(event.target).text());
+  },
+  'click .dir .btn': function (event, template) {
+    Session.set('tag-dir', $(event.target).text());
+  },
+  'click .thread .btn': function (event, template) {
+    Session.set('post-thread', $(event.target).text());
   }
 });
 
@@ -41,6 +51,9 @@ Template.navbar.helpers({
   },
   isActive: function (key) {
     return Session.equals(key, true) ? "active" : "";
+  },
+  maybe: function (key, val) {
+    return Session.equals(key, val) ? "active" : "";
   }
 });
 
@@ -49,8 +62,8 @@ Handlebars.registerHelper('canEdit', function (obj, prop) {
   return owner._id === Meteor.userId();
 });;
 
-
 Meteor.startup(function() {
   WeFi.md_converter = new Markdown.getSanitizingConverter();
-  $(".navbar .brand .anim").delay(1000).fadeOut(1000, 'easeInBack', function() { $(this).html('&nbsp;blog&nbsp;').fadeIn(1000, 'easeInBack') });
+  Session.set("tag-sort", "date");
+  Session.set("post-thread", "thread");
 });

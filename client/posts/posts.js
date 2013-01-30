@@ -8,6 +8,7 @@ WeFi.router_func = {
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', page || 1);
+    Session.set("tag-dir", "desc");
     return 'home';
   },
   post: function(id, page) {
@@ -15,6 +16,7 @@ WeFi.router_func = {
     Session.set('post_id', id);
     Session.set('postit_id', null);
     Session.set('page', page || 1);
+    Session.set("tag-dir", "asc");
     return 'post';
   }
 };
@@ -39,7 +41,14 @@ WeFi.query_func = {
 
     if (Session.get('hideClosed'))
       cons.state = { $ne: "closed" };
-    return [cons, { sort: { posted: -1 } } ];
+
+    var sorter = [['posted', Session.get('tag-dir')]];
+    switch (Session.get('tag-sort')) {
+    case "score":
+      sorter.unshift(['score', Session.get('tag-dir')]);
+      break;
+    }
+    return [cons, { sort: sorter } ];
   }
 };
 
@@ -50,7 +59,13 @@ Template.post.post = function() {
 Template.post.tree = function() {
   var pid = Session.get("post_id");
   var post = Posts.findOne(Session.get("post_id"));
-  return Posts.find({ $and: [ {root: post.root, slug: {$regex: post.slug } } ] }, { sort: { date_slug: 1 } });
+  var sorter = [[Session.equals("post-thread", "thread") ? 'date_slug' : 'posted', Session.get('tag-dir')]];
+  switch (Session.get('tag-sort')) {
+  case "score":
+    sorter.unshift([Session.equals("post-thread", "thread") ?'score_slug' : 'score', Session.get('tag-dir')]);
+    break;
+  }
+  return Posts.find({ $and: [ {root: post.root, slug: {$regex: post.slug } } ] }, { sort: sorter });
 };
 
 Pagination.perPage(20);
@@ -167,6 +182,10 @@ Template.postLayout.isDifferentPost = function() {
 
 Template.postLayout.commentCount = function () {
   return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
+};
+
+Template.postLayout.depthIfThreaded = function() {
+  return Session.equals("post-thread", "inline") ? 0 : this.depth;
 };
 
 Template.postLayout.hasChildren = function () {
