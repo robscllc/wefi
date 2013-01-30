@@ -25,12 +25,22 @@ Template.navbar.events({
       Session.set('showPostit', true);
       Session.set('createError', null);
     }
+  },
+  'click button.hide-closed': function (event, template) {
+    if($(event.target).hasClass('active')) {
+      Session.set('hideClosed', false);
+    } else {
+      Session.set('hideClosed', true);
+    }
   }
 });
 
 Template.navbar.helpers({
   activePage: function (page) {
     return Session.equals("path", page) ? "active" : "";
+  },
+  isActive: function (key) {
+    return Session.equals(key, true) ? "active" : "";
   }
 });
 
