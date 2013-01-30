@@ -34,6 +34,12 @@ Template.navbar.helpers({
   }
 });
 
+Handlebars.registerHelper('canEdit', function (obj, prop) {
+  var owner = Meteor.users.findOne(obj[prop]);
+  return owner._id === Meteor.userId();
+});;
+
+
 Meteor.startup(function() {
   WeFi.md_converter = new Markdown.getSanitizingConverter();
   $(".navbar .brand .anim").delay(1000).fadeOut(1000, 'easeInBack', function() { $(this).html('&nbsp;blog&nbsp;').fadeIn(1000, 'easeInBack') });

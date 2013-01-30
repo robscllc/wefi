@@ -143,7 +143,12 @@ Template.postLayout.events({
     });
     return false;
   }
+});
 
+Template.tags.events({
+  'click button.tag': function (event, template) {
+    Meteor.Router.to('/tag/' + this);
+    return false;
 });
 
 Template.postLayout.isRoot = function() {

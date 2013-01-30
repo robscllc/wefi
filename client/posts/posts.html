@@ -22,8 +22,10 @@
     {{#if this}}
     <li>
       <div class="input-append pull-right">
-	<button class="btn btn-mini btn-link" href="/tag/{{this}}">{{this}}</button>
+	<button class="tag btn btn-mini btn-link" href="/tag/{{this}}">{{this}}</button>
+	{{#if canEdit ../.. "owner"}}
 	<button class="close btn btn-mini" >&times;</button>
+	{{/if}}
       </div>
     </li>
     {{/if}}
@@ -41,7 +43,7 @@
 	<button type="button" class="edit btn btn-mini hide" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
 	{{/if}}
 	{{/if}}
-	{{> tags }}
+	{{> tags}}
       </div>
       {{postbody}}
     </div>
