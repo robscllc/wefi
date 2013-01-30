@@ -235,6 +235,10 @@ Template.postLayout.maybeState = function (what) {
   return what == this.state ? "active" : "";
 };
 
+Template.postLayout.isActive = function () {
+  return this.state == "active";
+};
+
 Template.postit.rendered = function() {
   $("#postit").show();
   $("#postit").css({
