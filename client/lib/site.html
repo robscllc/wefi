@@ -18,7 +18,7 @@
 	<ul class="nav">
 	  <li>
 	    <div class="btn-group">
-	      <a class="btn btn-Link dropdown-toggle" data-toggle="dropdown" href="/">
+	      <a class="btn btn-link dropdown-toggle" data-toggle="dropdown" href="/">
 		<em>Weekday Filler</em>
 		<span class="caret"></span>
 	      </a>
@@ -30,7 +30,22 @@
 	      </ul>
 	    </div>
 	  </li>
-	  <li><button class="post btn btn-link" data-toggle="button">New Post</button></li>
+	  <li><button class="post btn btn-mini btn-link" data-toggle="button">New Post</button></li>
+	  <li>
+	    <div class="btn-group sort" data-toggle="buttons-radio">
+	      <button type="button" class="btn btn-mini {{maybe "tag-sort" "date"}}">date</button>
+	      <button type="button" class="btn btn-mini {{maybe "tag-sort" "score"}}">score</button>
+	    </div>
+	    <div class="btn-group dir" data-toggle="buttons-radio">
+	      <button type="button" class="btn btn-mini {{maybe "tag-dir" "asc"}}">asc</button>
+	      <button type="button" class="btn btn-mini {{maybe "tag-dir" "desc"}}">desc</button>
+	    </div>
+	    <div class="btn-group thread" data-toggle="buttons-radio">
+	      <button type="button" class="btn btn-mini {{maybe "post-thread" "thread"}}">thread</button>
+	      <button type="button" class="btn btn-mini {{maybe "post-thread" "inline"}}">inline</button>
+	    </div>
+	  </li>
+	  <li><button class="hide-closed btn btn-mini btn-link {{isActive "hideClosed"}}" data-toggle="button">Hide Closed</button></li>
 	</ul>
         <ul class="nav pull-right">
 	  <li><a>{{loginButtons align="right"}}</a></li>

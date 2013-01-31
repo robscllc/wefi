@@ -22,8 +22,10 @@
     {{#if this}}
     <li>
       <div class="input-append pull-right">
-	<button class="btn btn-mini btn-link" href="/tag/{{this}}">{{this}}</button>
+	<button class="tag btn btn-mini btn-link" href="/tag/{{this}}">{{this}}</button>
+	{{#if canEdit ../.. "owner"}}
 	<button class="close btn btn-mini" >&times;</button>
+	{{/if}}
       </div>
     </li>
     {{/if}}
@@ -32,11 +34,16 @@
 </template>
 
 <template name="postLayout">
-  <div class="post depth{{depth}}">
+  <div class="post depth{{depthIfThreaded}}">
     <a name="{{_id}}" />
     <div class="postbody">
       <div class="pull-right">
-	{{> tags }}
+	{{#if currentUser}}
+	{{#if inEditWindow}}
+	<button type="button" class="edit btn btn-mini hide" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
+	{{/if}}
+	{{/if}}
+	{{> tags}}
       </div>
       {{postbody}}
     </div>
@@ -67,9 +74,8 @@
       {{/if}}
       {{/if}}
       {{#if currentUser}}
+      {{#if isActive}}
       <button class="reply btn btn-mini btn-link" data-toggle="button">reply</button>
-      {{#if inEditWindow}}
-      <button type="button" class="edit btn btn-mini hide" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
       {{/if}}
       {{/if}}
       {{#if currentUser.is_admin}}

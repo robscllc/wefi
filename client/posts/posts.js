@@ -8,6 +8,7 @@ WeFi.router_func = {
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', page || 1);
+    Session.set("tag-dir", "desc");
     return 'home';
   },
   post: function(id, page) {
@@ -15,6 +16,7 @@ WeFi.router_func = {
     Session.set('post_id', id);
     Session.set('postit_id', null);
     Session.set('page', page || 1);
+    Session.set("tag-dir", "asc");
     return 'post';
   }
 };
@@ -27,14 +29,26 @@ Meteor.Router.add({
 });
 
 WeFi.query_func = {
-  post_constraints: function(tags) {
+  post_constraints: function() {
     var cons = { parent: null };
+
+    var tags = Session.get("page_tags").split(' ');
     if (tags.length > 1) {
       cons['$and'] = _.map(tags, function(tag){ return { tags: tag } });
     } else {
       cons.tags = tags[0];
     }
-    return [cons, { sort: { posted: -1 } } ];
+
+    if (Session.get('hideClosed'))
+      cons.state = { $ne: "closed" };
+
+    var sorter = [['posted', Session.get('tag-dir')]];
+    switch (Session.get('tag-sort')) {
+    case "score":
+      sorter.unshift(['score', Session.get('tag-dir')]);
+      break;
+    }
+    return [cons, { sort: sorter } ];
   }
 };
 
@@ -45,20 +59,26 @@ Template.post.post = function() {
 Template.post.tree = function() {
   var pid = Session.get("post_id");
   var post = Posts.findOne(Session.get("post_id"));
-  return Posts.find({ $and: [ {root: post.root, slug: {$regex: post.slug } } ] }, { sort: { full_slug: 1 } });
+  var sorter = [[Session.equals("post-thread", "thread") ? 'date_slug' : 'posted', Session.get('tag-dir')]];
+  switch (Session.get('tag-sort')) {
+  case "score":
+    sorter.unshift([Session.equals("post-thread", "thread") ?'score_slug' : 'score', Session.get('tag-dir')]);
+    break;
+  }
+  return Posts.find({ $and: [ {root: post.root, slug: {$regex: post.slug } } ] }, { sort: sorter });
 };
 
 Pagination.perPage(20);
 Pagination.style('bootstrap');
 
 Template.postlist.list = function() {
-  var pc = WeFi.query_func.post_constraints(Session.get("page_tags").split(' '));
+  var pc = WeFi.query_func.post_constraints();
   Pagination.currentPage(Session.get('page'));
   return Pagination.collection(Posts.find(pc[0], pc[1]).fetch());
 };
 
 Template.postlist.pagination = function () {
-  var pc = WeFi.query_func.post_constraints(Session.get("page_tags").split(' '));
+  var pc = WeFi.query_func.post_constraints();
   var count = Posts.find(pc[0], pc[1]).count();
   Pagination.currentPage(Session.get('page'));
   if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
@@ -143,7 +163,13 @@ Template.postLayout.events({
     });
     return false;
   }
+});
 
+Template.tags.events({
+  'click button.tag': function (event, template) {
+    Meteor.Router.to('/tag/' + this);
+    return false;
+  }
 });
 
 Template.postLayout.isRoot = function() {
@@ -156,6 +182,10 @@ Template.postLayout.isDifferentPost = function() {
 
 Template.postLayout.commentCount = function () {
   return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
+};
+
+Template.postLayout.depthIfThreaded = function() {
+  return Session.equals("post-thread", "inline") ? 0 : this.depth;
 };
 
 Template.postLayout.hasChildren = function () {
@@ -227,6 +257,10 @@ Template.postLayout.timestamp = function () {
 
 Template.postLayout.maybeState = function (what) {
   return what == this.state ? "active" : "";
+};
+
+Template.postLayout.isActive = function () {
+  return this.state == "active";
 };
 
 Template.postit.rendered = function() {
