@@ -11,3 +11,20 @@ body {
 ul.dropdown-menu li.active a {
     background: #f0f0f0;
 }
+
+h1 {
+    font-size: 1.3em;
+}
+
+h2 {
+    font-size: 1.15em;
+}
+
+h3 {
+    font-size: 1em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.3em;
+    margin: .2em 0;
+}
