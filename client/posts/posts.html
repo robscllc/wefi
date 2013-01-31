@@ -34,8 +34,7 @@
 </template>
 
 <template name="postLayout">
-  <div class="post depth{{depthIfThreaded}}">
-    <a name="{{_id}}" />
+  <div class="post depth{{depthIfThreaded}} {{_id}}">
     <div class="postbody">
       <div class="pull-right">
 	{{#if currentUser}}
@@ -60,7 +59,7 @@
       <a href="#" class="down"><i class="icon-thumbs-down{{#if myVoteIs "down"}} icon-filled{{/if}}" /></a>
       {{/if}}
       {{#if parent}}
-      <a href="#{{parent}}">parent</a>
+      <a href="?{{parent}}">parent</a>
       {{/if}}
       {{#if isDifferentPost}}
       {{#if isRoot}}
