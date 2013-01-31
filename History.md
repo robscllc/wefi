@@ -6,7 +6,7 @@
 * renamed full_slug to date_slug
 * added "Hide Closed" button
 * only showing reply button if thread is active
-* only post owner can see a tag's delete butto
+* only post owner can see a tag's delete button
 * moved edit window button to top right of post
 
 ## v0.1.4
