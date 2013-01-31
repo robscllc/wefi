@@ -61,15 +61,7 @@ WeFi.encodeScoreSlug = function(n) {
   return WeFi.zfill(Math.floor(n + WeFi.max_score*.5).toString(36), 6);
 };
 
-WeFi.zfill = function (number, size) {
-  number = number.toString();
-  while (number.length < size) number = "0" + number;
-      return number;
-};
-
-
 Meteor.methods({
-  // options should include: title, description, x, y, public
   createPost: function (options) {
     options = options || {};
     if (! (typeof options.body === "string" &&

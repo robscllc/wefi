@@ -234,7 +234,7 @@ Template.postLayout.rendered = function() {
     $(function(){
       var count = rem.text();
       var countdown = setInterval(function(){
-	rem.text(' for ' + count + ' more seconds');
+	rem.text(' for ' + Math.floor(count/60) + ':' + WeFi.zfill(Math.floor(count%60),2));
 	if (count < 0) {
 	  edit.hide();
 	  clearInterval(countdown);

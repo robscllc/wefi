@@ -37,11 +37,6 @@
   <div class="post depth{{depthIfThreaded}} {{_id}}">
     <div class="postbody">
       <div class="pull-right">
-	{{#if currentUser}}
-	{{#if inEditWindow}}
-	<button type="button" class="edit btn btn-mini hide" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
-	{{/if}}
-	{{/if}}
 	{{> tags}}
       </div>
       {{postbody}}
@@ -75,6 +70,9 @@
       {{#if currentUser}}
       {{#if isActive}}
       <button class="reply btn btn-mini btn-link" data-toggle="button">reply</button>
+      {{/if}}
+      {{#if inEditWindow}}
+      <button type="button" class="edit btn btn-mini hide" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
       {{/if}}
       {{/if}}
       {{#if currentUser.is_admin}}
