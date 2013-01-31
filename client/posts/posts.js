@@ -9,15 +9,23 @@ WeFi.router_func = {
     Session.set('postit_id', null);
     Session.set('page', page || 1);
     Session.set("tag-dir", "desc");
-    return 'home';
+    Session.set("routed_template", "home");
+    return Session.get("routed_template");
   },
   post: function(id, page) {
     Session.set('path', this.canonicalPath);
+    if (this.querystring) {
+      var target = this.querystring;
+      Meteor.defer(function() {
+	$("div." + target).scrollintoview({ topPadding: 60 });
+      });
+    }
     Session.set('post_id', id);
     Session.set('postit_id', null);
     Session.set('page', page || 1);
     Session.set("tag-dir", "asc");
-    return 'post';
+    Session.set("routed_template", "post");
+    return Session.get("routed_template");
   }
 };
 
@@ -274,7 +282,7 @@ Template.postit.rendered = function() {
     of: WeFi.postit_target,
     collision: "fit none"
   });
-  $("#postit").scrollintoview();
+  $("#postit").scrollintoview({ topPadding: 60 });
   $("#postit textarea.body").focus();
 };
 
@@ -306,6 +314,10 @@ Template.postit.events({
 	  } else {
 	    Session.set("createError", null);
 	    Session.set('showPostit', false);
+	    if ( Session.get("routed_template") == "home" ) {
+	      var p = Posts.findOne(post);
+	      Meteor.Router.to("/post/" + p.root + "?" + p._id);
+	    }
           }
 	});
 	break;
