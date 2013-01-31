@@ -202,7 +202,7 @@ Template.postLayout.hasChildren = function () {
 
 Template.postLayout.inEditWindow = function () {
   var owner = Meteor.users.findOne(this.owner);
-  if (owner._id === Meteor.userId())
+  if (owner && owner._id === Meteor.userId())
     return ((new Date()).getTime() - (new Date(this.posted)).getTime()) < 300000;
   return false;
 };
@@ -253,10 +253,8 @@ Template.postLayout.postbody = function () {
 };
 
 Template.postLayout.postuser = function () {
-  var owner = Meteor.users.findOne(this.owner);
-//  if (owner._id === Meteor.userId())
-//    return "me";
-  return displayName(owner);
+  var user = Meteor.users.findOne(this.owner);
+  return user && user.username ? user.username : null;
 };
 
 Template.postLayout.timestamp = function () {
