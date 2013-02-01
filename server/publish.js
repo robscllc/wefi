@@ -61,6 +61,15 @@ WeFi.encodeScoreSlug = function(n) {
   return WeFi.zfill(Math.floor(n + WeFi.max_score*.5).toString(36), 6);
 };
 
+WeFi.extend_body = function (o) {
+  var html = WeFi.md_converter.makeHtml(o.body);
+  var extend = { body_rendered: html, title: null };
+  var title = html.match(/<(h\d)>([\s\S]*?)<\/\1>/i);
+  if (title)
+    extend.title = String(title[2]).replace(/<\/?[^>]+>/g, '');
+  return _.extend( o, extend );
+};
+
 Meteor.methods({
   createPost: function (options) {
     options = options || {};
@@ -81,10 +90,10 @@ Meteor.methods({
 
     var tags = options.tags.split(/\W+/);
     var now = new Date();
-    var post = Posts.insert({
+
+    var post = Posts.insert(WeFi.extend_body({
       owner: this.userId,
       body: options.body,
-      body_rendered: WeFi.md_converter.makeHtml(options.body),
       posted: now,
       state: 'active',
       parent: options.parent,
@@ -94,7 +103,7 @@ Meteor.methods({
       tags: tags,
       votes: [],
       score: 0
-    });
+    }));
 
     var root = post;
     var depth = 0;
@@ -149,9 +158,7 @@ Meteor.methods({
     if (((new Date()).getTime() - (new Date(post.posted)).getTime()) > 300000)
       throw new Meteor.Error(404, "Not in edit window");
       
-    Posts.update(post, { $set: { body: options.body,
-				 tags: tags,
-				 body_rendered: WeFi.md_converter.makeHtml(options.body) } });
+    Posts.update(post, { $set: WeFi.extend_body({ body: options.body, tags: tags }) });
   },
   voteForPost: function (options) {
     options = options || {};

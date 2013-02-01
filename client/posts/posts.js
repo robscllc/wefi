@@ -227,7 +227,14 @@ Template.postLayout.editTimeRemaining = function () {
 };
 
 Template.postLayout.rendered = function() {
-  $("abbr.timeago").timeago();
+  $(this.find("abbr.timeago")).timeago();
+  $(this.find("div.fullbody")).expander({
+    expandEffect: 'show',
+    expandSpeed: 0,
+    collapseEffect: 'hide',
+    collapseSpeed: 0
+    ,slicePoint: 1000 
+  });
   var rem = $(this.find('span.remaining'));
   var edit = $(this.find('button.edit'));
   if (rem) {
