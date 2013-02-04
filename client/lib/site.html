@@ -30,7 +30,9 @@
 	      </ul>
 	    </div>
 	  </li>
+	  {{#if currentUser}}
 	  <li><button class="post btn btn-mini btn-link" data-toggle="button">New Post</button></li>
+	  {{/if}}
 	  <li>
 	    <div class="btn-group sort" data-toggle="buttons-radio">
 	      <button type="button" class="btn btn-mini {{maybe "tag-sort" "date"}}">date</button>

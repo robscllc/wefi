@@ -14,12 +14,6 @@ WeFi.router_func = {
   },
   post: function(id, slug) {
     Session.set('path', this.canonicalPath);
-    if (this.querystring) {
-      var target = this.querystring;
-      Meteor.defer(function() {
-	$("div." + target).scrollintoview({ topPadding: 60 });
-      });
-    }
     Session.set('post_id', id);
     Session.set('postit_id', null);
     Session.set("tag-dir", "asc");
@@ -169,6 +163,9 @@ Template.postLayout.events({
       }
     });
     return false;
+  },
+  'click .parent': function (event, template) {
+    $("div." + template.data.parent).scrollintoview({ topPadding: 60 });
   }
 });
 
@@ -179,24 +176,25 @@ Template.tags.events({
   }
 });
 
-Template.postLayout.isRoot = function() {
-  return this._id === this.root;
-};
-
-Template.postLayout.isDifferentPost = function() {
-  return this._id !== Session.get('post_id')
+Template.postLayout.showReplyCount = function() {
+  return Session.equals("routed_template", "home" )
 };
 
 Template.postLayout.commentCount = function () {
   return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
 };
 
-Template.postLayout.depthIfThreaded = function() {
-  return Session.equals("post-thread", "inline") ? 0 : this.depth;
+Template.postLayout.showSubThread = function() {
+  if (Session.equals("routed_template", "post" ) && this._id !== Session.get("post_id")) {
+    var child = Posts.findOne({parent: this._id });
+    if (child)
+      return true;
+  }
+  return false;
 };
 
-Template.postLayout.hasChildren = function () {
-  return Posts.find({ $and: [ {parent: this._id } ] }).count() > 0;
+Template.postLayout.depthIfThreaded = function() {
+  return Session.equals("post-thread", "inline") ? 0 : this.depth;
 };
 
 Template.postLayout.inEditWindow = function () {

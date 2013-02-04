@@ -58,18 +58,11 @@
       {{#if currentUser}}
       <a href="#" class="down"><i class="icon-thumbs-down{{#if myVoteIs "down"}} icon-filled{{/if}}" /></a>
       {{/if}}
-      {{#if parent}}
-      <a href="?{{parent}}">parent</a>
+
+      {{#if showReplyCount}}
+      <a href="/post/{{_id}}/{{url_slug}}">read {{commentCount}} replies</a>
       {{/if}}
-      {{#if isDifferentPost}}
-      {{#if isRoot}}
-      <a href="/post/{{_id}}">{{commentCount}} replies</a>
-      {{else}}
-      {{#if hasChildren}}
-      <a href="/post/{{_id}}">sub-thread</a>
-      {{/if}}
-      {{/if}}
-      {{/if}}
+
       {{#if currentUser}}
       {{#if isActive}}
       <button class="reply btn btn-mini btn-link" data-toggle="button">reply</button>
@@ -78,6 +71,15 @@
       <button type="button" class="edit btn btn-mini hide" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
       {{/if}}
       {{/if}}
+
+      {{#if parent}}
+      <button class="parent btn btn-mini btn-link">parent</button>
+      {{/if}}
+      
+      {{#if showSubThread}}
+      <a class="btn btn-mini btn-link" href="/post/{{_id}}/{{url_slug}}">sub-thread</a>
+      {{/if}}
+
       {{#if currentUser.is_admin}}
       <div class="btn-group state" data-toggle="buttons-radio">
 	<button type="button" class="btn btn-mini btn-link {{maybeState "active"}}">active</button>
