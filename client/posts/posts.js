@@ -12,7 +12,7 @@ WeFi.router_func = {
     Session.set("routed_template", "home");
     return Session.get("routed_template");
   },
-  post: function(id, page) {
+  post: function(id, slug) {
     Session.set('path', this.canonicalPath);
     if (this.querystring) {
       var target = this.querystring;
@@ -22,7 +22,6 @@ WeFi.router_func = {
     }
     Session.set('post_id', id);
     Session.set('postit_id', null);
-    Session.set('page', page || 1);
     Session.set("tag-dir", "asc");
     Session.set("routed_template", "post");
     return Session.get("routed_template");
@@ -31,7 +30,7 @@ WeFi.router_func = {
 
 Meteor.Router.add({
   "/post/:id": WeFi.router_func.post
-  ,"/post/:id/:page": WeFi.router_func.post
+  ,"/post/:id/:slug": WeFi.router_func.post
   ,"/tag/:tag": WeFi.router_func.tag
   ,"/tag/:tag/:page": WeFi.router_func.tag
 });
@@ -227,7 +226,14 @@ Template.postLayout.editTimeRemaining = function () {
 };
 
 Template.postLayout.rendered = function() {
-  $("abbr.timeago").timeago();
+  $(this.find("abbr.timeago")).timeago();
+  $(this.find("div.fullbody")).expander({
+    expandEffect: 'show',
+    expandSpeed: 0,
+    collapseEffect: 'hide',
+    collapseSpeed: 0
+    ,slicePoint: 1000 
+  });
   var rem = $(this.find('span.remaining'));
   var edit = $(this.find('button.edit'));
   if (rem) {

@@ -39,9 +39,14 @@
       <div class="pull-right">
 	{{> tags}}
       </div>
-      {{postbody}}
+      <div class="fullbody">
+	{{postbody}}
+      </div>
     </div>
     <span class="footer">
+      {{#if title}}
+      <a href="/post/{{_id}}/{{url_slug}}">{{title}}</a>
+      {{/if}}
       posted by
       <a href="" class="user">{{postuser}}</a>
       <abbr class="timeago" title="{{posted}}">{{timestamp}}</abbr>  
@@ -58,9 +63,7 @@
       {{/if}}
       {{#if isDifferentPost}}
       {{#if isRoot}}
-      {{#if commentCount}}
       <a href="/post/{{_id}}">{{commentCount}} replies</a>
-      {{/if}}
       {{else}}
       {{#if hasChildren}}
       <a href="/post/{{_id}}">sub-thread</a>
