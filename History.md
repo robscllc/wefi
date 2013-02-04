@@ -1,3 +1,22 @@
+## v0.1.6
+
+* img tags not allowed in posts
+* made header tags smaller
+* using scrollintoview to jump into and around post threads
+  * added topPadding option to scrollintoview
+* added routed_template to Session
+* moved edit button back into footer & shortened button copy
+* lightened footer text
+* user table changes
+  * not publishing email anymore
+  * not using displayName anymore
+* added title field to posts, determined by first header (h1, h2, etc)
+* show first 1000 characters of rendered post by default,
+  "read more" jquery link for rest (using jquery.expander.js)
+* added url_slug to posts
+* cleaned up parent & sub-thread buttons
+  * parent link is now a button, not refreshing the page, just scrolling
+
 ## v0.1.5
 
 * added sort buttons to nav bar
