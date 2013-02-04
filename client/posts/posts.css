@@ -34,6 +34,11 @@ div.post p {
 
 div.post span.footer {
     font-size: .8em;
+    color: #999;
+}
+
+div.post hr {
+    margin: .3em 0;
 }
 
 .affix {

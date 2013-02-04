@@ -9,21 +9,22 @@ WeFi.router_func = {
     Session.set('postit_id', null);
     Session.set('page', page || 1);
     Session.set("tag-dir", "desc");
-    return 'home';
+    Session.set("routed_template", "home");
+    return Session.get("routed_template");
   },
-  post: function(id, page) {
+  post: function(id, slug) {
     Session.set('path', this.canonicalPath);
     Session.set('post_id', id);
     Session.set('postit_id', null);
-    Session.set('page', page || 1);
     Session.set("tag-dir", "asc");
-    return 'post';
+    Session.set("routed_template", "post");
+    return Session.get("routed_template");
   }
 };
 
 Meteor.Router.add({
   "/post/:id": WeFi.router_func.post
-  ,"/post/:id/:page": WeFi.router_func.post
+  ,"/post/:id/:slug": WeFi.router_func.post
   ,"/tag/:tag": WeFi.router_func.tag
   ,"/tag/:tag/:page": WeFi.router_func.tag
 });
@@ -162,6 +163,9 @@ Template.postLayout.events({
       }
     });
     return false;
+  },
+  'click .parent': function (event, template) {
+    $("div." + template.data.parent).scrollintoview({ topPadding: 60 });
   }
 });
 
@@ -172,29 +176,30 @@ Template.tags.events({
   }
 });
 
-Template.postLayout.isRoot = function() {
-  return this._id === this.root;
-};
-
-Template.postLayout.isDifferentPost = function() {
-  return this._id !== Session.get('post_id')
+Template.postLayout.showReplyCount = function() {
+  return Session.equals("routed_template", "home" )
 };
 
 Template.postLayout.commentCount = function () {
   return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
 };
 
+Template.postLayout.showSubThread = function() {
+  if (Session.equals("routed_template", "post" ) && this._id !== Session.get("post_id")) {
+    var child = Posts.findOne({parent: this._id });
+    if (child)
+      return true;
+  }
+  return false;
+};
+
 Template.postLayout.depthIfThreaded = function() {
   return Session.equals("post-thread", "inline") ? 0 : this.depth;
 };
 
-Template.postLayout.hasChildren = function () {
-  return Posts.find({ $and: [ {parent: this._id } ] }).count() > 0;
-};
-
 Template.postLayout.inEditWindow = function () {
   var owner = Meteor.users.findOne(this.owner);
-  if (owner._id === Meteor.userId())
+  if (owner && owner._id === Meteor.userId())
     return ((new Date()).getTime() - (new Date(this.posted)).getTime()) < 300000;
   return false;
 };
@@ -219,14 +224,21 @@ Template.postLayout.editTimeRemaining = function () {
 };
 
 Template.postLayout.rendered = function() {
-  $("abbr.timeago").timeago();
+  $(this.find("abbr.timeago")).timeago();
+  $(this.find("div.fullbody")).expander({
+    expandEffect: 'show',
+    expandSpeed: 0,
+    collapseEffect: 'hide',
+    collapseSpeed: 0
+    ,slicePoint: 1000 
+  });
   var rem = $(this.find('span.remaining'));
   var edit = $(this.find('button.edit'));
   if (rem) {
     $(function(){
       var count = rem.text();
       var countdown = setInterval(function(){
-	rem.text(' for ' + count + ' more seconds');
+	rem.text(' for ' + Math.floor(count/60) + ':' + WeFi.zfill(Math.floor(count%60),2));
 	if (count < 0) {
 	  edit.hide();
 	  clearInterval(countdown);
@@ -245,10 +257,8 @@ Template.postLayout.postbody = function () {
 };
 
 Template.postLayout.postuser = function () {
-  var owner = Meteor.users.findOne(this.owner);
-//  if (owner._id === Meteor.userId())
-//    return "me";
-  return displayName(owner);
+  var user = Meteor.users.findOne(this.owner);
+  return user && user.username ? user.username : null;
 };
 
 Template.postLayout.timestamp = function () {
@@ -274,7 +284,7 @@ Template.postit.rendered = function() {
     of: WeFi.postit_target,
     collision: "fit none"
   });
-  $("#postit").scrollintoview();
+  $("#postit").scrollintoview({ topPadding: 60 });
   $("#postit textarea.body").focus();
 };
 
@@ -306,6 +316,10 @@ Template.postit.events({
 	  } else {
 	    Session.set("createError", null);
 	    Session.set('showPostit', false);
+	    if ( Session.get("routed_template") == "home" ) {
+	      var p = Posts.findOne(post);
+	      Meteor.Router.to("/post/" + p.root + "?" + p._id);
+	    }
           }
 	});
 	break;

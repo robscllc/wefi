@@ -83,6 +83,8 @@
 			options = $.extend({}, settings, options);
 			options.direction = converter[typeof (options.direction) === "string" && options.direction.toLowerCase()] || converter.both;
 
+		  options.topPadding = options.topPadding || 0;
+
 			var dirStr = "";
 			if (options.direction.x === true) dirStr = "horizontal";
 			if (options.direction.y === true) dirStr = dirStr ? "both" : "vertical";
@@ -101,7 +103,7 @@
 				};
 
 				var rel = {
-					top: dim.e.rect.top - (dim.s.rect.top + dim.s.border.top),
+					top: dim.e.rect.top - options.topPadding - (dim.s.rect.top + dim.s.border.top),
 					bottom: dim.s.rect.bottom - dim.s.border.bottom - dim.s.scrollbar.bottom - dim.e.rect.bottom,
 					left: dim.e.rect.left - (dim.s.rect.left + dim.s.border.left),
 					right: dim.s.rect.right - dim.s.border.right - dim.s.scrollbar.right - dim.e.rect.right

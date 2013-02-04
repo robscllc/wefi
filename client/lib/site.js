@@ -10,7 +10,8 @@ Meteor.Router.add({
     Session.set('postit_tags', 'fpp');
     Session.set('page_tags', 'fpp');
     Session.set("tag-dir", "desc");
-    return 'home';
+    Session.set("routed_template", "home");
+    return Session.get("routed_template");
   }
 });
 
