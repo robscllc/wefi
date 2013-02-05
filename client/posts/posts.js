@@ -14,6 +14,12 @@ WeFi.router_func = {
   },
   post: function(id, slug) {
     Session.set('path', this.canonicalPath);
+    if (_.isString(slug) && slug.match(/^[0-9a-f\-]+$/)) {
+      Meteor.defer(function() {
+	$("div." + slug).scrollintoview({ topPadding: 60 });
+      });
+    }
+ 
     Session.set('post_id', id);
     Session.set('postit_id', null);
     Session.set("tag-dir", "asc");
@@ -326,7 +332,10 @@ Template.postit.events({
 	    Session.set('showPostit', false);
 	    if ( Session.get("routed_template") == "home" ) {
 	      var p = Posts.findOne(post);
-	      Meteor.Router.to("/post/" + p.root + "?" + p._id);
+	      if (p.root == p._id)
+		Meteor.Router.to("/post/" + p.root);
+	      else
+		Meteor.Router.to("/post/" + p.root + "/" + p._id);
 	    }
           }
 	});
