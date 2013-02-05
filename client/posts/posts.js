@@ -206,6 +206,12 @@ Template.postLayout.inEditWindow = function () {
   return false;
 };
 
+Template.postLayout.abbrTitle = function () {
+  var shorten = 40;
+  var sub = this.title.substr(0, shorten);
+  return new Handlebars.SafeString(sub + (sub.length < this.title.length ? ' &hellip;' : ''));
+};
+
 Template.postLayout.myVoteIs = function (val) {
   // no elemMatch in client :(
   // votes: { $elemMatch: { owner: Meteor.userId() } }
