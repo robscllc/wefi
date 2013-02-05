@@ -50,6 +50,19 @@ WeFi.query_func = {
       break;
     }
     return [cons, { sort: sorter } ];
+  },
+  edit_callback: function (event, template) {
+    if($(event.target).hasClass('active')) {
+      Session.set('showPostit', false);
+    } else {
+      Session.set('postit_id', template.data._id);
+      Session.set('postit_mode', 'edit');
+      Session.set("postit_body", template.data.body);
+      Session.set("postit_tags", template.data.tags.join(' '));
+      WeFi.postit_target = $(event.target);
+      Session.set('showPostit', true);
+      Session.set('createError', null);
+    }
   }
 };
 
@@ -113,19 +126,8 @@ Template.postLayout.events({
       Session.set('createError', null);
     }
   },
-  'click .edit': function (event, template) {
-    if($(event.target).hasClass('active')) {
-      Session.set('showPostit', false);
-    } else {
-      Session.set('postit_id', template.data._id);
-      Session.set('postit_mode', 'edit');
-      Session.set("postit_body", template.data.body);
-      Session.set("postit_tags", template.data.tags.join(' '));
-      WeFi.postit_target = $(template.find(".edit"));
-      Session.set('showPostit', true);
-      Session.set('createError', null);
-    }
-  },
+  'click .edit': WeFi.query_func.edit_callback,
+  'click .admin-edit': WeFi.query_func.edit_callback,
   'click .remove': function () {
     Meteor.call('removeThread', {
       post_id: this._id
