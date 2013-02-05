@@ -48,7 +48,7 @@
       <a href="/post/{{_id}}/{{url_slug}}">{{abbrTitle}}</a>
       {{/if}}
       posted by
-      <a href="" class="user">{{postuser}}</a>
+      <a href="/directory/{{postuser}}/history" class="user">{{postuser}}</a>
       <abbr class="timeago" title="{{posted}}">{{timestamp}}</abbr>  
       with a score of 
       {{#if currentUser}}
@@ -104,7 +104,7 @@
 
     <p>
       Why bother? It's an attempt
-      by <a href="/users/fred">fred</a> to learn
+      by <a href="/directory/fred/history">fred</a> to learn
       the <a href="http://meteor.com">Meteor framework</a>.
       <em>Weekday Filler</em> updates in real-time,
       without page

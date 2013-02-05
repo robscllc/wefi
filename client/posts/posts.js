@@ -1,6 +1,6 @@
 Meteor.subscribe("posts");
 
-WeFi.router_func = {
+_.extend(WeFi.router_func, {
   tag: function(tag, page) {
     Session.set('path', this.canonicalPath);
     Session.set("postit_tags", (_.isString(tag) ? tag.split('-') : []).join(' '));
@@ -19,14 +19,13 @@ WeFi.router_func = {
 	$("div." + slug).scrollintoview({ topPadding: 60 });
       });
     }
- 
     Session.set('post_id', id);
     Session.set('postit_id', null);
     Session.set("tag-dir", "asc");
     Session.set("routed_template", "post");
     return Session.get("routed_template");
   }
-};
+});
 
 Meteor.Router.add({
   "/post/:id": WeFi.router_func.post
@@ -35,7 +34,7 @@ Meteor.Router.add({
   ,"/tag/:tag/:page": WeFi.router_func.tag
 });
 
-WeFi.query_func = {
+_.extend(WeFi.query_func, {
   post_constraints: function() {
     var cons = { parent: null };
 
@@ -70,7 +69,7 @@ WeFi.query_func = {
       Session.set('createError', null);
     }
   }
-};
+});
 
 Template.post.post = function() {
   return Posts.findOne(Session.get("post_id"));
@@ -104,19 +103,6 @@ Template.postlist.pagination = function () {
   if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
     return Pagination.links('/tag/' + Session.get('page_tags').split(' ').join('-'), count);
 }
-
-Template.postlist.rendered = function () {
-  $('div.affix-top').affix({
-    offset: $('div.affix-top').position()
-  });
-};
-
-Template.postlist.events({
-  'click .new_post': function () {
-    newPostDialog();
-    return false;
-  }
-});
 
 Template.postLayout.events({
   'click .reply': function (event, template) {
