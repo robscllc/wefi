@@ -63,6 +63,10 @@ Handlebars.registerHelper('canEdit', function (obj, prop) {
   return owner._id === Meteor.userId();
 });
 
+Handlebars.registerHelper('displayName', function (user) {
+  return WeFi.displayName(user);
+});
+
 Meteor.startup(function() {
   WeFi.md_converter = new Markdown.getSanitizingConverter();
   Session.set("tag-sort", "date");
