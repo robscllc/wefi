@@ -1,6 +1,6 @@
 Meteor.subscribe("posts");
 
-WeFi.router_func = {
+_.extend(WeFi.router_func, {
   tag: function(tag, page) {
     Session.set('path', this.canonicalPath);
     Session.set("postit_tags", (_.isString(tag) ? tag.split('-') : []).join(' '));
@@ -14,13 +14,18 @@ WeFi.router_func = {
   },
   post: function(id, slug) {
     Session.set('path', this.canonicalPath);
+    if (_.isString(slug) && slug.match(/^[0-9a-f\-]+$/)) {
+      Meteor.defer(function() {
+	$("div." + slug).scrollintoview({ topPadding: 60 });
+      });
+    }
     Session.set('post_id', id);
     Session.set('postit_id', null);
     Session.set("tag-dir", "asc");
     Session.set("routed_template", "post");
     return Session.get("routed_template");
   }
-};
+});
 
 Meteor.Router.add({
   "/post/:id": WeFi.router_func.post
@@ -29,7 +34,7 @@ Meteor.Router.add({
   ,"/tag/:tag/:page": WeFi.router_func.tag
 });
 
-WeFi.query_func = {
+_.extend(WeFi.query_func, {
   post_constraints: function() {
     var cons = { parent: null };
 
@@ -50,8 +55,21 @@ WeFi.query_func = {
       break;
     }
     return [cons, { sort: sorter } ];
+  },
+  edit_callback: function (event, template) {
+    if($(event.target).hasClass('active')) {
+      Session.set('showPostit', false);
+    } else {
+      Session.set('postit_id', template.data._id);
+      Session.set('postit_mode', 'edit');
+      Session.set("postit_body", template.data.body);
+      Session.set("postit_tags", template.data.tags.join(' '));
+      WeFi.postit_target = $(event.target);
+      Session.set('showPostit', true);
+      Session.set('createError', null);
+    }
   }
-};
+});
 
 Template.post.post = function() {
   return Posts.findOne(Session.get("post_id"));
@@ -86,19 +104,6 @@ Template.postlist.pagination = function () {
     return Pagination.links('/tag/' + Session.get('page_tags').split(' ').join('-'), count);
 }
 
-Template.postlist.rendered = function () {
-  $('div.affix-top').affix({
-    offset: $('div.affix-top').position()
-  });
-};
-
-Template.postlist.events({
-  'click .new_post': function () {
-    newPostDialog();
-    return false;
-  }
-});
-
 Template.postLayout.events({
   'click .reply': function (event, template) {
     if($(event.target).hasClass('active')) {
@@ -113,19 +118,8 @@ Template.postLayout.events({
       Session.set('createError', null);
     }
   },
-  'click .edit': function (event, template) {
-    if($(event.target).hasClass('active')) {
-      Session.set('showPostit', false);
-    } else {
-      Session.set('postit_id', template.data._id);
-      Session.set('postit_mode', 'edit');
-      Session.set("postit_body", template.data.body);
-      Session.set("postit_tags", template.data.tags.join(' '));
-      WeFi.postit_target = $(template.find(".edit"));
-      Session.set('showPostit', true);
-      Session.set('createError', null);
-    }
-  },
+  'click .edit': WeFi.query_func.edit_callback,
+  'click .admin-edit': WeFi.query_func.edit_callback,
   'click .remove': function () {
     Meteor.call('removeThread', {
       post_id: this._id
@@ -204,6 +198,12 @@ Template.postLayout.inEditWindow = function () {
   return false;
 };
 
+Template.postLayout.abbrTitle = function () {
+  var shorten = 40;
+  var sub = this.title.substr(0, shorten);
+  return new Handlebars.SafeString(sub + (sub.length < this.title.length ? ' &hellip;' : ''));
+};
+
 Template.postLayout.myVoteIs = function (val) {
   // no elemMatch in client :(
   // votes: { $elemMatch: { owner: Meteor.userId() } }
@@ -220,7 +220,8 @@ Template.postLayout.myVoteIs = function (val) {
 };
 
 Template.postLayout.editTimeRemaining = function () {
-  return Math.floor(300 - ((new Date()).getTime() - (new Date(this.posted)).getTime()) / 1000);
+  var count = Math.floor(300 - ((new Date()).getTime() - (new Date(this.posted)).getTime()) / 1000);
+  return Math.floor(count/60) + ':' + WeFi.zfill(Math.floor(count%60),2);
 };
 
 Template.postLayout.rendered = function() {
@@ -236,9 +237,10 @@ Template.postLayout.rendered = function() {
   var edit = $(this.find('button.edit'));
   if (rem) {
     $(function(){
-      var count = rem.text();
+      var ms = rem.text().split(':');
+      var count = parseInt(ms[0])*60 + parseInt(ms[1]);
       var countdown = setInterval(function(){
-	rem.text(' for ' + Math.floor(count/60) + ':' + WeFi.zfill(Math.floor(count%60),2));
+	rem.text(Math.floor(count/60) + ':' + WeFi.zfill(Math.floor(count%60),2));
 	if (count < 0) {
 	  edit.hide();
 	  clearInterval(countdown);
@@ -318,7 +320,10 @@ Template.postit.events({
 	    Session.set('showPostit', false);
 	    if ( Session.get("routed_template") == "home" ) {
 	      var p = Posts.findOne(post);
-	      Meteor.Router.to("/post/" + p.root + "?" + p._id);
+	      if (p.root == p._id)
+		Meteor.Router.to("/post/" + p.root);
+	      else
+		Meteor.Router.to("/post/" + p.root + "/" + p._id);
 	    }
           }
 	});

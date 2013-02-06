@@ -1,0 +1,33 @@
+<template name="directory">
+  <div class="row-fluid">
+    <div class="span9">
+      <table class="table table-striped"> 
+       <tbody>
+	 {{#each users}}
+	 <tr>
+	   <td>{{username}}</td>
+	   <td><a href="/directory/{{username}}/history">Post history</a></td>
+	 </tr>
+	 {{/each}}
+       </tbody>
+      </table>
+    </div>
+    <div class="span3">
+      {{> about }}
+    </div>
+  </div>
+</template>
+
+<template name="user_history">
+  <div class="row-fluid">
+    <div class="span9">
+      {{#each list}}
+      {{> postLayout }}
+      {{/each}}
+    </div>
+    <div class="span3">
+      {{{pagination}}}
+      {{> about }}
+    </div>
+  </div>
+</template>

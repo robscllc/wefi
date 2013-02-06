@@ -31,8 +31,10 @@
 	    </div>
 	  </li>
 	  {{#if currentUser}}
-	  <li><button class="post btn btn-mini btn-link" data-toggle="button">New Post</button></li>
+	  <li class="divider-vertical"></li>
+	  <li><button class="post btn btn-mini" data-toggle="button">New Post</button></li>
 	  {{/if}}
+	  <li class="divider-vertical"></li>
 	  <li>
 	    <div class="btn-group sort" data-toggle="buttons-radio">
 	      <button type="button" class="btn btn-mini {{maybe "tag-sort" "date"}}">date</button>
@@ -47,9 +49,9 @@
 	      <button type="button" class="btn btn-mini {{maybe "post-thread" "inline"}}">inline</button>
 	    </div>
 	  </li>
-	  <li><button class="hide-closed btn btn-mini btn-link {{isActive "hideClosed"}}" data-toggle="button">Hide Closed</button></li>
 	</ul>
         <ul class="nav pull-right">
+	  <li class="divider-vertical"></li>
 	  <li><a>{{loginButtons align="right"}}</a></li>
 	</ul>
       </div>

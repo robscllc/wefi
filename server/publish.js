@@ -155,11 +155,13 @@ Meteor.methods({
     if (! post)
       throw new Meteor.Error(404, "No such post");
 
-    if (this.userId !== post.owner)
-      throw new Meteor.Error(404, "Not your post");
-
-    if (((new Date()).getTime() - (new Date(post.posted)).getTime()) > 300000)
-      throw new Meteor.Error(404, "Not in edit window");
+    if (! (this.userId && isAdminById(this.userId) ) ) {
+      if (this.userId !== post.owner)
+	throw new Meteor.Error(404, "Not your post");
+      
+      if (((new Date()).getTime() - (new Date(post.posted)).getTime()) > 300000)
+	throw new Meteor.Error(404, "Not in edit window");
+    }
       
     Posts.update(post, { $set: WeFi.extend_body({
       body: options.body, 
