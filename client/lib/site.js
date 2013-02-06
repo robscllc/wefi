@@ -7,8 +7,8 @@ Meteor.Router.add({
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', 1);
-    Session.set('postit_tags', 'fpp');
-    Session.set('page_tags', 'fpp');
+    Session.set('postit_tags', 'front_page');
+    Session.set('page_tags', 'front_page');
     Session.set("tag-dir", "desc");
     Session.set("routed_template", "home");
     return Session.get("routed_template");
