@@ -1,3 +1,7 @@
+## v0.1.7.1
+
+* configured email settings
+
 ## v0.1.7
 
 * a bunch of cosmetic changes
