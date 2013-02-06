@@ -6,6 +6,9 @@
 * using the slug field as a anchor refernce if an object_id is passed in
 * added abbreviated title
 * added admin edit button
+* removed delete-tag Xs
+* removed 'Hide Closed' button
+* replaced fpp with front_page
 
 ## v0.1.6
 
