@@ -1,3 +1,12 @@
+## v0.1.7
+
+* a bunch of cosmetic changes
+* cleaned up some garbage posts
+* added user directory
+* using the slug field as a anchor refernce if an object_id is passed in
+* added abbreviated title
+* added admin edit button
+
 ## v0.1.6
 
 * img tags not allowed in posts
