@@ -259,8 +259,7 @@ Template.postLayout.postbody = function () {
 };
 
 Template.postLayout.postuser = function () {
-  var user = Meteor.users.findOne(this.owner);
-  return user && user.username ? user.username : null;
+  return WeFi.displayName(Meteor.users.findOne(this.owner));
 };
 
 Template.postLayout.timestamp = function () {

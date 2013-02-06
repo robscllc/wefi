@@ -7,7 +7,7 @@ Meteor.publish("directory", function () {
 });
 
 Meteor.publish("posts", function () {
-  if (this.userId && isAdminById(this.userId)) {
+  if (this.userId && WeFi.isAdminById(this.userId)) {
     return Posts.find();
   } else {
     return Posts.find({ $or: [{state: "active"}, { state: "closed"}]});
@@ -46,9 +46,9 @@ Meteor.startup(function() {
       });
     },
     remove: function (userId, posts) {
-      return isAdminById(userId);
+      return WeFi.isAdminById(userId);
       return ! _.any(posts, function (post) {
-	return isAdminById(userId);
+	return WeFi.isAdminById(userId);
       });
     }
   });
@@ -128,7 +128,7 @@ Meteor.methods({
   },
   setPostState: function(options) {
     options = options || {};
-    if (! (this.userId && isAdminById(this.userId) ) )
+    if (! (this.userId && WeFi.isAdminById(this.userId) ) )
       throw new Meteor.Error(403, "You must be admin to change state");
     if (! _.contains(['active', 'closed', 'hidden'], options.state))
       throw new Meteor.Error(400, "Invalid state");
@@ -155,7 +155,7 @@ Meteor.methods({
     if (! post)
       throw new Meteor.Error(404, "No such post");
 
-    if (! (this.userId && isAdminById(this.userId) ) ) {
+    if (! (this.userId && WeFi.isAdminById(this.userId) ) ) {
       if (this.userId !== post.owner)
 	throw new Meteor.Error(404, "Not your post");
       
@@ -233,7 +233,7 @@ Meteor.methods({
   },
   removeThread: function(options) {
     options = options || {};
-    if (! (this.userId && isAdminById(this.userId) ) )
+    if (! (this.userId && WeFi.isAdminById(this.userId) ) )
       throw new Meteor.Error(403, "You must be admin to remove posts");
 
     var post = Posts.findOne(options.post_id);
