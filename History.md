@@ -1,3 +1,7 @@
+## v0.1.7.4
+
+* added displayName Handlebars helper
+
 ## v0.1.7.3
 
 * using WeFi.displayName to show the name now
