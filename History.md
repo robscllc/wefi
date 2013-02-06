@@ -1,3 +1,7 @@
+## v0.1.7.2
+
+* put the email settings on the server
+
 ## v0.1.7.1
 
 * configured email settings
