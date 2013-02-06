@@ -1,3 +1,7 @@
+## v0.1.7.5
+
+* can't resize the post textarea anymore
+
 ## v0.1.7.4
 
 * added displayName Handlebars helper

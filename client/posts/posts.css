@@ -59,3 +59,7 @@ ul.tags button.close {
     margin-right: 1em;
 }
 
+textarea.body {
+    resize: none;
+}
+
