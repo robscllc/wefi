@@ -50,7 +50,7 @@
       posted by
       <a href="/directory/{{postuser}}/history" class="user">{{postuser}}</a>
       <abbr class="timeago" title="{{posted}}">{{timestamp}}</abbr>  
-      with a score of 
+      | score: 
       {{#if currentUser}}
       <a href="#" class="up"><i class="icon-thumbs-up{{#if myVoteIs "up"}} icon-filled{{/if}}" /></a>
       {{/if}}
@@ -59,35 +59,36 @@
       <a href="#" class="down"><i class="icon-thumbs-down{{#if myVoteIs "down"}} icon-filled{{/if}}" /></a>
       {{/if}}
 
+
       {{#if showReplyCount}}
-      <a href="/post/{{_id}}/{{url_slug}}">read {{commentCount}} replies</a>
+      | <a href="/post/{{_id}}/{{url_slug}}">read {{commentCount}} replies</a>
       {{/if}}
 
       {{#if currentUser}}
       {{#if isActive}}
-      <button class="reply btn btn-mini btn-link" data-toggle="button">reply</button>
+      <button class="reply btn btn-mini" data-toggle="button">reply</button>
       {{/if}}
       {{#if inEditWindow}}
-      <button type="button" class="edit btn btn-mini hide" data-toggle="button">edit<span class="remaining">{{editTimeRemaining}}</span></button>
+      <button type="button" class="edit btn btn-mini" data-toggle="button">edit for <span class="remaining">{{editTimeRemaining}}</span></button>
       {{/if}}
       {{/if}}
 
       {{#if parent}}
-      <button class="parent btn btn-mini btn-link">parent</button>
+      <button class="parent btn btn-mini">parent</button>
       {{/if}}
       
       {{#if showSubThread}}
-      <a class="btn btn-mini btn-link" href="/post/{{_id}}/{{url_slug}}">sub-thread</a>
+      <a class="btn btn-mini" href="/post/{{_id}}/{{url_slug}}">sub-thread</a>
       {{/if}}
 
       {{#if currentUser.is_admin}}
       <div class="btn-group state" data-toggle="buttons-radio">
-	<button type="button" class="btn btn-mini btn-link {{maybeState "active"}}">active</button>
-	<button type="button" class="btn btn-mini btn-link {{maybeState "closed"}}">closed</button>
-	<button type="button" class="btn btn-mini btn-link {{maybeState "hidden"}}">hidden</button>
+	<button type="button" class="btn btn-mini {{maybeState "active"}}">active</button>
+	<button type="button" class="btn btn-mini {{maybeState "closed"}}">closed</button>
+	<button type="button" class="btn btn-mini{{maybeState "hidden"}}">hidden</button>
       </div>
-      <button type="button" class="admin-edit btn btn-mini btn-link" data-toggle="button">edit</span></button>
-      <button class="remove btn btn-mini btn-link" data-toggle="button">remove</button>
+      <button type="button" class="admin-edit btn btn-mini" data-toggle="button">edit</span></button>
+      <button class="remove btn btn-mini" data-toggle="button">remove</button>
       {{/if}}
     </span>
   </div>
@@ -158,7 +159,7 @@
 	  
 	  <div class="tab-content">
 	    <div class="tab-pane active" id="home">
-	      <textarea class="body" style="width: 95%;" rows="6">{{body}}</textarea>
+	      <textarea class="body" style="width: 95%;" rows="6" placeholder="Text, Markdown, or HTML goes here ...">{{body}}</textarea>
 	    </div>
 	    <div class="tab-pane" id="profile">
 	      <div class="preview"></div>
@@ -174,7 +175,48 @@
 	  <input type="text" class="tags span12" value="{{tags}}"/>
 	</div>
       </div>
+      <div id="help" class="row-fluid collapse">
+	<div class="span12">
+	  <ul>
+	    <li>
+	      <a target="_blank" href="http://stackoverflow.com/editing-help">Markdown tutorial</a>
+	      (external link)
+	    </li>
+	    <li>Allowed HTML tags: 
+	      <code>
+		&lt;a&gt; 
+		&lt;b&gt;
+		&lt;blockquote&gt;
+		&lt;code&gt;
+		&lt;del&gt;
+		&lt;dd&gt;
+		&lt;dl&gt;
+		&lt;dt&gt;
+		&lt;em&gt;
+		&lt;h1&gt;
+		&lt;h2&gt;
+		&lt;h3&gt;
+		&lt;i&gt;
+		&lt;kbd&gt;
+		&lt;li&gt;
+		&lt;ol&gt;
+		&lt;p&gt;
+		&lt;pre&gt;
+		&lt;s&gt;
+		&lt;sup&gt;
+		&lt;sub&gt;
+		&lt;strong&gt;
+		&lt;strike&gt;
+		&lt;ul&gt;
+		&lt;br/&gt;
+		&lt;hr/&gt;
+	      </code>
+	    </li>
+	  </ul>
+	</div>
+      </div>
       <div class="modal-footer">
+	<button type="button" class="btn" data-toggle="collapse" data-target="#help">Markdown / HTML help</button>
 	<button type="button" class="btn preview" data-toggle="button">Preview</button>
 	<button type="button" class="btn btn-primary save">Save</button>
 	<button type="button" class="btn cancel btn-danger">Cancel</button>

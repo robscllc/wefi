@@ -220,7 +220,8 @@ Template.postLayout.myVoteIs = function (val) {
 };
 
 Template.postLayout.editTimeRemaining = function () {
-  return Math.floor(300 - ((new Date()).getTime() - (new Date(this.posted)).getTime()) / 1000);
+  var count = Math.floor(300 - ((new Date()).getTime() - (new Date(this.posted)).getTime()) / 1000);
+  return Math.floor(count/60) + ':' + WeFi.zfill(Math.floor(count%60),2);
 };
 
 Template.postLayout.rendered = function() {
@@ -236,9 +237,10 @@ Template.postLayout.rendered = function() {
   var edit = $(this.find('button.edit'));
   if (rem) {
     $(function(){
-      var count = rem.text();
+      var ms = rem.text().split(':');
+      var count = parseInt(ms[0])*60 + parseInt(ms[1]);
       var countdown = setInterval(function(){
-	rem.text(' for ' + Math.floor(count/60) + ':' + WeFi.zfill(Math.floor(count%60),2));
+	rem.text(Math.floor(count/60) + ':' + WeFi.zfill(Math.floor(count%60),2));
 	if (count < 0) {
 	  edit.hide();
 	  clearInterval(countdown);
