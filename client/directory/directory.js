@@ -10,7 +10,7 @@ _.extend(WeFi.router_func, {
 
 _.extend(WeFi.query_func, {
   user_history_constraints: function() {
-    var user = Meteor.users.findOne({ username: Session.get("directory_user")});
+    var user = Meteor.users.findOne(Session.get("directory_user"));
     if (user) {
       var cons = { owner: user._id };
 

@@ -1,3 +1,8 @@
+## v0.1.7.3
+
+* using WeFi.displayName to show the name now
+* directory uses user._id
+
 ## v0.1.7.2
 
 * put the email settings on the server
