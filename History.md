@@ -1,3 +1,15 @@
+## v0.1.8
+
+* added:
+ * spiderable package
+ * explanatory header bar which also has pagination
+ * post button to sidebar copy
+ * firehose page that shows all posts
+* preserving inputs in 'new post'
+* slightly darker background for tags
+* show 'New Post' button even if not logged in
+* moved backup/release utils into tests/utils
+
 ## v0.1.7.5
 
 * can't resize the post textarea anymore
