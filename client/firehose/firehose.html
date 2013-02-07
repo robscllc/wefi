@@ -1,0 +1,13 @@
+<template name="firehose">
+  <div class="row-fluid">
+    <div class="span9">
+      {{#each list}}
+      {{> postLayout }}
+      {{/each}}
+    </div>
+    <div class="span3">
+      {{{pagination}}}
+      {{> about }}
+    </div>
+  </div>
+</template>
