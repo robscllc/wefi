@@ -363,3 +363,7 @@ Template.postit.tags = function () {
 Template.postit.body = function () {
   return Session.get("postit_body");
 };
+
+Template.about.events({
+  'click button.post': function(e, t) { return WeFi.root_post_popup(e, t) }
+});

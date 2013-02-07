@@ -16,18 +16,7 @@ Meteor.Router.add({
 });
 
 Template.navbar.events({
-  'click button.post': function (event, template) {
-    if($(event.target).hasClass('active')) {
-      Session.set('showPostit', false);
-    } else {
-      Session.set('postit_id', null);
-      Session.set('postit_mode', 'reply');
-      Session.set("postit_body", undefined);
-      WeFi.postit_target = $(template.find(".post"));
-      Session.set('showPostit', true);
-      Session.set('createError', null);
-    }
-  },
+  'click button.post': function(e, t) { return WeFi.root_post_popup(e, t) },
   'click button.hide-closed': function (event, template) {
     if($(event.target).hasClass('active')) {
       Session.set('hideClosed', false);
