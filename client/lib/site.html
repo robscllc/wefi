@@ -27,13 +27,15 @@
 		<li class="{{activePage "/tag/wefi-meta"}}"><a href="/tag/wefi-meta">About</a></li>
 		<li class="{{activePage "/tag/wefi-feature"}}"><a href="/tag/wefi-feature">Feature Requests</a></li>
 		<li class="{{activePage "/tag/wefi-bug"}}"><a href="/tag/wefi-bug">Bug Reports</a></li>
+		<li class="{{activePage "/firehose"}}"><a href="/firehose">Firehose</a></li>
+		{{#if currentUser.is_admin}}
+		<li class="{{activePage "/directory"}}"><a href="/directory">Directory</a></li>
+		{{/if}}
 	      </ul>
 	    </div>
 	  </li>
-	  {{#if currentUser}}
 	  <li class="divider-vertical"></li>
 	  <li><button class="post btn btn-mini" data-toggle="button">New Post</button></li>
-	  {{/if}}
 	  <li class="divider-vertical"></li>
 	  <li>
 	    <div class="btn-group sort" data-toggle="buttons-radio">

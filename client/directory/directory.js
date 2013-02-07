@@ -42,6 +42,10 @@ Template.directory.users = function() {
   return Meteor.users.find({});
 };
 
+Template.user_history.user = function() {
+  return Meteor.users.findOne(Session.get("directory_user"));
+};
+
 Template.user_history.list = function() {
   var pc = WeFi.query_func.user_history_constraints();
   Pagination.currentPage(Session.get('page')); 

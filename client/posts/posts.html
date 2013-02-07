@@ -93,11 +93,18 @@
 
 <template name="about">
   <div>
-    
     <p>
       <a href="/"><em>Weekday Filler</em></a> is a weblog heavily
       influenced by <a href="http://metafilter.com">MetaFilter</a> with a dash
       of <a href="http://reddit.com">reddit</a>.
+    </p>
+
+    <p>
+      Please <button class="post btn btn-mini" data-toggle="button">post</button> something,
+      <a href="/tag/wefi-feature">suggest
+	features</a>, <a href="/tag/wefi-bug">report bugs</a>,
+      or <a href="/tag/wefi-meta">read more
+	about</a> <em>WeFi</em>.
     </p>
 
     <p>
@@ -116,25 +123,30 @@
       aims to be fully open and responsive in its development.
     </p>
     
-    <p>
-      Please <a href="/tag/wefi-feature">suggest
-	features</a>, <a href="/tag/wefi-bug">report bugs</a>,
-      or <a href="/tag/wefi-meta">read more
-	about</a> <em>WeFi</em>.
-    </p>
-    
   </div>
 </template>
 
 <template name="postlist">
   <div class="row-fluid">
     <div class="span9">
+      <div class="row-fluid">
+	<div class="span6 offset1">
+	  <ul class="breadcrumb">
+	    <li>Showing posts with tags: </li>
+	    {{#each current_tags}}
+	    <li><a href="/tag/{{this}}">{{this}}</a></li>
+	    {{/each}}
+	  </ul>
+	</div>
+	<div class="span5">
+	  {{{pagination}}}
+	</div>
+      </div>
       {{#each list}}
       {{> postLayout }}
       {{/each}}
     </div>
     <div class="span3">
-      {{{pagination}}}
       {{> about }}
     </div>
   </div>
@@ -156,7 +168,7 @@
 	  
 	  <div class="tab-content">
 	    <div class="tab-pane active" id="home">
-	      <textarea class="body" style="width: 95%;" rows="6" placeholder="Text, Markdown, or HTML goes here ...">{{body}}</textarea>
+	      <textarea class="body" name="body" style="width: 95%;" rows="6" placeholder="Text, Markdown, or HTML goes here ...">{{body}}</textarea>
 	    </div>
 	    <div class="tab-pane" id="profile">
 	      <div class="preview"></div>
@@ -169,7 +181,7 @@
 	  <label class="pull-right">Tags</label>
 	</div>
 	<div class="span11">
-	  <input type="text" class="tags span12" value="{{tags}}"/>
+	  <input type="text" name="tags" class="tags span12" value="{{tags}}"/>
 	</div>
       </div>
       <div id="help" class="row-fluid collapse">

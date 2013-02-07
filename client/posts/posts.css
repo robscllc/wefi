@@ -59,6 +59,14 @@ ul.tags button.close {
     margin-right: 1em;
 }
 
+ul.tags button.tag {
+    background: #f0f0f0;
+}
+
+ul.tags {
+    padding-left: 4px;
+}
+
 textarea.body {
     resize: none;
 }

@@ -102,7 +102,11 @@ Template.postlist.pagination = function () {
   Pagination.currentPage(Session.get('page'));
   if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
     return Pagination.links('/tag/' + Session.get('page_tags').split(' ').join('-'), count);
-}
+};
+
+Template.postlist.current_tags = function() {
+  return Session.get('page_tags').split(' ');
+};
 
 Template.postLayout.events({
   'click .reply': function (event, template) {
@@ -363,3 +367,7 @@ Template.postit.tags = function () {
 Template.postit.body = function () {
   return Session.get("postit_body");
 };
+
+Template.about.events({
+  'click button.post': function(e, t) { return WeFi.root_post_popup(e, t) }
+});
