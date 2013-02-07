@@ -102,7 +102,11 @@ Template.postlist.pagination = function () {
   Pagination.currentPage(Session.get('page'));
   if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
     return Pagination.links('/tag/' + Session.get('page_tags').split(' ').join('-'), count);
-}
+};
+
+Template.postlist.current_tags = function() {
+  return Session.get('page_tags').split(' ');
+};
 
 Template.postLayout.events({
   'click .reply': function (event, template) {

@@ -93,7 +93,6 @@
 
 <template name="about">
   <div>
-    
     <p>
       <a href="/"><em>Weekday Filler</em></a> is a weblog heavily
       influenced by <a href="http://metafilter.com">MetaFilter</a> with a dash
@@ -130,12 +129,24 @@
 <template name="postlist">
   <div class="row-fluid">
     <div class="span9">
+      <div class="row-fluid">
+	<div class="span6 offset1">
+	  <ul class="breadcrumb">
+	    <li>Showing posts with tags: </li>
+	    {{#each current_tags}}
+	    <li><a href="/tag/{{this}}">{{this}}</a></li>
+	    {{/each}}
+	  </ul>
+	</div>
+	<div class="span5">
+	  {{{pagination}}}
+	</div>
+      </div>
       {{#each list}}
       {{> postLayout }}
       {{/each}}
     </div>
     <div class="span3">
-      {{{pagination}}}
       {{> about }}
     </div>
   </div>
