@@ -222,14 +222,18 @@ Meteor.methods({
     }
     
     post = Posts.findOne(post._id);
-    var mys = post.score_slug.split('/').pop();
-    var arr = mys.split(':');
-    var new_slug = [WeFi.encodeScoreSlug(0-post.score), arr[1]].join(':');
-    var cursor = Posts.find({ root: post.root, score_slug: {$regex: mys }});
-    cursor.forEach( function(p) {
-      var new_full = p.score_slug;
-      Posts.update(p, { $set: { score_slug: new_full.replace(mys, new_slug) } });
-    });
+    if ( _.isString(post.score_slug) ) {  
+      var mys = post.score_slug.split('/').pop();
+      if ( _.isString(mys) ) {
+	var arr = mys.split(':');
+	var new_slug = [WeFi.encodeScoreSlug(0-post.score), arr[1]].join(':');
+	var cursor = Posts.find({ root: post.root, score_slug: {$regex: mys }});
+	cursor.forEach( function(p) {
+	  var new_full = p.score_slug;
+	  Posts.update(p, { $set: { score_slug: new_full.replace(mys, new_slug) } });
+	});
+      }
+    }
   },
   removeThread: function(options) {
     options = options || {};
