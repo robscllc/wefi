@@ -61,10 +61,10 @@
       | <a href="/post/{{_id}}/{{url_slug}}">read {{commentCount}} replies</a>
       {{/if}}
 
-      {{#if currentUser}}
       {{#if isActive}}
       <button class="reply btn btn-mini" data-toggle="button">reply</button>
       {{/if}}
+      {{#if currentUser}}
       {{#if inEditWindow}}
       <button type="button" class="edit btn btn-mini" data-toggle="button">edit for <span class="remaining">{{editTimeRemaining}}</span></button>
       {{/if}}
