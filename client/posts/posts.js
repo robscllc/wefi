@@ -179,7 +179,7 @@ Template.tags.events({
 });
 
 Template.postLayout.showReplyCount = function() {
-  return Session.equals("routed_template", "home" )
+  return ! Session.equals("routed_template", "post" )
 };
 
 Template.postLayout.commentCount = function () {
