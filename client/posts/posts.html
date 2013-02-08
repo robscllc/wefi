@@ -70,11 +70,11 @@
       {{/if}}
 
       {{#if parent}}
-      <button class="parent btn btn-mini">parent</button>
+      <button class="parent btn btn-mini btn-link">parent</button>
       {{/if}}
       
       {{#if showSubThread}}
-      <a class="btn btn-mini" href="/post/{{_id}}/{{url_slug}}">sub-thread</a>
+      <a class="btn btn-mini btn-link" href="/post/{{_id}}/{{url_slug}}">sub-thread</a>
       {{/if}}
 
       {{#if currentUser.is_admin}}
