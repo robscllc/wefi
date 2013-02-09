@@ -1,5 +1,6 @@
 Meteor.subscribe("currentUser");
 Meteor.subscribe("directory");
+Meteor.subscribe("actives");
 
 Meteor.Router.add({
   "/": function() {
@@ -88,4 +89,16 @@ Meteor.startup(function() {
     if (tags)
       Session.set("all_tags", _.toArray(tags));
   });
+});
+
+Meteor.logout = _.wrap(Meteor.logout, function(logout) {
+  var args = _.toArray(arguments).slice(1),
+  origCallback = args[0];
+
+  ActiveUsers.remove({ userId: Meteor.userId() });
+  var newCallback = function(error) {
+    origCallback.call(this, error);
+  };
+  
+  logout(newCallback);
 });

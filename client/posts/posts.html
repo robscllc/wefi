@@ -91,6 +91,14 @@
 </template>
 
 <template name="about">
+  <div class="well">
+    <ul class="nav nav-list">
+      <li class="nav-header">Logged in users</li>
+      {{#each activeUsers}}
+      <li><a href="/directory/{{userId}}/history">{{displayName userId}}</a></li>
+      {{/each}}
+    </ul>
+  </div>
   <div>
     <p>
       <a href="/"><em>Weekday Filler</em></a> is a weblog heavily

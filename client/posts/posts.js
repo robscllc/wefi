@@ -389,6 +389,10 @@ Template.about.events({
   'click button.post': function(e, t) { return WeFi.root_post_popup(e, t) }
 });
 
+Template.about.activeUsers = function() {
+  return ActiveUsers.find({ userId: { $ne: Meteor.userId() } });
+};
+
 Template.all_tags.tags = function() {
   return Session.get('all_tags');
 };
