@@ -3,12 +3,17 @@ Meteor.subscribe("posts");
 _.extend(WeFi.router_func, {
   tag: function(tag, page) {
     Session.set('path', this.canonicalPath);
-    Session.set("postit_tags", (_.isString(tag) ? tag.split('-') : []).join(' '));
-    Session.set("page_tags", (_.isString(tag) ? tag.split('-') : []).join(' '));
+    var tags = (_.isString(tag) ? tag.split('-') : []);
+    Session.set("postit_tags", tags.join(' '));
+    Session.set("page_tags", tags.join(' '));
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', page || 1);
     Session.set("tag-dir", "desc");
+    WeFi.set_head( { 
+      title: "posts tagged with " + _.map(tags, function(s) { return "'" + s + "'"; }).join(' and '),
+      tags: tags 
+    } );
     Session.set("routed_template", "home");
     return Session.get("routed_template");
   },
@@ -22,6 +27,13 @@ _.extend(WeFi.router_func, {
     Session.set('post_id', id);
     Session.set('postit_id', null);
     Session.set("tag-dir", "asc");
+    var post = Posts.findOne(Session.get("post_id"));
+    if (post)
+      WeFi.set_head( { 
+	title: post.title,
+	description: post.body_text,
+	tags: post.tags 
+      } );
     Session.set("routed_template", "post");
     return Session.get("routed_template");
   }
