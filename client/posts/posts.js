@@ -45,6 +45,7 @@ Meteor.Router.add({
   ,"/tag/:tag": WeFi.router_func.tag
   ,"/tag/:tag/:page": WeFi.router_func.tag
   ,"/tag": function() {
+    WeFi.set_head( { title: "All tags", tags: Session.get("all_tags") } );
     Session.set("routed_template", "all_tags");
     return Session.get("routed_template");
   }
