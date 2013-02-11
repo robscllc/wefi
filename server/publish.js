@@ -56,7 +56,8 @@ Meteor.startup(function() {
 
 WeFi.max_posts = 1679616;
 WeFi.max_score = 2176782336;
-WeFi.max_slug_length = 200;
+WeFi.max_title_words = 10;
+WeFi.max_body_text = 200;
 
 WeFi.encodeScoreSlug = function(n) {
   return WeFi.zfill(Math.floor(n + WeFi.max_score*.5).toString(36), 6);
@@ -66,10 +67,17 @@ WeFi.extend_body = function (o) {
   var html = WeFi.md_converter.makeHtml(o.body);
   var extend = { body_rendered: html, title: null, url_slug: null };
   var title = html.match(/<(h\d)>([\s\S]*?)<\/\1>/i);
-  if (title)
+  if (title) {
     extend.title = String(title[2]).replace(/<\/?[^>]+>/g, '');
+    extend.user_title = true;
+  }
   var body_text = o.body.replace(/<(?:.|\n)*?>/gm, '');
-  extend.url_slug = (title ? extend.title : body_text).substr(0, WeFi.max_slug_length).toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+  extend.body_text = body_text.substr(0, WeFi.max_body_text);
+  var words = (title ? extend.title : body_text).match(new RegExp('^(?:\\b\\w+\\b[\\s\\r\\n]*){1,' + WeFi.max_title_words + '}'));
+  var default_title = (words ? words[0] : (title ? extend.title : body_text)).replace(/\s+$/, '');
+  if (!title) 
+    extend.title = default_title;
+  extend.url_slug = default_title.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
   return _.extend( o, extend );
 };
 

@@ -10,6 +10,7 @@ Meteor.Router.add({
     Session.set('postit_tags', 'front_page');
     Session.set('page_tags', 'front_page');
     Session.set("tag-dir", "desc");
+    WeFi.set_head( { title: "Front page", tags: ['front_page'] } );
     Session.set("routed_template", "home");
     return Session.get("routed_template");
   }
@@ -79,10 +80,8 @@ Meteor.startup(function() {
   Session.set("post-thread", "thread");
 
   Meteor.autorun(function() {
-    var tags = _.chain(Posts.find().fetch()).pluck('tags').flatten().uniq().filter(
-      function(tag) {
-	return tag && tag.length > 0;
-      }).sortBy(
+    var tags = _.chain(Posts.find().fetch()).pluck('tags').flatten().uniq()
+      .compact().sortBy(
 	function(tag) {
 	  return tag;
 	}).value();
