@@ -1,3 +1,15 @@
+## v0.1.9
+
+* added dynamic title, keywords, and description to all pages
+* added a bit of vertical margin to the post paragraphs
+* fixed voteForPost split bug
+* added google web tools verification file
+* parent & sub-thread links no longer styled like buttons
+* only hiding 'read n replies' link on post page
+* showing all tags at /tag
+ * blocked out typeahead & tagsearch, but hidden for now
+* reply buttons show even if not logged in
+
 ## v0.1.8
 
 * added:
