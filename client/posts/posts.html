@@ -41,7 +41,7 @@
       </div>
     </div>
     <span class="footer">
-      {{#if title}}
+      {{#if user_title}}
       <a href="/post/{{_id}}/{{url_slug}}">{{abbrTitle}}</a>
       {{/if}}
       posted by
@@ -56,26 +56,25 @@
       <a href="#" class="down"><i class="icon-thumbs-down{{#if myVoteIs "down"}} icon-filled{{/if}}" /></a>
       {{/if}}
 
-
       {{#if showReplyCount}}
       | <a href="/post/{{_id}}/{{url_slug}}">read {{commentCount}} replies</a>
       {{/if}}
 
-      {{#if currentUser}}
       {{#if isActive}}
       <button class="reply btn btn-mini" data-toggle="button">reply</button>
       {{/if}}
+      {{#if currentUser}}
       {{#if inEditWindow}}
       <button type="button" class="edit btn btn-mini" data-toggle="button">edit for <span class="remaining">{{editTimeRemaining}}</span></button>
       {{/if}}
       {{/if}}
 
       {{#if parent}}
-      <button class="parent btn btn-mini">parent</button>
+      <button class="parent btn btn-mini btn-link">parent</button>
       {{/if}}
       
       {{#if showSubThread}}
-      <a class="btn btn-mini" href="/post/{{_id}}/{{url_slug}}">sub-thread</a>
+      <a class="btn btn-mini btn-link" href="/post/{{_id}}/{{url_slug}}">sub-thread</a>
       {{/if}}
 
       {{#if currentUser.is_admin}}
@@ -117,7 +116,7 @@
     </p>
     
     <p>This project was also inspired by the
-      recent <a href="http://metatalk.metafilter.com/22319/MeFi-is-adding-titles">clusterfuck
+      recent <a href="http://metatalk.metafilter.com/22319/MeFi-is-adding-titles">kerfuffle
 	over at MeFi</a> that erupted following the rollout of a
       seemingly innocuous feature. <em>Weekday Filler</em>
       aims to be fully open and responsive in its development.
@@ -233,4 +232,12 @@
     </div>
   </div>
   {{/if}}
+</template>
+
+<template name="all_tags">
+  <ul>
+    {{#each tags}}
+    <li><a href="/tag/{{this}}">{{this}}</a></li>
+    {{/each}}
+  </ul>
 </template>

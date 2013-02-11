@@ -1,5 +1,7 @@
 <head>
   <title>Weekday Filler</title>
+  <meta name="keywords" content="blog, real-time, weblog, meteor, community" /> 
+  <meta name="description" content="Weekday Filler is a real-time blog that anyone can post to ... In continuous development using the Meteor framework." /> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -59,6 +61,17 @@
       </div>
     </div>   
   </div>
+</template>
+
+<template name="tagsearch">
+  <li>
+    <div class="navbar-form pull-left">
+      <div class="input-append">
+	<input type="text" class="tags" placeholder="Find a tag ..." />
+	<button class="btn tag-btn" type="button">Go!</button>
+      </div>
+    </div>
+  </li>
 </template>
 
 <template name="home">

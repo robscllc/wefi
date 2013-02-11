@@ -29,7 +29,7 @@ div.post {
 }
 
 div.post p {
-    margin: 0px;
+    margin: .3em 0;
 }
 
 div.post span.footer {

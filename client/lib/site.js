@@ -10,6 +10,7 @@ Meteor.Router.add({
     Session.set('postit_tags', 'front_page');
     Session.set('page_tags', 'front_page');
     Session.set("tag-dir", "desc");
+    WeFi.set_head( { title: "Front page", tags: ['front_page'] } );
     Session.set("routed_template", "home");
     return Session.get("routed_template");
   }
@@ -47,6 +48,23 @@ Template.navbar.helpers({
   }
 });
 
+Template.tagsearch.events({
+  'click button.tag-btn': function (event, template) {
+    console.log('hi');
+    return false;
+  }
+});
+
+Template.tagsearch.rendered = function() {
+  var template = this;
+  Meteor.defer(function() {
+    var b = Session.get("all_tags");
+    if (b.length > 0) {
+      $(template.find('input.tags')).typeahead( { source: b } );
+    }
+  });
+};
+
 Handlebars.registerHelper('canEdit', function (obj, prop) {
   var owner = Meteor.users.findOne(obj[prop]);
   return owner._id === Meteor.userId();
@@ -60,4 +78,14 @@ Meteor.startup(function() {
   WeFi.md_converter = new Markdown.getSanitizingConverter();
   Session.set("tag-sort", "date");
   Session.set("post-thread", "thread");
+
+  Meteor.autorun(function() {
+    var tags = _.chain(Posts.find().fetch()).pluck('tags').flatten().uniq()
+      .compact().sortBy(
+	function(tag) {
+	  return tag;
+	}).value();
+    if (tags)
+      Session.set("all_tags", _.toArray(tags));
+  });
 });

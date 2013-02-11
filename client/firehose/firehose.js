@@ -3,6 +3,7 @@ _.extend(WeFi.router_func, {
     Session.set('page', page || 1);
     Session.set("tag-dir", "desc");
     Session.set("post-thread", "inline");
+    WeFi.set_head( { title: "All posts" } );
     Session.set("routed_template", "firehose");
     return Session.get("routed_template");
   }

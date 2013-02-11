@@ -3,12 +3,17 @@ Meteor.subscribe("posts");
 _.extend(WeFi.router_func, {
   tag: function(tag, page) {
     Session.set('path', this.canonicalPath);
-    Session.set("postit_tags", (_.isString(tag) ? tag.split('-') : []).join(' '));
-    Session.set("page_tags", (_.isString(tag) ? tag.split('-') : []).join(' '));
+    var tags = (_.isString(tag) ? tag.split('-') : []);
+    Session.set("postit_tags", tags.join(' '));
+    Session.set("page_tags", tags.join(' '));
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', page || 1);
     Session.set("tag-dir", "desc");
+    WeFi.set_head( { 
+      title: "posts tagged with " + _.map(tags, function(s) { return "'" + s + "'"; }).join(' and '),
+      tags: tags 
+    } );
     Session.set("routed_template", "home");
     return Session.get("routed_template");
   },
@@ -22,6 +27,13 @@ _.extend(WeFi.router_func, {
     Session.set('post_id', id);
     Session.set('postit_id', null);
     Session.set("tag-dir", "asc");
+    var post = Posts.findOne(Session.get("post_id"));
+    if (post)
+      WeFi.set_head( { 
+	title: post.title,
+	description: post.body_text,
+	tags: post.tags 
+      } );
     Session.set("routed_template", "post");
     return Session.get("routed_template");
   }
@@ -32,6 +44,11 @@ Meteor.Router.add({
   ,"/post/:id/:slug": WeFi.router_func.post
   ,"/tag/:tag": WeFi.router_func.tag
   ,"/tag/:tag/:page": WeFi.router_func.tag
+  ,"/tag": function() {
+    WeFi.set_head( { title: "All tags", tags: Session.get("all_tags") } );
+    Session.set("routed_template", "all_tags");
+    return Session.get("routed_template");
+  }
 });
 
 _.extend(WeFi.query_func, {
@@ -175,7 +192,7 @@ Template.tags.events({
 });
 
 Template.postLayout.showReplyCount = function() {
-  return Session.equals("routed_template", "home" )
+  return ! Session.equals("routed_template", "post" )
 };
 
 Template.postLayout.commentCount = function () {
@@ -371,3 +388,7 @@ Template.postit.body = function () {
 Template.about.events({
   'click button.post': function(e, t) { return WeFi.root_post_popup(e, t) }
 });
+
+Template.all_tags.tags = function() {
+  return Session.get('all_tags');
+};
