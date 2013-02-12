@@ -91,6 +91,14 @@
 </template>
 
 <template name="about">
+  <div class="well">
+    <ul class="nav nav-list">
+      <li class="nav-header">Logged in users</li>
+      {{#each activeUsers}}
+      <li><a href="/directory/{{userId}}/history">{{displayName userId}}</a></li>
+      {{/each}}
+    </ul>
+  </div>
   <div>
     <p>
       <a href="/"><em>Weekday Filler</em></a> is a weblog heavily
@@ -131,7 +139,7 @@
       <div class="row-fluid">
 	<div class="span6 offset1">
 	  <ul class="breadcrumb">
-	    <li>Showing posts with tags: </li>
+	    <li>Showing posts with <a href="/tag">tags</a>: </li>
 	    {{#each current_tags}}
 	    <li><a href="/tag/{{this}}">{{this}}</a></li>
 	    {{/each}}

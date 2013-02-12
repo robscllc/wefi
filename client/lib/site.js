@@ -1,5 +1,6 @@
 Meteor.subscribe("currentUser");
 Meteor.subscribe("directory");
+Meteor.subscribe("actives");
 
 Meteor.Router.add({
   "/": function() {
@@ -10,7 +11,7 @@ Meteor.Router.add({
     Session.set('postit_tags', 'front_page');
     Session.set('page_tags', 'front_page');
     Session.set("tag-dir", "desc");
-    WeFi.set_head( { title: "Front page", tags: ['front_page'] } );
+    WeFi.set_head( { tags: ['front_page'] } );
     Session.set("routed_template", "home");
     return Session.get("routed_template");
   }
@@ -88,4 +89,16 @@ Meteor.startup(function() {
     if (tags)
       Session.set("all_tags", _.toArray(tags));
   });
+});
+
+Meteor.logout = _.wrap(Meteor.logout, function(logout) {
+  var args = _.toArray(arguments).slice(1),
+  origCallback = args[0];
+
+  ActiveUsers.remove({ userId: Meteor.userId() });
+  var newCallback = function(error) {
+    origCallback.call(this, error);
+  };
+  
+  logout(newCallback);
 });

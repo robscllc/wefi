@@ -1,3 +1,11 @@
+## v0.1.10
+
+* new collection ActiveUsers tracks the logged in users to the site
+ * counting logged in sockets on the server by polling every 5 seconds
+ * had to wrap Meteor.logout to remove the relevant ActiveUser rows
+* linking to tag list from header bar
+* removed 'Front page' from / dynamic title
+
 ## v0.1.9
 
 * added dynamic title, keywords, and description to all pages
