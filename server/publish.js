@@ -111,13 +111,15 @@ WeFi.extend_body = function (o) {
   var html = WeFi.md_converter.makeHtml(o.body);
   var extend = { body_rendered: html, title: null, url_slug: null };
   var title = html.match(/<(h\d)>([\s\S]*?)<\/\1>/i);
+  extend.user_title = false;
   if (title) {
     extend.title = String(title[2]).replace(/<\/?[^>]+>/g, '');
     extend.user_title = true;
   }
   var body_text = o.body.replace(/<(?:.|\n)*?>/gm, '');
   extend.body_text = body_text.substr(0, WeFi.max_body_text);
-  var words = (title ? extend.title : body_text).match(new RegExp('^(?:\\b\\w+\\b[\\s\\r\\n]*){1,' + WeFi.max_title_words + '}'));
+  var re = new RegExp('^(?:\\b\\w+\\b[\\W\\r\\n]*){1,' + WeFi.max_title_words + '}');
+  var words = (title ? extend.title : body_text).match(re);
   var default_title = (words ? words[0] : (title ? extend.title : body_text)).replace(/\s+$/, '');
   if (!title) 
     extend.title = default_title;
