@@ -231,11 +231,16 @@ Meteor.methods({
     if (! post)
       throw new Meteor.Error(404, "No such post");
 
+    if (post.owner == this.userId)
+      throw new Meteor.Error(404, "Can't vote for your own post");
+
     var vote = Posts.findOne({_id: post._id, 
 			      votes: { $elemMatch: { owner: this.userId } } },
 			     { fields: { votes: 1 } });
+
     if (vote) {
-      if (vote.votes[0].vote == 1) {
+      vote = _.where(vote.votes, { owner: this.userId })[0];
+      if (vote.vote > 0) {
 	if (options.vote == 'up') {
 	  Posts.update({_id: post._id, 'votes.owner': this.userId},
 		       { $inc: { score: -1 },
@@ -245,7 +250,7 @@ Meteor.methods({
 		       { $inc: { score: -2 },
 			 $set: { 'votes.$.vote': -1 } });
 	}
-      } else if (vote.votes[0].vote == -1) {
+      } else if (vote.vote < 0) {
 	if (options.vote == 'up') {
 	  Posts.update({_id: post._id, 'votes.owner': this.userId},
 		       { $inc: { score: 2 },

@@ -231,13 +231,15 @@ Template.postLayout.myVoteIs = function (val) {
   var post = Posts.findOne({_id: this._id},
 			   { fields: { votes: 1 } });
   if (post) {
-    var vote = _.find(post.votes, function(vote) {
-      return vote.owner == Meteor.userId();
-    });
-    if (vote)
-      return (vote.vote == 1 ? 'up' : 'down') == val;
+    var vote = _.where(post.votes, { owner: Meteor.userId() });
+    if (vote && vote.length)
+      return (vote[0].vote == 1 ? 'up' : 'down') == val;
   }
   return undefined;
+};
+
+Template.postLayout.canVote = function () {
+  return Meteor.userId() && this.owner != Meteor.userId();
 };
 
 Template.postLayout.editTimeRemaining = function () {

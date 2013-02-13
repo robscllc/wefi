@@ -48,11 +48,11 @@
       <a href="/directory/{{owner}}/history" class="user">{{postuser}}</a>
       <abbr class="timeago" title="{{posted}}">{{timestamp}}</abbr>  
       | score: 
-      {{#if currentUser}}
+      {{#if canVote}}
       <a href="#" class="up"><i class="icon-thumbs-up{{#if myVoteIs "up"}} icon-filled{{/if}}" /></a>
       {{/if}}
       {{score}}
-      {{#if currentUser}}
+      {{#if canVote}}
       <a href="#" class="down"><i class="icon-thumbs-down{{#if myVoteIs "down"}} icon-filled{{/if}}" /></a>
       {{/if}}
 
@@ -93,7 +93,7 @@
 <template name="about">
   <div class="well">
     <ul class="nav nav-list">
-      <li class="nav-header">Logged in users</li>
+      <li class="nav-header">Other logged-in users</li>
       {{#each activeUsers}}
       <li><a href="/directory/{{userId}}/history">{{displayName userId}}</a></li>
       {{/each}}
