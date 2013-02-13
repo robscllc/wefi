@@ -185,7 +185,7 @@ Template.postLayout.events({
 });
 
 Template.tags.distinct_tags = function() {
-  return _.difference(this.tags, Session.get('page_tags').split(' '));
+  return Session.equals("routed_template", "home" ) ? _.difference(this.tags, Session.get('page_tags').split(' ')) : this.tags;
 };
 
 
@@ -214,7 +214,7 @@ Template.postLayout.showSubThread = function() {
 };
 
 Template.postLayout.depthIfThreaded = function() {
-  return Session.equals("post-thread", "inline") ? 0 : this.depth;
+  return Session.equals("post-thread", "inline") ? (this.root == this._id ? 0 : 1) : this.depth;
 };
 
 Template.postLayout.inEditWindow = function () {
