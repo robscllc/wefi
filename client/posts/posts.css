@@ -23,9 +23,7 @@ div.depth19 { margin-left: 19em; }
 }
 
 div.post {
-    background: #f8f8f8;
-    padding: 2px 4px;
-    margin-bottom: 1em;
+    padding: 5px 10px;
 }
 
 div.post p {
@@ -33,7 +31,7 @@ div.post p {
 }
 
 div.post span.footer {
-    font-size: .8em;
+    font-size: .75em;
     color: #999;
 }
 
