@@ -184,6 +184,11 @@ Template.postLayout.events({
   }
 });
 
+Template.tags.distinct_tags = function() {
+  return _.difference(this.tags, Session.get('page_tags').split(' '));
+};
+
+
 Template.tags.events({
   'click button.tag': function (event, template) {
     Meteor.Router.to('/tag/' + this);
