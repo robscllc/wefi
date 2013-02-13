@@ -348,7 +348,7 @@ Template.postit.events({
 	    if ( Session.get("routed_template") == "home" ) {
 	      var p = Posts.findOne(post);
 	      if (p.root == p._id)
-		Meteor.Router.to("/post/" + p.root);
+		Meteor.Router.to("/post/" + p.root + "/" + p.url_slug);
 	      else
 		Meteor.Router.to("/post/" + p.root + "/" + p._id);
 	    }

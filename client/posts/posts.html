@@ -17,13 +17,11 @@
 </template>
 
 <template name="tags">
-  <ul class="tags inline">
+  <ul class="tags inline pull-right">
     {{#each distinct_tags}}
     {{#if this}}
     <li>
-      <div class="input-append pull-right">
-	<button class="tag btn btn-mini btn-link" href="/tag/{{this}}">{{this}}</button>
-      </div>
+      <a class="tag btn btn-mini btn-link" href="/tag/{{this}}">{{this}}</a>
     </li>
     {{/if}}
     {{/each}}
