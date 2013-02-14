@@ -125,10 +125,6 @@ Template.postlist.current_tags = function() {
   return Session.get('page_tags').split(' ');
 };
 
-Template.sidebar.rendered = function() {
-  $(this.find("div.sidebar-contents")).affix();//{ offset: $(this.find("div.sidebar-contents")).position() });
-};
-
 Template.postLayout.events({
   'click .reply': function (event, template) {
     if($(event.target).hasClass('active')) {

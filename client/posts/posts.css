@@ -39,22 +39,10 @@ div.post hr {
     margin: .3em 0;
 }
 
-
 @media (min-width: 980px) {
-    .sidebar-contents {
-	width: 100%; 
-    }
-    .sidebar-contents.affix {
-	width: 22.5%; 
+    .sidebar {
 	position: fixed;
-    }
-}
-
-@media (max-width: 979px) {
-    .sidebar-contents.affix {
-	position: static;
-	width: auto;
-	top: 0;
+	width: 22.5%;
     }
 }
 
