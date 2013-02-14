@@ -2,7 +2,7 @@ _.extend(WeFi.router_func, {
   user_history: function(user, page) {
     Session.set("directory_user", user);
     Session.set('page', page || 1);
-    Session.set("post-thread", "inline");
+    //Session.set("post-thread", "inline");
     WeFi.set_head( { title: "Post history for user '" + WeFi.displayName(Template.user_history.user()) + "'" } );
     Session.set("routed_template", "user_history");
     return Session.get("routed_template");
