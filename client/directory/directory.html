@@ -10,21 +10,3 @@
     </tbody>
   </table>
 </template>
-
-<template name="user_history">
-  <div class="row-fluid">
-    <div class="span6 offset1">
-      <ul class="breadcrumb">
-	{{#with user}}
-	<li>Posts by: {{displayName this}}</li>
-	{{/with}}
-      </ul>
-    </div>
-    <div class="span5">
-      {{{pagination}}}
-    </div>
-  </div>
-  {{#each list}}
-  {{> postLayout }}
-  {{/each}}
-</template>

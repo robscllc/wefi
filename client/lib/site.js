@@ -81,6 +81,9 @@ Handlebars.registerHelper('array_of_posts', function (user) {
   case "firehose":
     func = 'firehose_constraints';
     break;
+  case "user_history":
+    func = 'user_history_constraints';
+    break;
   }
   
   if (func) {
@@ -97,6 +100,10 @@ Handlebars.registerHelper('pager', function (user) {
     func = 'firehose_constraints';
     link = '/firehose'
     break;
+  case "user_history":
+    func = 'user_history_constraints';
+    link = '/directory/' + Session.get('directory_user') + '/history';
+    break;
   }
   
   if (func) {
@@ -112,7 +119,8 @@ Handlebars.registerHelper('page_description', function (user) {
   switch (Session.get("routed_template")) {
   case "firehose":
     return 'All posts';
-    break;
+  case "user_history":
+    return 'Posts by: ' + WeFi.displayName(Session.get("directory_user"));
   }
 });
 
