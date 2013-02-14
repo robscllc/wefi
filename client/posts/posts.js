@@ -21,7 +21,7 @@ _.extend(WeFi.router_func, {
     Session.set('path', this.canonicalPath);
     if (_.isString(slug) && slug.match(/^[0-9a-f\-]+$/)) {
       Meteor.defer(function() {
-	$("div." + slug).scrollintoview({ topPadding: 60 });
+	WeFi.scroll_to_post("div." + slug);
       });
     }
     Session.set('post_id', id);
@@ -180,7 +180,10 @@ Template.postLayout.events({
     return false;
   },
   'click .parent': function (event, template) {
-    $("div." + template.data.parent).scrollintoview({ topPadding: 60 });
+    if ( ! WeFi.scroll_to_post("div." + template.data.parent) ) {
+      var p = Posts.findOne({ _id: template.data.parent });
+      Meteor.Router.to("/post/" + p.root + "/" + p._id);
+    }
   }
 });
 
