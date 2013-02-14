@@ -2,16 +2,9 @@
 <template name="post">
   {{#if post}}
   {{#with post}}
-  <div class="row-fluid">
-    <div class="span9">            
       {{#each tree}}
       {{> postLayout }}
       {{/each}}
-    </div>
-    <div class="span3">
-      {{> about }}
-    </div>
-  </div>
   {{/with}}
   {{/if}}
 </template>
@@ -90,14 +83,6 @@
 
 <template name="about">
   <div class="well">
-    <ul class="nav nav-list">
-      <li class="nav-header">Other logged-in users</li>
-      {{#each activeUsers}}
-      <li><a href="/directory/{{userId}}/history">{{displayName userId}}</a></li>
-      {{/each}}
-    </ul>
-  </div>
-  <div>
     <p>
       <a href="/"><em>Weekday Filler</em></a> is a weblog heavily
       influenced by <a href="http://metafilter.com">MetaFilter</a> with a dash
@@ -111,50 +96,35 @@
       or <a href="/tag/wefi-meta">read more
 	about</a> <em>WeFi</em>.
     </p>
-
-    <p>
-      Why bother? It's an attempt
-      by <a href="/directory/4c2d4bfc-7aa5-496d-9437-b462f2fa0cc6/history">fred</a> to learn
-      the <a href="http://meteor.com">Meteor framework</a>.
-      <em>Weekday Filler</em> updates in real-time,
-      without page
-      refreshes. It's <a href="http://www.meteor.com/screencast">magic</a>.
-    </p>
     
-    <p>This project was also inspired by the
-      recent <a href="http://metatalk.metafilter.com/22319/MeFi-is-adding-titles">kerfuffle
-	over at MeFi</a> that erupted following the rollout of a
-      seemingly innocuous feature. <em>Weekday Filler</em>
-      aims to be fully open and responsive in its development.
-    </p>
-    
+  </div>
+  <div class="well">
+    <ul class="nav nav-list">
+      <li class="nav-header">Other logged-in users</li>
+      {{#each activeUsers}}
+      <li><a href="/directory/{{userId}}/history">{{displayName userId}}</a></li>
+      {{/each}}
+    </ul>
   </div>
 </template>
 
 <template name="postlist">
   <div class="row-fluid">
-    <div class="span9">
-      <div class="row-fluid">
-	<div class="span6 offset1">
-	  <ul class="breadcrumb">
-	    <li>Showing posts with <a href="/tag">tags</a>: </li>
-	    {{#each current_tags}}
-	    <li><a href="/tag/{{this}}">{{this}}</a></li>
-	    {{/each}}
-	  </ul>
-	</div>
-	<div class="span5">
-	  {{{pagination}}}
-	</div>
-      </div>
-      {{#each list}}
-      {{> postLayout }}
-      {{/each}}
+    <div class="span6 offset1">
+      <ul class="breadcrumb">
+	<li>Showing posts with <a href="/tag">tags</a>: </li>
+	{{#each current_tags}}
+	<li><a href="/tag/{{this}}">{{this}}</a></li>
+	{{/each}}
+      </ul>
     </div>
-    <div class="span3">
-      {{> about }}
+    <div class="span5">
+      {{{pagination}}}
     </div>
   </div>
+  {{#each list}}
+  {{> postLayout }}
+  {{/each}}
 </template>
 
 <template name="postit">

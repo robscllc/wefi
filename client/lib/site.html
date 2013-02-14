@@ -9,9 +9,21 @@
   {{> navbar }}
   <div class="container-fluid">
     {{> postit }}
-    {{renderPage}}
+    <div class="row-fluid">
+      <div class="span3 sidebar-wrap">
+	{{> sidebar }}
+      </div>
+      <div class="span9">
+	{{renderPage}}
+      </div>
+    </div>
   </div>
 </body>
+<template name="sidebar">
+  <div class="sidebar-contents" data-offset-top="60">
+    {{> about }}
+  </div>
+</template>
 
 <template name="navbar">
   <div class="navbar navbar-fixed-top">  

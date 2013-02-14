@@ -1,44 +1,30 @@
 <template name="directory">
-  <div class="row-fluid">
-    <div class="span9">
-      <table class="table table-striped"> 
-       <tbody>
-	 {{#each users}}
-	 <tr>
-	   <td>{{displayName this}}</td>
-	   <td><a href="/directory/{{_id}}/history">Post history</a></td>
-	 </tr>
-	 {{/each}}
-       </tbody>
-      </table>
-    </div>
-    <div class="span3">
-      {{> about }}
-    </div>
-  </div>
+  <table class="table table-striped"> 
+    <tbody>
+      {{#each users}}
+      <tr>
+	<td>{{displayName this}}</td>
+	<td><a href="/directory/{{_id}}/history">Post history</a></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
 </template>
 
 <template name="user_history">
   <div class="row-fluid">
-    <div class="span9">
-      <div class="row-fluid">
-	<div class="span6 offset1">
-	  <ul class="breadcrumb">
-	    {{#with user}}
-	    <li>Posts by: {{displayName this}}</li>
-	    {{/with}}
-	  </ul>
-	</div>
-	<div class="span5">
-	  {{{pagination}}}
-	</div>
-      </div>
-      {{#each list}}
-      {{> postLayout }}
-      {{/each}}
+    <div class="span6 offset1">
+      <ul class="breadcrumb">
+	{{#with user}}
+	<li>Posts by: {{displayName this}}</li>
+	{{/with}}
+      </ul>
     </div>
-    <div class="span3">
-      {{> about }}
+    <div class="span5">
+      {{{pagination}}}
     </div>
   </div>
+  {{#each list}}
+  {{> postLayout }}
+  {{/each}}
 </template>

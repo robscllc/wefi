@@ -1,22 +1,15 @@
 <template name="firehose">
   <div class="row-fluid">
-    <div class="span9">
-      <div class="row-fluid">
-	<div class="span6 offset1">
-	  <ul class="breadcrumb">
-	    <li>All posts</li>
-	  </ul>
-	</div>
-	<div class="span5">
-	  {{{pagination}}}
-	</div>
-      </div>
-      {{#each list}}
-      {{> postLayout }}
-      {{/each}}
+    <div class="span6 offset1">
+      <ul class="breadcrumb">
+	<li>All posts</li>
+      </ul>
     </div>
-    <div class="span3">
-      {{> about }}
+    <div class="span5">
+      {{{pagination}}}
     </div>
   </div>
+  {{#each list}}
+  {{> postLayout }}
+  {{/each}}
 </template>
