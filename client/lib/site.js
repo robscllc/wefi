@@ -75,6 +75,32 @@ Handlebars.registerHelper('displayName', function (user) {
   return WeFi.displayName(user);
 });
 
+Handlebars.registerHelper('pager', function (user) {
+  var func, link;
+  switch (Session.get("routed_template")) {
+  case "firehose":
+    func = 'firehose_constraints';
+    link = '/firehose'
+    break;
+  }
+  
+  if (func) {
+    var pc = WeFi.query_func[func]();
+    var count = Posts.find(pc[0], pc[1]).count();
+    Pagination.currentPage(Session.get('page'));
+    if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
+      return Pagination.links(link, count);
+  }
+});
+
+Handlebars.registerHelper('page_description', function (user) {
+  switch (Session.get("routed_template")) {
+  case "firehose":
+    return 'All posts';
+    break;
+  }
+});
+
 Meteor.startup(function() {
   WeFi.md_converter = new Markdown.getSanitizingConverter();
   Session.set("tag-sort", "date");

@@ -19,10 +19,50 @@
     </div>
   </div>
 </body>
+
 <template name="sidebar">
   <div class="sidebar">
     {{> about }}
   </div>
+</template>
+
+<template name="about">
+  {{#if page_description}}
+  <div class="well">
+    {{> current_page }}
+  </div>
+  {{/if}}
+  <div class="well">
+    <p>
+      <a href="/"><em>Weekday Filler</em></a> is a weblog heavily
+      influenced by <a href="http://metafilter.com">MetaFilter</a> with a dash
+      of <a href="http://reddit.com">reddit</a>.
+    </p>
+
+    <p>
+      Please <button class="post btn btn-mini" data-toggle="button">post</button> something,
+      <a href="/tag/wefi-feature">suggest
+	features</a>, <a href="/tag/wefi-bug">report bugs</a>,
+      or <a href="/tag/wefi-meta">read more
+	about</a> <em>WeFi</em>.
+    </p>
+    
+  </div>
+  <div class="well">
+    <ul class="nav nav-list">
+      <li class="nav-header">Other logged-in users</li>
+      {{#each activeUsers}}
+      <li><a href="/directory/{{userId}}/history">{{displayName userId}}</a></li>
+      {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name="current_page">
+  <p>
+    {{{page_description}}}
+  </p>
+  {{{pager}}}
 </template>
 
 <template name="navbar">

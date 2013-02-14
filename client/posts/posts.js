@@ -105,7 +105,7 @@ Template.post.tree = function() {
 };
 
 Pagination.perPage(20);
-Pagination.style('bootstrap');
+//Pagination.style('bootstrap');
 
 Template.postlist.list = function() {
   var pc = WeFi.query_func.post_constraints();
