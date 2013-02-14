@@ -129,3 +129,9 @@
 <template name="home">
   {{> postlist}}
 </template>
+
+<template name="firehose">
+  {{#each array_of_posts}}
+  {{> postLayout }}
+  {{/each}}
+</template>

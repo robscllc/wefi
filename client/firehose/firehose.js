@@ -30,17 +30,3 @@ Meteor.Router.add({
   "/firehose": WeFi.router_func.firehose
   ,"/firehose/:page": WeFi.router_func.firehose
 });
-
-Template.firehose.list = function() {
-  var pc = WeFi.query_func.firehose_constraints();
-  Pagination.currentPage(Session.get('page')); 
-  return Pagination.collection(Posts.find(pc[0], pc[1]).fetch());
-};
-
-Template.firehose.pagination = function () {
-  var pc = WeFi.query_func.firehose_constraints();
-  var count = Posts.find(pc[0], pc[1]).count();
-  Pagination.currentPage(Session.get('page'));
-  if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
-    return Pagination.links('/firehose', count);
-}

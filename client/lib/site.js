@@ -75,6 +75,21 @@ Handlebars.registerHelper('displayName', function (user) {
   return WeFi.displayName(user);
 });
 
+Handlebars.registerHelper('array_of_posts', function (user) {
+  var func, link;
+  switch (Session.get("routed_template")) {
+  case "firehose":
+    func = 'firehose_constraints';
+    break;
+  }
+  
+  if (func) {
+    var pc = WeFi.query_func[func]();
+    Pagination.currentPage(Session.get('page')); 
+    return Pagination.collection(Posts.find(pc[0], pc[1]).fetch());
+  }
+});
+
 Handlebars.registerHelper('pager', function (user) {
   var func, link;
   switch (Session.get("routed_template")) {
