@@ -18,6 +18,43 @@ Meteor.publish("actives", function() {
   return ActiveUsers.find();
 });
 
+Posts.allow({
+  insert: function (userId, post) {
+    return false; // no cowboy inserts -- use createPost method
+  },
+  update: function (userId, posts, fields, modifier) {
+    return false;
+    return _.all(posts, function (post) {
+      console.log(fields);
+      if (userId !== post.owner)
+        return false; // not the owner
+      
+      var allowed = ["body", "tags"];
+      if (_.difference(fields, allowed).length)
+        return false; // tried to write to forbidden field
+      
+      // A good improvement would be to validate the type of the new
+      // value of the field (and if a string, the length.) In the
+      // future Meteor will have a schema system to makes that easier.
+      return true;
+    });
+  },
+  remove: function (userId, posts) {
+    return WeFi.isAdminById(userId);
+    return ! _.any(posts, function (post) {
+      return WeFi.isAdminById(userId);
+    });
+  }
+});
+
+ActiveUsers.allow({
+  remove: function (userId, docs) {
+    return _.all(docs, function(doc) {
+      return doc.userId === userId;
+    });
+  }
+});
+
 Meteor.startup(function() {
 
   var require = __meteor_bootstrap__.require;
@@ -27,43 +64,6 @@ Meteor.startup(function() {
   var isProd = fs.existsSync(base + '/static');
 
   WeFi.md_converter = require(base + (isProd ? "/static" : "/public") + "/thirdparty/pagedown/Markdown.Sanitizer").getSanitizingConverter();
-
-  Posts.allow({
-    insert: function (userId, post) {
-      return false; // no cowboy inserts -- use createPost method
-    },
-    update: function (userId, posts, fields, modifier) {
-      return false;
-      return _.all(posts, function (post) {
-	console.log(fields);
-	if (userId !== post.owner)
-          return false; // not the owner
-	
-	var allowed = ["body", "tags"];
-	if (_.difference(fields, allowed).length)
-          return false; // tried to write to forbidden field
-	
-	// A good improvement would be to validate the type of the new
-	// value of the field (and if a string, the length.) In the
-	// future Meteor will have a schema system to makes that easier.
-	return true;
-      });
-    },
-    remove: function (userId, posts) {
-      return WeFi.isAdminById(userId);
-      return ! _.any(posts, function (post) {
-	return WeFi.isAdminById(userId);
-      });
-    }
-  });
-
-  ActiveUsers.allow({
-    remove: function (userId, docs) {
-      return _.all(docs, function(doc) {
-	return doc.userId === userId;
-      });
-    }
-  });
 
   ActiveUsers.remove({});
   Meteor.default_server.stream_server.register( Meteor.bindEnvironment( function(socket) {
