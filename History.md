@@ -1,3 +1,19 @@
+## v0.1.11
+
+* refactored post-list view for tags, directory, and firehose
+ * 'postlist' is now the name of the generic post-list template
+* page description & pager controls now in static sideber on left
+* disabled automatic inline view for directory & firehose
+ * just using 'position: fixed' for sidebar ... didn't need bootstrap affix
+* added jquery.color to animate target posts
+* moved Meteor.allow out of Meteor.startup
+* fixed default title for pages without explicit ones
+* fixed small bug in javascript slug generator
+* excluding the common page tags from being listed in each post
+* tags are now links, not buttons
+* user can no longer vote on his own posts
+* posts using 'well' class now
+
 ## v0.1.10
 
 * new collection ActiveUsers tracks the logged in users to the site
