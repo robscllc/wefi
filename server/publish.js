@@ -18,6 +18,43 @@ Meteor.publish("actives", function() {
   return ActiveUsers.find();
 });
 
+Posts.allow({
+  insert: function (userId, post) {
+    return false; // no cowboy inserts -- use createPost method
+  },
+  update: function (userId, posts, fields, modifier) {
+    return false;
+    return _.all(posts, function (post) {
+      console.log(fields);
+      if (userId !== post.owner)
+        return false; // not the owner
+      
+      var allowed = ["body", "tags"];
+      if (_.difference(fields, allowed).length)
+        return false; // tried to write to forbidden field
+      
+      // A good improvement would be to validate the type of the new
+      // value of the field (and if a string, the length.) In the
+      // future Meteor will have a schema system to makes that easier.
+      return true;
+    });
+  },
+  remove: function (userId, posts) {
+    return WeFi.isAdminById(userId);
+    return ! _.any(posts, function (post) {
+      return WeFi.isAdminById(userId);
+    });
+  }
+});
+
+ActiveUsers.allow({
+  remove: function (userId, docs) {
+    return _.all(docs, function(doc) {
+      return doc.userId === userId;
+    });
+  }
+});
+
 Meteor.startup(function() {
 
   var require = __meteor_bootstrap__.require;
@@ -27,43 +64,6 @@ Meteor.startup(function() {
   var isProd = fs.existsSync(base + '/static');
 
   WeFi.md_converter = require(base + (isProd ? "/static" : "/public") + "/thirdparty/pagedown/Markdown.Sanitizer").getSanitizingConverter();
-
-  Posts.allow({
-    insert: function (userId, post) {
-      return false; // no cowboy inserts -- use createPost method
-    },
-    update: function (userId, posts, fields, modifier) {
-      return false;
-      return _.all(posts, function (post) {
-	console.log(fields);
-	if (userId !== post.owner)
-          return false; // not the owner
-	
-	var allowed = ["body", "tags"];
-	if (_.difference(fields, allowed).length)
-          return false; // tried to write to forbidden field
-	
-	// A good improvement would be to validate the type of the new
-	// value of the field (and if a string, the length.) In the
-	// future Meteor will have a schema system to makes that easier.
-	return true;
-      });
-    },
-    remove: function (userId, posts) {
-      return WeFi.isAdminById(userId);
-      return ! _.any(posts, function (post) {
-	return WeFi.isAdminById(userId);
-      });
-    }
-  });
-
-  ActiveUsers.allow({
-    remove: function (userId, docs) {
-      return _.all(docs, function(doc) {
-	return doc.userId === userId;
-      });
-    }
-  });
 
   ActiveUsers.remove({});
   Meteor.default_server.stream_server.register( Meteor.bindEnvironment( function(socket) {
@@ -111,13 +111,15 @@ WeFi.extend_body = function (o) {
   var html = WeFi.md_converter.makeHtml(o.body);
   var extend = { body_rendered: html, title: null, url_slug: null };
   var title = html.match(/<(h\d)>([\s\S]*?)<\/\1>/i);
+  extend.user_title = false;
   if (title) {
     extend.title = String(title[2]).replace(/<\/?[^>]+>/g, '');
     extend.user_title = true;
   }
-  var body_text = o.body.replace(/<(?:.|\n)*?>/gm, '');
+  var body_text = html.replace(/<(?:.|\n)*?>/gm, '');
   extend.body_text = body_text.substr(0, WeFi.max_body_text);
-  var words = (title ? extend.title : body_text).match(new RegExp('^(?:\\b\\w+\\b[\\s\\r\\n]*){1,' + WeFi.max_title_words + '}'));
+  var re = new RegExp('^(?:\\b\\w+\\b[\\W\\r\\n]*){1,' + WeFi.max_title_words + '}');
+  var words = (title ? extend.title : body_text).match(re);
   var default_title = (words ? words[0] : (title ? extend.title : body_text)).replace(/\s+$/, '');
   if (!title) 
     extend.title = default_title;
@@ -231,11 +233,16 @@ Meteor.methods({
     if (! post)
       throw new Meteor.Error(404, "No such post");
 
+    if (post.owner == this.userId)
+      throw new Meteor.Error(404, "Can't vote for your own post");
+
     var vote = Posts.findOne({_id: post._id, 
 			      votes: { $elemMatch: { owner: this.userId } } },
 			     { fields: { votes: 1 } });
+
     if (vote) {
-      if (vote.votes[0].vote == 1) {
+      vote = _.where(vote.votes, { owner: this.userId })[0];
+      if (vote.vote > 0) {
 	if (options.vote == 'up') {
 	  Posts.update({_id: post._id, 'votes.owner': this.userId},
 		       { $inc: { score: -1 },
@@ -245,7 +252,7 @@ Meteor.methods({
 		       { $inc: { score: -2 },
 			 $set: { 'votes.$.vote': -1 } });
 	}
-      } else if (vote.votes[0].vote == -1) {
+      } else if (vote.vote < 0) {
 	if (options.vote == 'up') {
 	  Posts.update({_id: post._id, 'votes.owner': this.userId},
 		       { $inc: { score: 2 },

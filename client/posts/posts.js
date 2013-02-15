@@ -14,14 +14,14 @@ _.extend(WeFi.router_func, {
       title: "posts tagged with " + _.map(tags, function(s) { return "'" + s + "'"; }).join(' and '),
       tags: tags 
     } );
-    Session.set("routed_template", "home");
+    Session.set("routed_template", "posts_by_tag");
     return Session.get("routed_template");
   },
   post: function(id, slug) {
     Session.set('path', this.canonicalPath);
     if (_.isString(slug) && slug.match(/^[0-9a-f\-]+$/)) {
       Meteor.defer(function() {
-	$("div." + slug).scrollintoview({ topPadding: 60 });
+	WeFi.scroll_to_post("div." + slug);
       });
     }
     Session.set('post_id', id);
@@ -104,27 +104,6 @@ Template.post.tree = function() {
   return Posts.find({ $and: [ {root: post.root, slug: {$regex: post.slug } } ] }, { sort: sorter });
 };
 
-Pagination.perPage(20);
-Pagination.style('bootstrap');
-
-Template.postlist.list = function() {
-  var pc = WeFi.query_func.post_constraints();
-  Pagination.currentPage(Session.get('page'));
-  return Pagination.collection(Posts.find(pc[0], pc[1]).fetch());
-};
-
-Template.postlist.pagination = function () {
-  var pc = WeFi.query_func.post_constraints();
-  var count = Posts.find(pc[0], pc[1]).count();
-  Pagination.currentPage(Session.get('page'));
-  if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
-    return Pagination.links('/tag/' + Session.get('page_tags').split(' ').join('-'), count);
-};
-
-Template.postlist.current_tags = function() {
-  return Session.get('page_tags').split(' ');
-};
-
 Template.postLayout.events({
   'click .reply': function (event, template) {
     if($(event.target).hasClass('active')) {
@@ -180,9 +159,17 @@ Template.postLayout.events({
     return false;
   },
   'click .parent': function (event, template) {
-    $("div." + template.data.parent).scrollintoview({ topPadding: 60 });
+    if ( ! WeFi.scroll_to_post("div." + template.data.parent) ) {
+      var p = Posts.findOne({ _id: template.data.parent });
+      Meteor.Router.to("/post/" + p.root + "/" + p._id);
+    }
   }
 });
+
+Template.tags.distinct_tags = function() {
+  return Session.equals("routed_template", "posts_by_tag" ) ? _.difference(this.tags, Session.get('page_tags').split(' ')) : this.tags;
+};
+
 
 Template.tags.events({
   'click button.tag': function (event, template) {
@@ -209,7 +196,7 @@ Template.postLayout.showSubThread = function() {
 };
 
 Template.postLayout.depthIfThreaded = function() {
-  return Session.equals("post-thread", "inline") ? 0 : this.depth;
+  return Session.equals("post-thread", "inline") ? (this.root == this._id ? 0 : 1) : this.depth;
 };
 
 Template.postLayout.inEditWindow = function () {
@@ -231,13 +218,15 @@ Template.postLayout.myVoteIs = function (val) {
   var post = Posts.findOne({_id: this._id},
 			   { fields: { votes: 1 } });
   if (post) {
-    var vote = _.find(post.votes, function(vote) {
-      return vote.owner == Meteor.userId();
-    });
-    if (vote)
-      return (vote.vote == 1 ? 'up' : 'down') == val;
+    var vote = _.where(post.votes, { owner: Meteor.userId() });
+    if (vote && vote.length)
+      return (vote[0].vote == 1 ? 'up' : 'down') == val;
   }
   return undefined;
+};
+
+Template.postLayout.canVote = function () {
+  return Meteor.userId() && this.owner != Meteor.userId();
 };
 
 Template.postLayout.editTimeRemaining = function () {
@@ -313,10 +302,10 @@ Template.postit.rendered = function() {
 Template.postit.events({
   'click button.preview': function (event, template) { 
    if($(event.target).hasClass('active')) {
-      $('#myTab a[href="#home"]').tab('show');
+      $('#myTab a[href="#editor"]').tab('show');
     } else {
-      $('#profile').css('height', $('#home').outerHeight());
-      $('#myTab a[href="#profile"]').tab('show');
+      $('#preview').css('height', $('#editor').outerHeight());
+      $('#myTab a[href="#preview"]').tab('show');
       $(template.find('.preview')).html(WeFi.md_converter.makeHtml(template.find(".body").value));
     }      
   },
@@ -338,10 +327,10 @@ Template.postit.events({
 	  } else {
 	    Session.set("createError", null);
 	    Session.set('showPostit', false);
-	    if ( Session.get("routed_template") == "home" ) {
+	    if ( Session.get("routed_template") == "posts_by_tag" ) {
 	      var p = Posts.findOne(post);
 	      if (p.root == p._id)
-		Meteor.Router.to("/post/" + p.root);
+		Meteor.Router.to("/post/" + p.root + "/" + p.url_slug);
 	      else
 		Meteor.Router.to("/post/" + p.root + "/" + p._id);
 	    }

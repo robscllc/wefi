@@ -22,10 +22,8 @@ div.depth19 { margin-left: 19em; }
   background-image: url("/images/css/filled_thumbs.png");
 }
 
-div.post {
-    background: #f8f8f8;
-    padding: 2px 4px;
-    margin-bottom: 1em;
+div.well {
+    padding: 5px 10px;
 }
 
 div.post p {
@@ -33,7 +31,7 @@ div.post p {
 }
 
 div.post span.footer {
-    font-size: .8em;
+    font-size: .75em;
     color: #999;
 }
 
@@ -41,9 +39,11 @@ div.post hr {
     margin: .3em 0;
 }
 
-.affix {
-    position: fixed;
-    top: 60px;
+@media (min-width: 980px) {
+    .sidebar {
+	position: fixed;
+	width: 22.5%;
+    }
 }
 
 ul.inline {
@@ -59,8 +59,8 @@ ul.tags button.close {
     margin-right: 1em;
 }
 
-ul.tags button.tag {
-    background: #f0f0f0;
+ul.tags a.tag {
+    background: #e0e0e0;
 }
 
 ul.tags {

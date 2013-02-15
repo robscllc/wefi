@@ -2,8 +2,8 @@ _.extend(WeFi.router_func, {
   user_history: function(user, page) {
     Session.set("directory_user", user);
     Session.set('page', page || 1);
-    Session.set("post-thread", "inline");
-    WeFi.set_head( { title: "Post history for user '" + WeFi.displayName(Template.user_history.user()) + "'" } );
+    //Session.set("post-thread", "inline");
+    WeFi.set_head( { title: "Post history for user '" + WeFi.displayName(Session.get("directory_user")) + "'" } );
     Session.set("routed_template", "user_history");
     return Session.get("routed_template");
   }
@@ -43,21 +43,3 @@ Meteor.Router.add({
 Template.directory.users = function() {
   return Meteor.users.find({});
 };
-
-Template.user_history.user = function() {
-  return Meteor.users.findOne(Session.get("directory_user"));
-};
-
-Template.user_history.list = function() {
-  var pc = WeFi.query_func.user_history_constraints();
-  Pagination.currentPage(Session.get('page')); 
-  return Pagination.collection(Posts.find(pc[0], pc[1]).fetch());
-};
-
-Template.user_history.pagination = function () {
-  var pc = WeFi.query_func.user_history_constraints();
-  var count = Posts.find(pc[0], pc[1]).count();
-  Pagination.currentPage(Session.get('page'));
-  if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
-    return Pagination.links('/directory/' + Session.get('directory_user') + '/history', count);
-}
