@@ -51,7 +51,6 @@ Template.navbar.helpers({
 
 Template.tagsearch.events({
   'click button.tag-btn': function (event, template) {
-    console.log('hi');
     return false;
   }
 });

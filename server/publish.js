@@ -116,7 +116,7 @@ WeFi.extend_body = function (o) {
     extend.title = String(title[2]).replace(/<\/?[^>]+>/g, '');
     extend.user_title = true;
   }
-  var body_text = o.body.replace(/<(?:.|\n)*?>/gm, '');
+  var body_text = html.replace(/<(?:.|\n)*?>/gm, '');
   extend.body_text = body_text.substr(0, WeFi.max_body_text);
   var re = new RegExp('^(?:\\b\\w+\\b[\\W\\r\\n]*){1,' + WeFi.max_title_words + '}');
   var words = (title ? extend.title : body_text).match(re);
