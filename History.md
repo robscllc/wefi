@@ -2,7 +2,7 @@
 
 * refactored post-list view for tags, directory, and firehose
  * 'postlist' is now the name of the generic post-list template
-* page description & pager controls now in static sideber on left
+* page description & pager controls now in static sidebar on left
 * disabled automatic inline view for directory & firehose
  * just using 'position: fixed' for sidebar ... didn't need bootstrap affix
 * added jquery.color to animate target posts
