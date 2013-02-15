@@ -32,3 +32,25 @@ h1, h2, h3, h4, h5, h6 {
 div.pagination {
     margin: 0;
 }
+
+footer.footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 70px;
+    border-top: 1px solid #E5E5E5;
+    background-color: whiteSmoke;
+}
+footer.footer p {
+  margin-bottom: 0;
+  color: #777;
+}
+ul.footer-links {
+  margin: 10px 0;
+}
+ul.footer-links li {
+  display: inline;
+  padding: 0 2px;
+}
+ul.footer-links li:first-child {
+  padding-left: 0;
+}
