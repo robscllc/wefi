@@ -104,27 +104,6 @@ Template.post.tree = function() {
   return Posts.find({ $and: [ {root: post.root, slug: {$regex: post.slug } } ] }, { sort: sorter });
 };
 
-Pagination.perPage(20);
-//Pagination.style('bootstrap');
-
-Template.postlist.list = function() {
-  var pc = WeFi.query_func.post_constraints();
-  Pagination.currentPage(Session.get('page'));
-  return Pagination.collection(Posts.find(pc[0], pc[1]).fetch());
-};
-
-Template.postlist.pagination = function () {
-  var pc = WeFi.query_func.post_constraints();
-  var count = Posts.find(pc[0], pc[1]).count();
-  Pagination.currentPage(Session.get('page'));
-  if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
-    return Pagination.links('/tag/' + Session.get('page_tags').split(' ').join('-'), count);
-};
-
-Template.postlist.current_tags = function() {
-  return Session.get('page_tags').split(' ');
-};
-
 Template.postLayout.events({
   'click .reply': function (event, template) {
     if($(event.target).hasClass('active')) {

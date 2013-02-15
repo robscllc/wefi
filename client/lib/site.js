@@ -75,6 +75,9 @@ Handlebars.registerHelper('displayName', function (user) {
   return WeFi.displayName(user);
 });
 
+Pagination.perPage(20);
+//Pagination.style('bootstrap');
+
 Handlebars.registerHelper('array_of_posts', function (user) {
   var func, link;
   switch (Session.get("routed_template")) {
@@ -83,6 +86,9 @@ Handlebars.registerHelper('array_of_posts', function (user) {
     break;
   case "user_history":
     func = 'user_history_constraints';
+    break;
+  case "home":
+    func = 'post_constraints';
     break;
   }
   
@@ -104,6 +110,10 @@ Handlebars.registerHelper('pager', function (user) {
     func = 'user_history_constraints';
     link = '/directory/' + Session.get('directory_user') + '/history';
     break;
+  case "home":
+    func = 'post_constraints';
+    link = '/tag/' + Session.get('page_tags').split(' ').join('-');
+    break;
   }
   
   if (func) {
@@ -121,7 +131,11 @@ Handlebars.registerHelper('page_description', function (user) {
     return 'All posts';
   case "user_history":
     return 'Posts by: ' + WeFi.displayName(Session.get("directory_user"));
-  }
+  case "home":
+    func = 'post_constraints';
+    return Template.tag_list({ current_tags: Session.get('page_tags').split(' ') });
+    break;
+   }
 });
 
 Meteor.startup(function() {

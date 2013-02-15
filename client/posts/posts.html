@@ -81,25 +81,6 @@
   </div>
 </template>
 
-<template name="postlist">
-  <div class="row-fluid">
-    <div class="span6 offset1">
-      <ul class="breadcrumb">
-	<li>Showing posts with <a href="/tag">tags</a>: </li>
-	{{#each current_tags}}
-	<li><a href="/tag/{{this}}">{{this}}</a></li>
-	{{/each}}
-      </ul>
-    </div>
-    <div class="span5">
-      {{{pagination}}}
-    </div>
-  </div>
-  {{#each list}}
-  {{> postLayout }}
-  {{/each}}
-</template>
-
 <template name="postit">
   {{#if showPostit}}
   <div id="postit" class="depth1 modal">

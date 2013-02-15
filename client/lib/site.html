@@ -127,7 +127,9 @@
 </template>
 
 <template name="home">
-  {{> postlist}}
+  {{#each array_of_posts}}
+  {{> postLayout }}
+  {{/each}}
 </template>
 
 <template name="firehose">
@@ -140,4 +142,13 @@
   {{#each array_of_posts}}
   {{> postLayout }}
   {{/each}}
+</template>
+
+<template name="tag_list">
+  Showing posts with <a href="/tag">tags</a>
+  <ul>
+  {{#each current_tags}}
+  <li><a href="/tag/{{this}}">{{this}}</a></li>
+  {{/each}}
+  </ul>
 </template>
