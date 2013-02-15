@@ -12,7 +12,7 @@ Meteor.Router.add({
     Session.set('page_tags', 'front_page');
     Session.set("tag-dir", "desc");
     WeFi.set_head( { tags: ['front_page'] } );
-    Session.set("routed_template", "home");
+    Session.set("routed_template", "posts_by_tag");
     return Session.get("routed_template");
   }
 });
@@ -87,7 +87,7 @@ Handlebars.registerHelper('array_of_posts', function (user) {
   case "user_history":
     func = 'user_history_constraints';
     break;
-  case "home":
+  case "posts_by_tag":
     func = 'post_constraints';
     break;
   }
@@ -110,7 +110,7 @@ Handlebars.registerHelper('pager', function (user) {
     func = 'user_history_constraints';
     link = '/directory/' + Session.get('directory_user') + '/history';
     break;
-  case "home":
+  case "posts_by_tag":
     func = 'post_constraints';
     link = '/tag/' + Session.get('page_tags').split(' ').join('-');
     break;
@@ -131,7 +131,7 @@ Handlebars.registerHelper('page_description', function (user) {
     return 'All posts';
   case "user_history":
     return 'Posts by: ' + WeFi.displayName(Session.get("directory_user"));
-  case "home":
+  case "posts_by_tag":
     func = 'post_constraints';
     return Template.tag_list({ current_tags: Session.get('page_tags').split(' ') });
     break;

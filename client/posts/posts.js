@@ -14,7 +14,7 @@ _.extend(WeFi.router_func, {
       title: "posts tagged with " + _.map(tags, function(s) { return "'" + s + "'"; }).join(' and '),
       tags: tags 
     } );
-    Session.set("routed_template", "home");
+    Session.set("routed_template", "posts_by_tag");
     return Session.get("routed_template");
   },
   post: function(id, slug) {
@@ -167,7 +167,7 @@ Template.postLayout.events({
 });
 
 Template.tags.distinct_tags = function() {
-  return Session.equals("routed_template", "home" ) ? _.difference(this.tags, Session.get('page_tags').split(' ')) : this.tags;
+  return Session.equals("routed_template", "posts_by_tag" ) ? _.difference(this.tags, Session.get('page_tags').split(' ')) : this.tags;
 };
 
 
@@ -327,7 +327,7 @@ Template.postit.events({
 	  } else {
 	    Session.set("createError", null);
 	    Session.set('showPostit', false);
-	    if ( Session.get("routed_template") == "home" ) {
+	    if ( Session.get("routed_template") == "posts_by_tag" ) {
 	      var p = Posts.findOne(post);
 	      if (p.root == p._id)
 		Meteor.Router.to("/post/" + p.root + "/" + p.url_slug);

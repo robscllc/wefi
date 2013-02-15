@@ -122,23 +122,15 @@
   </li>
 </template>
 
-<template name="home">
+<template name="postlist">
   {{#each array_of_posts}}
   {{> postLayout }}
   {{/each}}
 </template>
 
-<template name="firehose">
-  {{#each array_of_posts}}
-  {{> postLayout }}
-  {{/each}}
-</template>
-
-<template name="user_history">
-  {{#each array_of_posts}}
-  {{> postLayout }}
-  {{/each}}
-</template>
+<template name="posts_by_tag">{{> postlist }}</template>
+<template name="firehose">{{> postlist }}</template>
+<template name="user_history">{{> postlist }}</template>
 
 <template name="tag_list">
   Showing posts with <a href="/tag">tags</a>
