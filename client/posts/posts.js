@@ -302,10 +302,10 @@ Template.postit.rendered = function() {
 Template.postit.events({
   'click button.preview': function (event, template) { 
    if($(event.target).hasClass('active')) {
-      $('#myTab a[href="#home"]').tab('show');
+      $('#myTab a[href="#editor"]').tab('show');
     } else {
-      $('#profile').css('height', $('#home').outerHeight());
-      $('#myTab a[href="#profile"]').tab('show');
+      $('#preview').css('height', $('#editor').outerHeight());
+      $('#myTab a[href="#preview"]').tab('show');
       $(template.find('.preview')).html(WeFi.md_converter.makeHtml(template.find(".body").value));
     }      
   },
