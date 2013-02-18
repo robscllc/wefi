@@ -1,3 +1,8 @@
+## v0.1.12
+
+* refactored the code for github
+* released under the MIT license
+
 ## v0.1.11
 
 * refactored post-list view for tags, directory, and firehose
