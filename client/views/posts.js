@@ -1,23 +1,5 @@
-Meteor.subscribe("posts");
-
-_.extend(WeFi.router_func, {
-  tag: function(tag, page) {
-    Session.set('path', this.canonicalPath);
-    var tags = (_.isString(tag) ? tag.split('-') : []);
-    Session.set("postit_tags", tags.join(' '));
-    Session.set("page_tags", tags.join(' '));
-    Session.set('post_id', null);
-    Session.set('postit_id', null);
-    Session.set('page', page || 1);
-    Session.set("tag-dir", "desc");
-    WeFi.set_head( { 
-      title: "posts tagged with " + _.map(tags, function(s) { return "'" + s + "'"; }).join(' and '),
-      tags: tags 
-    } );
-    Session.set("routed_template", "posts_by_tag");
-    return Session.get("routed_template");
-  },
-  post: function(id, slug) {
+WeFi.view.post = {
+  router: function(id, slug) {
     Session.set('path', this.canonicalPath);
     if (_.isString(slug) && slug.match(/^[0-9a-f\-]+$/)) {
       Meteor.defer(function() {
@@ -36,42 +18,6 @@ _.extend(WeFi.router_func, {
       } );
     Session.set("routed_template", "post");
     return Session.get("routed_template");
-  }
-});
-
-Meteor.Router.add({
-  "/post/:id": WeFi.router_func.post
-  ,"/post/:id/:slug": WeFi.router_func.post
-  ,"/tag/:tag": WeFi.router_func.tag
-  ,"/tag/:tag/:page": WeFi.router_func.tag
-  ,"/tag": function() {
-    WeFi.set_head( { title: "All tags", tags: Session.get("all_tags") } );
-    Session.set("routed_template", "all_tags");
-    return Session.get("routed_template");
-  }
-});
-
-_.extend(WeFi.query_func, {
-  post_constraints: function() {
-    var cons = { parent: null };
-
-    var tags = Session.get("page_tags").split(' ');
-    if (tags.length > 1) {
-      cons['$and'] = _.map(tags, function(tag){ return { tags: tag } });
-    } else {
-      cons.tags = tags[0];
-    }
-
-    if (Session.get('hideClosed'))
-      cons.state = { $ne: "closed" };
-
-    var sorter = [['posted', Session.get('tag-dir')]];
-    switch (Session.get('tag-sort')) {
-    case "score":
-      sorter.unshift(['score', Session.get('tag-dir')]);
-      break;
-    }
-    return [cons, { sort: sorter } ];
   },
   edit_callback: function (event, template) {
     if($(event.target).hasClass('active')) {
@@ -86,6 +32,11 @@ _.extend(WeFi.query_func, {
       Session.set('createError', null);
     }
   }
+};
+
+Meteor.Router.add({
+  "/post/:id": WeFi.view.post.router
+  ,"/post/:id/:slug": WeFi.view.post.router
 });
 
 Template.post.post = function() {
@@ -118,8 +69,8 @@ Template.postLayout.events({
       Session.set('createError', null);
     }
   },
-  'click .edit': WeFi.query_func.edit_callback,
-  'click .admin-edit': WeFi.query_func.edit_callback,
+  'click .edit': WeFi.view.post.edit_callback,
+  'click .admin-edit': WeFi.view.post.edit_callback,
   'click .remove': function () {
     Meteor.call('removeThread', {
       post_id: this._id
@@ -372,16 +323,4 @@ Template.postit.tags = function () {
 
 Template.postit.body = function () {
   return Session.get("postit_body");
-};
-
-Template.about.events({
-  'click button.post': function(e, t) { return WeFi.root_post_popup(e, t) }
-});
-
-Template.about.activeUsers = function() {
-  return ActiveUsers.find({ userId: { $ne: Meteor.userId() } });
-};
-
-Template.all_tags.tags = function() {
-  return Session.get('all_tags');
 };

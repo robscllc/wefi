@@ -1,16 +1,13 @@
-_.extend(WeFi.router_func, {
-  firehose: function(page) {
+WeFi.view.firehose = {
+  router: function(page) {
     Session.set('page', page || 1);
     Session.set("tag-dir", "desc");
     //Session.set("post-thread", "inline");
     WeFi.set_head( { title: "All posts" } );
     Session.set("routed_template", "firehose");
     return Session.get("routed_template");
-  }
-});
-
-_.extend(WeFi.query_func, {
-  firehose_constraints: function() {
+  },
+  constraints: function() {
     var cons = { };
     
     if (Session.get('hideClosed'))
@@ -23,10 +20,12 @@ _.extend(WeFi.query_func, {
       break;
     }
     return [cons, { sort: sorter } ];
-  }
-});
+  },
+  link: '/firehose',
+  description: function() { return 'All Posts' }
+};
 
 Meteor.Router.add({
-  "/firehose": WeFi.router_func.firehose
-  ,"/firehose/:page": WeFi.router_func.firehose
+  "/firehose": WeFi.view.firehose.router
+  ,"/firehose/:page": WeFi.view.firehose.router
 });
