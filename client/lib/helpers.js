@@ -39,7 +39,7 @@ WeFi.root_post_popup = function (event, template) {
   } else {
     Session.set('postit_id', null);
     Session.set('postit_mode', 'reply');
-    Session.set("postit_body", undefined);
+    Session.set("postit_body", null);
     WeFi.postit_target = $(template.find(".post"));
     Session.set('showPostit', true);
     Session.set('createError', null);

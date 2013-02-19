@@ -62,8 +62,8 @@ Template.postLayout.events({
     } else {
       Session.set('postit_id', template.data._id);
       Session.set('postit_mode', 'reply');
-      Session.set("postit_body", undefined);
-      Session.set("postit_tags", undefined);
+      Session.set("postit_body", null);
+      Session.set("postit_tags", null);
       WeFi.postit_target = $(template.find(".reply"));
       Session.set('showPostit', true);
       Session.set('createError', null);
@@ -173,7 +173,7 @@ Template.postLayout.myVoteIs = function (val) {
     if (vote && vote.length)
       return (vote[0].vote == 1 ? 'up' : 'down') == val;
   }
-  return undefined;
+  return null;
 };
 
 Template.postLayout.canVote = function () {
