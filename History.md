@@ -1,3 +1,8 @@
+## v0.1.12.2
+
+* fixed bug involving page_tags
+* tags are stored in Session as arrays
+
 ## v0.1.12.1
 
 * added README.md
