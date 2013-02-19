@@ -2,8 +2,8 @@ WeFi.view.posts_by_tag = {
   router: function(tag, page) {
     Session.set('path', this.canonicalPath);
     var tags = (_.isString(tag) ? tag.split('-') : []);
-    Session.set("postit_tags", tags.join(' '));
-    Session.set("page_tags", tags.join(' '));
+    Session.set("postit_tags", tags);
+    Session.set("page_tags", tags);
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', page || 1);
@@ -18,7 +18,7 @@ WeFi.view.posts_by_tag = {
   constraints: function() {
     var cons = { parent: null };
 
-    var tags = Session.get("page_tags").split(' ');
+    var tags = Session.get("page_tags");
     if (tags.length > 1) {
       cons['$and'] = _.map(tags, function(tag){ return { tags: tag } });
     } else {
@@ -36,9 +36,11 @@ WeFi.view.posts_by_tag = {
     }
     return [cons, { sort: sorter } ];
   },
-  link: '/tag/' + Session.get('page_tags').split(' ').join('-'),
+  link: function() {
+    return '/tag/' + (_.isArray(Session.get('page_tags')) ? Session.get('page_tags').join('-') : '');
+  },
   description: function() { 
-    return Template.tag_list({ current_tags: Session.get('page_tags').split(' ') });
+    return Template.tag_list({ current_tags: Session.get('page_tags') });
   }
 };
 
