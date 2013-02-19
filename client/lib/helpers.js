@@ -22,8 +22,8 @@ Handlebars.registerHelper('pager', function (user) {
     var pc = view.constraints();
     var count = Posts.find(pc[0], pc[1]).count();
     Pagination.currentPage(Session.get('page'));
-    if (count && Pagination.totalPages(count, Pagination.perPage()) > 1)
-      return Pagination.links(view.link, count);
+    if (count && Pagination.totalPages(count, Pagination.perPage()) > 1 && _.isFunction(view.link))
+      return Pagination.links(view.link(), count);
   }
 });
 

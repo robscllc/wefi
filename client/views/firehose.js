@@ -21,7 +21,7 @@ WeFi.view.firehose = {
     }
     return [cons, { sort: sorter } ];
   },
-  link: '/firehose',
+  link: function() { return '/firehose' },
   description: function() { return 'All Posts' }
 };
 

@@ -36,7 +36,9 @@ WeFi.view.posts_by_tag = {
     }
     return [cons, { sort: sorter } ];
   },
-  link: '/tag/' + (_.isArray(Session.get('page_tags')) ? Session.get('page_tags').join('-') : ''),
+  link: function() {
+    return '/tag/' + (_.isArray(Session.get('page_tags')) ? Session.get('page_tags').join('-') : '');
+  },
   description: function() { 
     return Template.tag_list({ current_tags: Session.get('page_tags') });
   }
