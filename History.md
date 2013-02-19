@@ -2,6 +2,7 @@
 
 * fixed bug involving page_tags
 * tags are stored in Session as arrays
+* pager links are now dynamic
 
 ## v0.1.12.1
 
