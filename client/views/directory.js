@@ -25,7 +25,9 @@ WeFi.view.user_history = {
     }
     return [{_id: 0}, {}];
   },
-  link: '/directory/' + Session.get('directory_user') + '/history',
+  link: function() {
+    return '/directory/' + Session.get('directory_user') + '/history';
+  },
   description: function() { return 'Posts by: ' + WeFi.displayName(Session.get("directory_user")) }
 };
   
