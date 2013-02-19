@@ -137,6 +137,10 @@ Template.postLayout.commentCount = function () {
   return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
 };
 
+Template.postLayout.cc_sp = function() {
+  return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count() === 1 ? 'reply' : 'replies';
+};
+
 Template.postLayout.showSubThread = function() {
   if (Session.equals("routed_template", "post" ) && this._id !== Session.get("post_id")) {
     var child = Posts.findOne({parent: this._id });
