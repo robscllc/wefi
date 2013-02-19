@@ -26,7 +26,7 @@ WeFi.view.post = {
       Session.set('postit_id', template.data._id);
       Session.set('postit_mode', 'edit');
       Session.set("postit_body", template.data.body);
-      Session.set("postit_tags", template.data.tags.join(' '));
+      Session.set("postit_tags", template.data.tags);
       WeFi.postit_target = $(event.target);
       Session.set('showPostit', true);
       Session.set('createError', null);
@@ -63,7 +63,7 @@ Template.postLayout.events({
       Session.set('postit_id', template.data._id);
       Session.set('postit_mode', 'reply');
       Session.set("postit_body", null);
-      Session.set("postit_tags", null);
+      Session.set("postit_tags", []);
       WeFi.postit_target = $(template.find(".reply"));
       Session.set('showPostit', true);
       Session.set('createError', null);
@@ -118,7 +118,7 @@ Template.postLayout.events({
 });
 
 Template.tags.distinct_tags = function() {
-  return Session.equals("routed_template", "posts_by_tag" ) ? _.difference(this.tags, Session.get('page_tags').split(' ')) : this.tags;
+  return Session.equals("routed_template", "posts_by_tag" ) ? _.difference(this.tags, Session.get('page_tags')) : this.tags;
 };
 
 
@@ -318,7 +318,7 @@ Template.postit.error = function () {
 };
 
 Template.postit.tags = function () {
-  return Session.get("postit_tags");
+  return _.isArray(Session.get("postit_tags")) ? Session.get("postit_tags").join(" ") : '';
 };
 
 Template.postit.body = function () {

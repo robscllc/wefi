@@ -9,8 +9,8 @@ Meteor.Router.add({
     Session.set('post_id', null);
     Session.set('postit_id', null);
     Session.set('page', 1);
-    Session.set('postit_tags', 'front_page');
-    Session.set('page_tags', 'front_page');
+    Session.set('postit_tags', ['front_page']);
+    Session.set('page_tags', ['front_page']);
     Session.set("tag-dir", "desc");
     WeFi.set_head( { tags: ['front_page'] } );
     Session.set("routed_template", "posts_by_tag");
