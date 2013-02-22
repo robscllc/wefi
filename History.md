@@ -1,3 +1,9 @@
+## v0.1.12.3
+
+* fixed null in reply body
+* only showing reply count on root-level posts
+* only enter thread on a reply
+
 ## v0.1.12.2
 
 * fixed bug involving page_tags
