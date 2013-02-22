@@ -62,7 +62,7 @@ Template.postLayout.events({
     } else {
       Session.set('postit_id', template.data._id);
       Session.set('postit_mode', 'reply');
-      Session.set("postit_body", null);
+      Session.set("postit_body", undefined);
       Session.set("postit_tags", []);
       WeFi.postit_target = $(template.find(".reply"));
       Session.set('showPostit', true);
@@ -130,11 +130,15 @@ Template.tags.events({
 });
 
 Template.postLayout.showReplyCount = function() {
-  return ! Session.equals("routed_template", "post" )
+  return ! Session.equals("routed_template", "post" ) && this._id == this.root;
 };
 
 Template.postLayout.commentCount = function () {
   return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count();
+};
+
+Template.postLayout.cc_sp = function() {
+  return Posts.find({ $and: [ {root: this._id }, {_id: {$ne: this._id }} ] }).count() === 1 ? 'reply' : 'replies';
 };
 
 Template.postLayout.showSubThread = function() {
@@ -278,11 +282,9 @@ Template.postit.events({
 	  } else {
 	    Session.set("createError", null);
 	    Session.set('showPostit', false);
-	    if ( Session.get("routed_template") == "posts_by_tag" ) {
+	    if ( ! Session.equals("routed_template", "post" ) ) {
 	      var p = Posts.findOne(post);
-	      if (p.root == p._id)
-		Meteor.Router.to("/post/" + p.root + "/" + p.url_slug);
-	      else
+	      if (p.root != p._id)
 		Meteor.Router.to("/post/" + p.root + "/" + p._id);
 	    }
           }
