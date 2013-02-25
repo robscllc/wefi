@@ -112,7 +112,7 @@ Meteor.methods({
       throw new Meteor.Error(404, "No such post");
 
     if (! (this.userId && WeFi.isAdminById(this.userId) ) ) {
-      if (this.userId !== post.owner)
+      if (! EJSON.equals(this.userId, post.owner))
 	throw new Meteor.Error(404, "Not your post");
       
       if (((new Date()).getTime() - (new Date(post.posted)).getTime()) > 300000)
@@ -135,7 +135,7 @@ Meteor.methods({
     if (! post)
       throw new Meteor.Error(404, "No such post");
 
-    if (post.owner == this.userId)
+    if (EJSON.equals(post.owner, this.userId))
       throw new Meteor.Error(404, "Can't vote for your own post");
 
     var vote = Posts.findOne({_id: post._id, 

@@ -181,7 +181,7 @@ Template.postLayout.myVoteIs = function (val) {
 };
 
 Template.postLayout.canVote = function () {
-  return Meteor.userId() && this.owner != Meteor.userId();
+  return Meteor.userId() && ! EJSON.equals(this.owner, Meteor.userId());
 };
 
 Template.postLayout.editTimeRemaining = function () {
