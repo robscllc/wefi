@@ -11,7 +11,9 @@
     {{> postit }}
     <div class="row-fluid">
       <div class="span3">
-	{{> sidebar }}
+	<div class="sidebar-nave sidebar-nav-fixed">
+	  {{> about }}
+	</div>
       </div>
       <div class="span9">
 	{{renderPage}}
@@ -20,12 +22,6 @@
   </div>
   {{> footer}}
 </body>
-
-<template name="sidebar">
-  <div class="sidebar">
-    {{> about }}
-  </div>
-</template>
 
 <template name="about">
   {{#if page_description}}
@@ -138,8 +134,8 @@
 <template name="user_history">{{> postlist }}</template>
 
 <template name="tag_list">
-  Showing posts with <a href="/tag">tags</a>
-  <ul>
+  Showing posts with <a href="/tag">tags</a>:
+  <ul class="inline">
   {{#each current_tags}}
   <li><a href="/tag/{{this}}">{{this}}</a></li>
   {{/each}}
