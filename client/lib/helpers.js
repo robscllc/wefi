@@ -1,6 +1,6 @@
 Handlebars.registerHelper('canEdit', function (obj, prop) {
   var owner = Meteor.users.findOne(obj[prop]);
-  return owner._id === Meteor.userId();
+  return EJSON.equals(owner._id, Meteor.userId());
 });
 
 Handlebars.registerHelper('displayName', function (user) {
