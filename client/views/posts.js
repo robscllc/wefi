@@ -228,7 +228,7 @@ Template.postLayout.postuser = function () {
 };
 
 Template.postLayout.timestamp = function () {
-  return new Date(this.posted);
+  return this.posted.toISOString();
 };
 
 Template.postLayout.maybeState = function (what) {
