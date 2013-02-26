@@ -7,7 +7,8 @@
   "dependencies": {
     "basePackages": {
       "pagination": {},
-      "router": {}
+      "router": {},
+      "HTML5-History-API": {}
     },
     "packages": {
       "pagination": {
@@ -17,13 +18,18 @@
       },
       "router": {
         "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.3.5",
-        "commit": "e8e63db2411204f0a6589b74dd591babbfb2da1a"
+        "tag": "v0.4.0",
+        "commit": "c99ccbc30a4692635a67a585a6ce4eed252aa268"
       },
-      "page-js": {
-        "git": "https://github.com/tmeasday/meteor-page-js.git",
+      "HTML5-History-API": {
+        "git": "https://github.com/tmeasday/meteor-HTML5-History-API.git",
+        "tag": "v0.1.2",
+        "commit": "72333bfa71ae1ca75243085e83200eef40818088"
+      },
+      "page-js-ie-support": {
+        "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
         "tag": "v1.3.5",
-        "commit": "c652f795a86498aa4609ab637a694710421cb218"
+        "commit": "b99ed8380aefd10b2afc8f18d9eed4dd0d8ea9cb"
       }
     }
   }
