@@ -10,6 +10,7 @@
 * tags are all toLowerCase() now
 * added backup Date.prototype.toISOString
 * added facebook & google+ page links
+* spiderable fix
 
 ## v0.1.12.3
 
