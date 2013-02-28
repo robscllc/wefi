@@ -15,17 +15,13 @@ Meteor.startup(function() {
 	
         var connection = {
           connectionId: socket.meteor_session.id,
-          connectionAddress: socket.address,
           userId: socket.meteor_session.userId
         };
 	
         socket.id = socket.meteor_session.id;
-
         ActiveUsers.insert(connection); 
-	
-        //Meteor.clearInterval(intervalID);
       }
-    }, 5000);
+    }, WeFi.active_users_poll_interval);
     
     socket.on('close', Meteor.bindEnvironment(function () {
       ActiveUsers.remove({
