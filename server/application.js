@@ -58,7 +58,7 @@ Meteor.Router.add('/tag/:tag.xml', function(tag) {
     cons.tags = tags[0];
   }
    
-  Posts.find(cons, {sort: {posted: -1}}).
+  Posts.find(cons, {sort: {posted: -1}, limit: 20}).
     forEach(function(post) {
       feed.item({
 	title: post.title,
