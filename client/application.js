@@ -12,7 +12,7 @@ Meteor.Router.add({
     Session.set('postit_tags', ['front_page']);
     Session.set('page_tags', ['front_page']);
     Session.set("tag-dir", "desc");
-    WeFi.set_head( { tags: ['front_page'] } );
+    WeFi.set_head( { tags: ['front_page'], rss: { href: '/tag/front_page.xml' } } );
     Session.set("routed_template", "posts_by_tag");
     return Session.get("routed_template");
   }
