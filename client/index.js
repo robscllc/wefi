@@ -63,5 +63,5 @@ Template.about.events({
 });
 
 Template.about.activeUsers = function() {
-  return ActiveUsers.find({ userId: { $ne: Meteor.userId() } });
+  return ActiveUsers.find();
 };

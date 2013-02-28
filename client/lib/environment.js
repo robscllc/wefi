@@ -12,4 +12,4 @@ Accounts.ui.config({
 });
 
 Pagination.perPage(20);
-//Pagination.style('bootstrap');
+Pagination.style('bootstrap');

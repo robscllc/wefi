@@ -39,10 +39,22 @@ div.post hr {
     margin: .3em 0;
 }
 
-@media (min-width: 980px) {
-    .sidebar {
-	position: fixed;
-	width: 22.5%;
+.sidebar-nav-fixed {
+    position:fixed;
+    top:60px;
+    width:21.97%;
+}
+
+@media (max-width: 767px) {
+    .sidebar-nav-fixed {
+        position:static;
+        width:auto;
+    }
+}
+
+@media (max-width: 979px) {
+    .sidebar-nav-fixed {
+        top:70px;
     }
 }
 

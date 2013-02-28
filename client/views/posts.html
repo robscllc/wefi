@@ -13,9 +13,7 @@
   <ul class="tags inline pull-right">
     {{#each distinct_tags}}
     {{#if this}}
-    <li>
-      <a class="tag btn btn-mini btn-link" href="/tag/{{this}}">{{this}}</a>
-    </li>
+    <li><a href="/tag/{{this}}"><span class="label">{{this}}</span></a></li>
     {{/if}}
     {{/each}}
   </ul>
@@ -37,7 +35,7 @@
       {{/if}}
       posted by
       <a href="/directory/{{owner}}/history" class="user">{{postuser}}</a>
-      <abbr class="timeago" title="{{posted}}">{{timestamp}}</abbr>  
+      <abbr class="timeago" title="{{timestamp}}">{{posted}}</abbr>  
       | score: 
       {{#if canVote}}
       <a href="#" class="up"><i class="icon-thumbs-up{{#if myVoteIs "up"}} icon-filled{{/if}}" /></a>
@@ -165,9 +163,9 @@
 </template>
 
 <template name="all_tags">
-  <ul>
+  <ul class="inline">
     {{#each tags}}
-    <li><a href="/tag/{{this}}">{{this}}</a></li>
+    <li><a href="/tag/{{this}}"><span class="label">{{this}}</span></a></li>
     {{/each}}
   </ul>
 </template>

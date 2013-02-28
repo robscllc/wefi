@@ -1,7 +1,7 @@
 WeFi.view.post = {
   router: function(id, slug) {
     Session.set('path', this.canonicalPath);
-    if (_.isString(slug) && slug.match(/^[0-9a-f\-]+$/)) {
+    if (_.isString(slug) && slug.match(/^[0-9a-zA-Z\-]+$/)) {
       Meteor.defer(function() {
 	WeFi.scroll_to_post("div." + slug);
       });
@@ -130,7 +130,7 @@ Template.tags.events({
 });
 
 Template.postLayout.showReplyCount = function() {
-  return ! Session.equals("routed_template", "post" ) && this._id == this.root;
+  return ! Session.equals("routed_template", "post" ) && EJSON.equals(this._id, this.root);
 };
 
 Template.postLayout.commentCount = function () {
@@ -142,7 +142,7 @@ Template.postLayout.cc_sp = function() {
 };
 
 Template.postLayout.showSubThread = function() {
-  if (Session.equals("routed_template", "post" ) && this._id !== Session.get("post_id")) {
+  if (Session.equals("routed_template", "post" ) && ! EJSON.equals(this._id, Session.get("post_id"))) {
     var child = Posts.findOne({parent: this._id });
     if (child)
       return true;
@@ -151,12 +151,12 @@ Template.postLayout.showSubThread = function() {
 };
 
 Template.postLayout.depthIfThreaded = function() {
-  return Session.equals("post-thread", "inline") ? (this.root == this._id ? 0 : 1) : this.depth;
+  return Session.equals("post-thread", "inline") ? (EJSON.equals(this.root, this._id) ? 0 : 1) : this.depth;
 };
 
 Template.postLayout.inEditWindow = function () {
   var owner = Meteor.users.findOne(this.owner);
-  if (owner && owner._id === Meteor.userId())
+  if (owner && EJSON.equals(owner._id, Meteor.userId()))
     return ((new Date()).getTime() - (new Date(this.posted)).getTime()) < 300000;
   return false;
 };
@@ -181,7 +181,7 @@ Template.postLayout.myVoteIs = function (val) {
 };
 
 Template.postLayout.canVote = function () {
-  return Meteor.userId() && this.owner != Meteor.userId();
+  return Meteor.userId() && ! EJSON.equals(this.owner, Meteor.userId());
 };
 
 Template.postLayout.editTimeRemaining = function () {
@@ -228,7 +228,7 @@ Template.postLayout.postuser = function () {
 };
 
 Template.postLayout.timestamp = function () {
-  return new Date(this.posted);
+  return this.posted.toISOString();
 };
 
 Template.postLayout.maybeState = function (what) {
@@ -284,7 +284,7 @@ Template.postit.events({
 	    Session.set('showPostit', false);
 	    if ( ! Session.equals("routed_template", "post" ) ) {
 	      var p = Posts.findOne(post);
-	      if (p.root != p._id)
+	      if (!EJSON.equals(p.root, p._id))
 		Meteor.Router.to("/post/" + p.root + "/" + p._id);
 	    }
           }

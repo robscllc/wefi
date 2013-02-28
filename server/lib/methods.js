@@ -23,6 +23,12 @@ WeFi.extend_body = function (o) {
   return _.extend( o, extend );
 };
 
+WeFi.normalize_tags = function(tags) {
+  return _.chain(tags.split(/\W+/)).
+    map( function(tag) { return tag.toLowerCase(); }).
+    uniq().compact().value();
+};
+
 Meteor.methods({
   createPost: function (options) {
     options = options || {};
@@ -41,7 +47,7 @@ Meteor.methods({
     if (par && par.state == 'closed')
       throw new Meteor.Error(403, "Parent post is closed");
 
-    var tags = options.tags.split(/\W+/);
+    var tags = WeFi.normalize_tags(options.tags);
     var now = new Date();
 
     var post = Posts.insert(WeFi.extend_body({
@@ -100,13 +106,13 @@ Meteor.methods({
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in");
 
-    var tags = options.tags.split(/\W+/);
+    var tags = WeFi.normalize_tags(options.tags);
     var post = Posts.findOne(options.post_id);
     if (! post)
       throw new Meteor.Error(404, "No such post");
 
     if (! (this.userId && WeFi.isAdminById(this.userId) ) ) {
-      if (this.userId !== post.owner)
+      if (! EJSON.equals(this.userId, post.owner))
 	throw new Meteor.Error(404, "Not your post");
       
       if (((new Date()).getTime() - (new Date(post.posted)).getTime()) > 300000)
@@ -129,7 +135,7 @@ Meteor.methods({
     if (! post)
       throw new Meteor.Error(404, "No such post");
 
-    if (post.owner == this.userId)
+    if (EJSON.equals(post.owner, this.userId))
       throw new Meteor.Error(404, "Can't vote for your own post");
 
     var vote = Posts.findOne({_id: post._id, 

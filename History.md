@@ -1,3 +1,17 @@
+## v0.2.0
+
+* upgraded to meteor 0.5.7
+  * supporting the new random collection ids
+  * changed object_id comparisons to use EJSON.equals
+* upgraded router to v0.4.0
+  * added HTML5-History-API
+* sidebar is now in one 'well'
+  * using slightly tighter css
+* tags are all toLowerCase() now
+* added backup Date.prototype.toISOString
+* added facebook & google+ page links
+* spiderable fix
+
 ## v0.1.12.3
 
 * fixed null in reply body

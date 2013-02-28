@@ -2,6 +2,7 @@
   <title>Weekday Filler</title>
   <meta name="keywords" content="blog, real-time, weblog, meteor, community" /> 
   <meta name="description" content="Weekday Filler is a real-time blog that anyone can post to ... In continuous development using the Meteor framework." /> 
+  <meta name="fragment" content="!">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -11,7 +12,9 @@
     {{> postit }}
     <div class="row-fluid">
       <div class="span3">
-	{{> sidebar }}
+	<div class="sidebar-nav sidebar-nav-fixed">
+	  {{> about }}
+	</div>
       </div>
       <div class="span9">
 	{{renderPage}}
@@ -21,48 +24,48 @@
   {{> footer}}
 </body>
 
-<template name="sidebar">
-  <div class="sidebar">
-    {{> about }}
-  </div>
-</template>
-
 <template name="about">
-  {{#if page_description}}
   <div class="well">
-    <p>
-      {{{page_description}}}
-    </p>
-    {{{pager}}}
-  </div>
-  {{/if}}
-  <div class="well">
-    <p>
-      <a href="/"><em>Weekday Filler</em></a> is a weblog heavily
-      influenced by <a href="http://metafilter.com" target="_blank">MetaFilter</a> with a dash
-      of <a href="http://reddit.com" target="_blank">reddit</a>.
-    </p>
+    <p>{{{page_description}}}</p>
+    {{#if pager}}
+    <div class="pagination-mini">
+      {{{pager}}}
+    </div>
+    {{/if}}
 
-    <p>
-      Please <button class="post btn btn-mini" data-toggle="button">post</button> something,
-      <a href="/tag/wefi-feature">suggest
-	features</a>, <a href="/tag/wefi-bug">report bugs</a>,
-      or <a href="/tag/wefi-meta">read more
-	about</a> <em>WeFi</em>.
-    </p>
+    <dl>
 
-    <p>
-      <a href="https://github.com/WeekdayFiller/wefi" target="_blank">Fork me on github!</a>
-    </p>
-    
-  </div>
-  <div class="well">
-    <ul class="nav nav-list">
-      <li class="nav-header">Other logged-in users</li>
-      {{#each activeUsers}}
-      <li><a href="/directory/{{userId}}/history">{{displayName userId}}</a></li>
-      {{/each}}
-    </ul>
+      <dt>Logged-in users</dt>
+      <dd>
+	<ul class="inline">
+	  {{#each activeUsers}}
+	  <li><a href="/directory/{{userId}}/history">{{displayName userId}}</a></li>
+	  {{/each}}
+	</ul>
+      </dd>
+
+      <dt>About</dt>
+      <dd>
+	<p>
+	  <a href="/"><em>Weekday Filler</em></a> is a weblog heavily
+	  influenced by <a href="http://metafilter.com" target="_blank">MetaFilter</a> with a dash
+	  of <a href="http://reddit.com" target="_blank">reddit</a>.
+	</p>
+	
+	<p>
+	  Please <button class="post btn btn-mini" data-toggle="button">post</button> something,
+	  <a href="/tag/wefi-feature">suggest
+	    features</a>, <a href="/tag/wefi-bug">report bugs</a>,
+	  or <a href="/tag/wefi-meta">read more
+	    about</a> <em>WeFi</em>.
+	</p>
+	
+	<p>
+	  <a href="https://github.com/WeekdayFiller/wefi" target="_blank">Fork me on github!</a>
+	</p>
+      </dd>
+	      
+    </dl>
   </div>
 </template>
 
@@ -138,10 +141,10 @@
 <template name="user_history">{{> postlist }}</template>
 
 <template name="tag_list">
-  Showing posts with <a href="/tag">tags</a>
-  <ul>
+  Showing posts with <a href="/tag">tags</a>:
+  <ul class="inline">
   {{#each current_tags}}
-  <li><a href="/tag/{{this}}">{{this}}</a></li>
+  <li><a href="/tag/{{this}}"><span class="label">{{this}}</span></a></li>
   {{/each}}
   </ul>
 </template>
@@ -154,9 +157,11 @@
       <ul class="footer-links">
 	<li><a href="http://twitter.com/WeekdayFiller" target="_blank">@WeekdayFiller</a></li>
         <li class="muted">&middot;</li>
-	<li><a href="https://www.facebook.com/weekday.filler" target="_blank">facebook</a></li>
+	<li><a href="https://www.facebook.com/pages/Weekday-Filler/557010290989611" target="_blank">facebook</a></li>
         <li class="muted">&middot;</li>
 	<li><a href="https://github.com/WeekdayFiller/wefi" target="_blank">github</a></li>
+        <li class="muted">&middot;</li>
+	<li><a href="https://plus.google.com/116105624489314535588" target="_blank">google+</a></li>
       </ul>
     </div>
   </footer>

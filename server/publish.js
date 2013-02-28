@@ -26,7 +26,7 @@ Posts.allow({
     return false;
     return _.all(posts, function (post) {
       console.log(fields);
-      if (userId !== post.owner)
+      if (! EJSON.equals(userId, post.owner))
         return false; // not the owner
       
       var allowed = ["body", "tags"];
@@ -50,7 +50,7 @@ Posts.allow({
 ActiveUsers.allow({
   remove: function (userId, docs) {
     return _.all(docs, function(doc) {
-      return doc.userId === userId;
+      return EJSON.equals(doc.userId, userId);
     });
   }
 });
