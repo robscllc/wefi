@@ -11,7 +11,7 @@ WeFi.view.posts_by_tag = {
     WeFi.set_head( { 
       title: "posts tagged with " + _.map(tags, function(s) { return "'" + s + "'"; }).join(' and '),
       tags: tags,
-      rss: { href: this.canonicalPath }
+      rss: { href: this.canonicalPath + '.xml' }
     } );
     Session.set("routed_template", "posts_by_tag");
     return Session.get("routed_template");
