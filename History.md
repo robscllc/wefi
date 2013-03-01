@@ -1,3 +1,11 @@
+## v0.2.1
+
+* added rss feeds for any posts_by_tag page (including front page)
+  * added node-xml & node-rss packages
+  * added limit of 20 to rss pages
+* added link to #WeFi freenode channel
+* added WeFi.active_users_poll_interval
+
 ## v0.2.0
 
 * upgraded to meteor 0.5.7
