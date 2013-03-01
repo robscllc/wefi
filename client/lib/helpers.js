@@ -58,6 +58,11 @@ WeFi.set_head = function(o) {
     var kw = $('meta[name=description]');
     kw.attr("content", o.description);
   }
+  if (o.rss) {
+    var kw = $('link[type="application/rss+xml"]');
+    kw.attr("title", o.rss.title || o.title);
+    kw.attr("href", o.rss.href);
+  }
 };
 
 WeFi.scroll_to_post = function(selector) {
@@ -69,17 +74,6 @@ WeFi.scroll_to_post = function(selector) {
     return true;
   }
   return false;
-};
-
-WeFi.displayName = function (user) {
-  if (_.isString(user))
-    user = Meteor.users.findOne(user)
-  if (!user)
-    return null;
-  if (user.username)
-    return user.username;
-  if (user.profile && user.profile.name)
-    return user.profile.name;
 };
 
 if (!Date.prototype.toISOString) {
