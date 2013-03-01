@@ -2,6 +2,7 @@
   "packages": {
     "pagination": {},
     "router": {},
-    "HTML5-History-API": {}
+    "HTML5-History-API": {},
+    "jquery-scrollintoview": {}
   }
 }

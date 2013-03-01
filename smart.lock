@@ -8,7 +8,8 @@
     "basePackages": {
       "pagination": {},
       "router": {},
-      "HTML5-History-API": {}
+      "HTML5-History-API": {},
+      "jquery-scrollintoview": {}
     },
     "packages": {
       "pagination": {
@@ -18,13 +19,18 @@
       },
       "router": {
         "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.4.0",
-        "commit": "c99ccbc30a4692635a67a585a6ce4eed252aa268"
+        "tag": "v0.4.2",
+        "commit": "82d2895847502b4025370523dba60d597cff4772"
       },
       "HTML5-History-API": {
         "git": "https://github.com/tmeasday/meteor-HTML5-History-API.git",
         "tag": "v0.1.2",
         "commit": "72333bfa71ae1ca75243085e83200eef40818088"
+      },
+      "jquery-scrollintoview": {
+        "git": "https://github.com/WeekdayFiller/meteor-jquery.scrollintoview",
+        "tag": "v1.8.0",
+        "commit": "2adb657b6f6c09728d726b26d6b3d1de85b41f9a"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
