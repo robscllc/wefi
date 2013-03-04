@@ -145,7 +145,7 @@
   Showing posts with <a href="/tag">tags</a>:
   <ul class="inline">
   {{#each current_tags}}
-  <li><a href="/tag/{{this}}"><span class="label">{{this}}</span></a></li>
+  <li><a href="/tag/{{this}}"><span class="label">{{render_tag this}}</span></a></li>
   {{/each}}
   </ul>
   <a href="{{rss_url}}" target="_self"><i class="icon-check"></i> Subscribe to RSS</a>

@@ -13,7 +13,7 @@
   <ul class="tags inline pull-right">
     {{#each distinct_tags}}
     {{#if this}}
-    <li><a href="/tag/{{this}}"><span class="label">{{this}}</span></a></li>
+    <li><a href="/tag/{{this}}"><span class="label">{{render_tag this}}</span></a></li>
     {{/if}}
     {{/each}}
   </ul>
@@ -165,7 +165,7 @@
 <template name="all_tags">
   <ul class="inline">
     {{#each tags}}
-    <li><a href="/tag/{{this}}"><span class="label">{{this}}</span></a></li>
+    <li><a href="/tag/{{this}}"><span class="label">{{render_tag this}}</span></a></li>
     {{/each}}
   </ul>
 </template>
