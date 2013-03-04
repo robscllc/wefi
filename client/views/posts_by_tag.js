@@ -41,7 +41,8 @@ WeFi.view.posts_by_tag = {
     return '/tag/' + (_.isArray(Session.get('page_tags')) ? Session.get('page_tags').join('-') : '');
   },
   description: function() { 
-    return Template.tag_list({ current_tags: Session.get('page_tags') });
+    return Template.tag_list({ current_tags: Session.get('page_tags'),
+			       rss_url: Meteor.absoluteUrl(this.link().substr(1) + ".xml") });
   }
 };
 
