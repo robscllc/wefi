@@ -1,8 +1,8 @@
 {
   "packages": {
     "pagination": {},
-    "router": {},
     "HTML5-History-API": {},
+    "router": {},
     "jquery-scrollintoview": {}
   }
 }
