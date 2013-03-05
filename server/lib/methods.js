@@ -29,17 +29,20 @@ WeFi.normalize_tags = function(tags) {
     uniq().compact().value();
 };
 
+WeFi.check_post = function(options, userId) {
+  if (! (typeof options.body === "string" &&
+         options.body.length ))
+    throw new Meteor.Error(400, "Required parameter missing");
+  if (options.body.length > 100000)
+    throw new Meteor.Error(413, "Body too long");
+  if (! userId)
+    throw new Meteor.Error(403, "You must be logged in");
+};
+
 Meteor.methods({
   createPost: function (options) {
     options = options || {};
-    if (! (typeof options.body === "string" &&
-           options.body.length ))
-      throw new Meteor.Error(400, "Required parameter missing");
-    if (options.body.length > 100000)
-      throw new Meteor.Error(413, "Body too long");
-    if (! this.userId)
-      throw new Meteor.Error(403, "You must be logged in");
-
+    WeFi.check_post(options, this.userId);
     var par;
     if (options.parent)
       par = Posts.findOne(options.parent);
@@ -50,8 +53,19 @@ Meteor.methods({
     var tags = WeFi.normalize_tags(options.tags);
     var now = new Date();
 
+    var post_owner = this.userId;
+    if (WeFi.isAdminById(this.userId) && options.alias) {
+      var alias = WeFi.findUser(options.alias);
+      if (alias) 
+	post_owner = alias._id;
+      else {
+	var provisional_id = Accounts.createUser({ username: options.alias })
+	if (provisional_id) post_owner = provisional_id;
+      }
+    }
+    
     var post = Posts.insert(WeFi.extend_body({
-      owner: this.userId,
+      owner: post_owner,
       body: options.body,
       posted: now,
       state: 'active',
@@ -98,13 +112,7 @@ Meteor.methods({
   },
   editPost: function (options) {
     options = options || {};
-    if (! (typeof options.body === "string" &&
-           options.body.length ))
-      throw new Meteor.Error(400, "Required parameter missing");
-    if (options.body.length > 1000)
-      throw new Meteor.Error(413, "Body too long");
-    if (! this.userId)
-      throw new Meteor.Error(403, "You must be logged in");
+    WeFi.check_post(options, this.userId);
 
     var tags = WeFi.normalize_tags(options.tags);
     var post = Posts.findOne(options.post_id);

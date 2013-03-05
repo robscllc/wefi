@@ -111,6 +111,16 @@
 	  <input type="text" name="tags" class="tags span12" value="{{tags}}"/>
 	</div>
       </div>
+      {{#if currentUser.is_admin}}
+      <div class="row-fluid">
+	<div class="span1">
+	  <label class="pull-right">Alias</label>
+	</div>
+	<div class="span5">
+	  <input type="text" name="alias" class="alias" placeholder="Alias as user?" />
+	</div>
+      </div>
+      {{/if}}
       <div id="help" class="row-fluid collapse">
 	<div class="span12">
 	  <ul>
