@@ -2,6 +2,7 @@ Meteor.subscribe("posts");
 Meteor.subscribe("currentUser");
 Meteor.subscribe("directory");
 Meteor.subscribe("actives");
+Meteor.subscribe("userPresence");
 
 Meteor.Router.add({
   "/": function() {
@@ -31,5 +32,12 @@ Meteor.startup(function() {
 	}).value();
     if (tags)
       Session.set("all_tags", _.toArray(tags));
+
+    if (WeFi.isAdminById(Meteor.userId())) {
+      var users = _.chain(Meteor.users.find().fetch()).map(WeFi.displayName)
+	.value();
+      if (users)
+	Session.set("all_users", _.toArray(users));
+    }
   });
 });

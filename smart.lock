@@ -7,8 +7,14 @@
   "dependencies": {
     "basePackages": {
       "pagination": {},
+      "HTML5-History-API": {},
       "router": {},
-      "HTML5-History-API": {}
+      "page-js-ie-support": {
+        "git": "https://github.com/WeekdayFiller/meteor-page-js-ie-support.git",
+        "branch": "master"
+      },
+      "jquery-scrollintoview": {},
+      "presence": {}
     },
     "packages": {
       "pagination": {
@@ -16,20 +22,30 @@
         "tag": "v1.0.0",
         "commit": "df546295d4bf11a89e57198c8074aa812d85755c"
       },
-      "router": {
-        "git": "https://github.com/tmeasday/meteor-router.git",
-        "tag": "v0.4.0",
-        "commit": "c99ccbc30a4692635a67a585a6ce4eed252aa268"
-      },
       "HTML5-History-API": {
         "git": "https://github.com/tmeasday/meteor-HTML5-History-API.git",
         "tag": "v0.1.2",
         "commit": "72333bfa71ae1ca75243085e83200eef40818088"
       },
+      "router": {
+        "git": "https://github.com/tmeasday/meteor-router.git",
+        "tag": "v0.4.2",
+        "commit": "82d2895847502b4025370523dba60d597cff4772"
+      },
       "page-js-ie-support": {
-        "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
-        "tag": "v1.3.5",
-        "commit": "b99ed8380aefd10b2afc8f18d9eed4dd0d8ea9cb"
+        "git": "https://github.com/WeekdayFiller/meteor-page-js-ie-support.git",
+        "branch": "master",
+        "commit": "cc85b5e61b9656b32660aff7075eb85fa27e3a62"
+      },
+      "jquery-scrollintoview": {
+        "git": "https://github.com/WeekdayFiller/meteor-jquery.scrollintoview",
+        "tag": "v1.8.0",
+        "commit": "2adb657b6f6c09728d726b26d6b3d1de85b41f9a"
+      },
+      "presence": {
+        "git": "https://github.com/tmeasday/meteor-presence.git",
+        "tag": "v0.1.0",
+        "commit": "63b7f5739e092e719b9148fe78aeac2c2afeb8a7"
       }
     }
   }

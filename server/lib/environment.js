@@ -4,7 +4,6 @@ WeFi.max_posts = 1679616;
 WeFi.max_score = 2176782336;
 WeFi.max_title_words = 10;
 WeFi.max_body_text = 200;
-WeFi.active_users_poll_interval = 5 * 1000;
 
 Accounts.config({
   sendVerificationEmail: true

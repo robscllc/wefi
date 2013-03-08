@@ -13,15 +13,15 @@ ul.dropdown-menu li.active a {
 }
 
 h1 {
-    font-size: 1.3em;
+    font-size: 130%;
 }
 
 h2 {
-    font-size: 1.15em;
+    font-size: 115%;
 }
 
 h3 {
-    font-size: 1em;
+    font-size: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {

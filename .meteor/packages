@@ -12,10 +12,12 @@ accounts-facebook
 accounts-twitter
 backbone
 pagination
+HTML5-History-API
 router
 accounts-ui-unstyled
 accounts-google
 accounts-github
 accounts-ui
 spiderable
-HTML5-History-API
+jquery-scrollintoview
+presence

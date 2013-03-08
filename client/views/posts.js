@@ -240,6 +240,14 @@ Template.postLayout.isActive = function () {
 };
 
 Template.postit.rendered = function() {
+  var template = this;
+  Meteor.defer(function() {
+    var b = Session.get("all_users");
+    if (_.isArray(b) && b.length > 0) {
+      $(template.find('input.alias')).typeahead( { source: b } );
+    }
+  });
+
   $("#postit").show();
   $("#postit").css({
     position: "absolute"
@@ -272,9 +280,12 @@ Template.postit.events({
     if (body.length) {
       switch (Session.get('postit_mode')) {
       case "reply":
+	var alias = template.find(".alias");
+	if (alias) alias = alias.value;
 	Meteor.call('createPost', {
           body: body,
 	  tags: template.find(".tags").value,
+	  alias: alias,
 	  parent: Session.get('postit_id')
 	}, function (error, post) {
           if (error) {

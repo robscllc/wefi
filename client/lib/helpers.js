@@ -33,6 +33,10 @@ Handlebars.registerHelper('page_description', function (user) {
     return view.description();
 });
 
+Handlebars.registerHelper('render_tag', function (tag) {
+  return tag.replace(/_/g,' ');
+});
+
 WeFi.root_post_popup = function (event, template) {
   if($(event.target).hasClass('active')) {
     Session.set('showPostit', false);

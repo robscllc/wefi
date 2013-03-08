@@ -1,7 +1,12 @@
 {
   "packages": {
     "pagination": {},
+    "HTML5-History-API": {},
     "router": {},
-    "HTML5-History-API": {}
+    "page-js-ie-support": {
+      "git": "https://github.com/WeekdayFiller/meteor-page-js-ie-support.git"
+    },
+    "jquery-scrollintoview": {},
+    "presence": {}
   }
 }

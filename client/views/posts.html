@@ -13,7 +13,7 @@
   <ul class="tags inline pull-right">
     {{#each distinct_tags}}
     {{#if this}}
-    <li><a href="/tag/{{this}}"><span class="label">{{this}}</span></a></li>
+    <li><a href="/tag/{{this}}"><span class="label">{{render_tag this}}</span></a></li>
     {{/if}}
     {{/each}}
   </ul>
@@ -111,6 +111,16 @@
 	  <input type="text" name="tags" class="tags span12" value="{{tags}}"/>
 	</div>
       </div>
+      {{#if currentUser.is_admin}}
+      <div class="row-fluid">
+	<div class="span1">
+	  <label class="pull-right">Alias</label>
+	</div>
+	<div class="span5">
+	  <input type="text" name="alias" class="alias" placeholder="Alias as user?" />
+	</div>
+      </div>
+      {{/if}}
       <div id="help" class="row-fluid collapse">
 	<div class="span12">
 	  <ul>
@@ -165,7 +175,7 @@
 <template name="all_tags">
   <ul class="inline">
     {{#each tags}}
-    <li><a href="/tag/{{this}}"><span class="label">{{this}}</span></a></li>
+    <li><a href="/tag/{{this}}"><span class="label">{{render_tag this}}</span></a></li>
     {{/each}}
   </ul>
 </template>

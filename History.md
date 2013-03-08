@@ -1,3 +1,18 @@
+## v0.2.2
+
+* replaced ActiveUsers with meteor-presence smart package
+* admin can now post as any user
+  * if user doesn't exist, user will be created
+  * added utility functions WeFi.findUser and WeFi.check_post
+* replacing underscores with spaces when displaying tags
+* using % instead of em in font-size css
+* added explicit RSS link on every posts_by_tag page
+  * using our own fork of meteor-page-js-ie-support
+* re-added HTML5-History-API
+* added jquery-scrollintoview
+* upgraded router to 0.4.2
+* got rid of all _blank targets except in the post modal
+
 ## v0.2.1
 
 * added rss feeds for any posts_by_tag page (including front page)
