@@ -243,7 +243,7 @@ Template.postit.rendered = function() {
   var template = this;
   Meteor.defer(function() {
     var b = Session.get("all_users");
-    if (b.length > 0) {
+    if (_.isArray(b) && b.length > 0) {
       $(template.find('input.alias')).typeahead( { source: b } );
     }
   });

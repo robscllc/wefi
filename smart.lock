@@ -13,7 +13,8 @@
         "git": "https://github.com/WeekdayFiller/meteor-page-js-ie-support.git",
         "branch": "master"
       },
-      "jquery-scrollintoview": {}
+      "jquery-scrollintoview": {},
+      "presence": {}
     },
     "packages": {
       "pagination": {
@@ -40,6 +41,11 @@
         "git": "https://github.com/WeekdayFiller/meteor-jquery.scrollintoview",
         "tag": "v1.8.0",
         "commit": "2adb657b6f6c09728d726b26d6b3d1de85b41f9a"
+      },
+      "presence": {
+        "git": "https://github.com/tmeasday/meteor-presence.git",
+        "tag": "v0.1.0",
+        "commit": "63b7f5739e092e719b9148fe78aeac2c2afeb8a7"
       }
     }
   }

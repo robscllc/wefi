@@ -2,6 +2,7 @@ Meteor.subscribe("posts");
 Meteor.subscribe("currentUser");
 Meteor.subscribe("directory");
 Meteor.subscribe("actives");
+Meteor.subscribe("userPresence");
 
 Meteor.Router.add({
   "/": function() {
