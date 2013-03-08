@@ -51,7 +51,8 @@ Template.about.events({
 });
 
 Template.about.activeUsers = function() {
-  return _.chain(Meteor.presences.find().fetch()).groupBy(function(presence) {
-    return presence ? presence.userId : 0;
-  }).values().map(_.first).value();
+  return _.chain(Meteor.presences.find().fetch()).compact()
+    .groupBy('userId').values().map(_.first).reject(function(presence) {
+      return _.isNull(presence.userId);
+    }).value();
 };
