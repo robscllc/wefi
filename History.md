@@ -11,6 +11,7 @@
 * re-added HTML5-History-API
 * added jquery-scrollintoview
 * upgraded router to 0.4.2
+* got rid of all _blank targets except in the post modal
 
 ## v0.2.1
 
