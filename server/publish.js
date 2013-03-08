@@ -14,10 +14,6 @@ Meteor.publish("posts", function () {
   }
 });
 
-Meteor.publish("actives", function() {
-  return ActiveUsers.find();
-});
-
 Meteor.publish('userPresence', function() {
   // Setup some filter to find the users your logged in user
   // cares about. It's unlikely that you want to publish the 
@@ -54,14 +50,6 @@ Posts.allow({
     return WeFi.isAdminById(userId);
     return ! _.any(posts, function (post) {
       return WeFi.isAdminById(userId);
-    });
-  }
-});
-
-ActiveUsers.allow({
-  remove: function (userId, docs) {
-    return _.all(docs, function(doc) {
-      return EJSON.equals(doc.userId, userId);
     });
   }
 });

@@ -1,15 +1,3 @@
-Meteor.logout = _.wrap(Meteor.logout, function(logout) {
-  var args = _.toArray(arguments).slice(1),
-  origCallback = args[0];
-
-  ActiveUsers.remove({ userId: Meteor.userId() });
-  var newCallback = function(error) {
-    origCallback.call(this, error);
-  };
-  
-  logout(newCallback);
-});
-
 Template.navbar.events({
   'click button.post': function(e, t) { return WeFi.root_post_popup(e, t) },
   'click button.hide-closed': function (event, template) {
@@ -63,5 +51,7 @@ Template.about.events({
 });
 
 Template.about.activeUsers = function() {
-  return ActiveUsers.find();
+  return _.chain(Meteor.presences.find().fetch()).groupBy(function(presence) {
+    return presence ? presence.userId : 0;
+  }).values().map(_.first).value();
 };
