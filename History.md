@@ -1,3 +1,9 @@
+## v0.2.3
+
+* upgraded to meteor 0.5.8
+* upgraded to router 0.4.3
+* RSS link needs an explicit _target='self'
+
 ## v0.2.2
 
 * replaced ActiveUsers with meteor-presence smart package
